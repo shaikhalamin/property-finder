@@ -15,11 +15,20 @@
   text-decoration: none;
 }
 .pTypeText:hover {
-  color: aquamarine;
+  color: #00f09a;
 }
 
 .pCount {
   font-size: 14px;
   color: #858b94;
   text-decoration: none;
+}
+
+.featureViewMore {
+  color: #00f09a;
+}
+
+.featureViewMore:hover {
+  text-decoration: underline;
+  color: #00f09a;
 }

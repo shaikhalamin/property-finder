@@ -2,3 +2,23 @@ html,
 body {
   overflow-x: hidden;
 }
+
+.ft-14 {
+  font-size: 14px;
+}
+.ft-16 {
+  font-size: 16px;
+}
+.ft-20 {
+  font-size: 20px;
+}
+
+.ft-30 {
+  font-size: 30px;
+}
+.text-color-a3a {
+  color: #212a3a;
+}
+.text-color-b94 {
+  color: #858b94;
+}

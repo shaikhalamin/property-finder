@@ -28,17 +28,22 @@ const PropertyTypes = () => {
     <>
       <section className="bg-white py-5 mt-5">
         <Container>
+          <h2 className={`${styles.ft30} mb-2 text-justify`}>
+            Find Your Property
+          </h2>
           <Row>
             <Col className="md-10 offset-md-1">
               <Container>
-                <h2 className={`${styles.ft30} mb-2 text-justify`}>
-                  Find Your Property
-                </h2>
                 <Row className="pl-2 pr-2 mt-4">
                   {propertyTypes.length > 0 &&
                     propertyTypes.map((propertyType) => (
                       <>
-                        <Col key={propertyType.id} md="2" sm="6" className={`${styles.pTypeBody}`}>
+                        <Col
+                          key={`${propertyType.id}-${propertyType.alias}`}
+                          md="2"
+                          sm="6"
+                          className={`${styles.pTypeBody}`}
+                        >
                           <a href="#" className="text-decoration-none">
                             <Row>
                               <Col className="py-3 px-0 ">
@@ -54,7 +59,9 @@ const PropertyTypes = () => {
                                     />
                                   </Card.Body>
                                 </Card>
-                                <div className={`text-center ${styles.pTypeText}`}>
+                                <div
+                                  className={`text-center ${styles.pTypeText}`}
+                                >
                                   {propertyType.name}
                                 </div>
                                 <div className={`text-center ${styles.pCount}`}>
