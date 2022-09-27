@@ -1,3 +1,4 @@
+import Agents from "@/components/home/Agents";
 import PropertyFeatured from "@/components/home/PropertyFeatured";
 import PropertyTypes from "@/components/home/PropertyTypes";
 import PropertyLayout from "@/components/layouts/PropertyLayout";
@@ -8,6 +9,7 @@ const Home = () => {
     <>
       <PropertyTypes />
       <PropertyFeatured />
+      <Agents />
     </>
   );
 };

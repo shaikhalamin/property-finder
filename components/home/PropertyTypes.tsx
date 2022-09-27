@@ -26,7 +26,7 @@ const PropertyTypes = () => {
 
   return (
     <>
-      <section className="bg-white py-5 mt-5">
+      <section className="bg-white py-3 mt-4">
         <Container>
           <h2 className={`${styles.ft30} mb-2 text-justify`}>
             Find Your Property

@@ -32,3 +32,14 @@
   text-decoration: underline;
   color: #00f09a;
 }
+
+.propertyIcon {
+  margin: 0px 6px 0px 0px;
+}
+
+.propertyIcon svg {
+  fill: #00f09a;
+  padding: 2px;
+  width: 23px;
+  height: 23px;
+}

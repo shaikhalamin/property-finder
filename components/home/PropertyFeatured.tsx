@@ -3,7 +3,11 @@ import { PropertyList } from "@/data/model/property-list";
 import { API_URLS } from "@/data/utils/api.urls";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import BathIcon from "../common/icon/Bath";
+import BedIcon from "../common/icon/Bed";
+import PropertySizeIcon from "../common/icon/PropertySize";
 import styles from "./home.module.css";
+import SectionTitleLink from "./SectionTitleLink";
 
 const PropertyFeatured = () => {
   const [properties, setProperties] = useState({} as PropertyList);
@@ -20,38 +24,31 @@ const PropertyFeatured = () => {
 
   return (
     <>
-      <section className="bg-white py-5 mt-1">
+      <section className="bg-white py-3 mt-1">
         <Container>
           <Row>
             <Col md="12">
               <Container>
-                <Row>
-                  <Col md="6">
-                    <h2 className={`mb-2 text-start ft-30`}>
-                      Recent Real Estate
-                    </h2>
-                  </Col>
-                  <Col md="6">
-                    <h2 className={`mb-2 text-end`}>
-                      <a
-                        href="#"
-                        className={`text-decoration-none text-dark ft-14 text-uppercase font-weight-bold ${styles.featureViewMore}`}
-                      >
-                        View more properties
-                      </a>
-                    </h2>
-                  </Col>
-                </Row>
+                <SectionTitleLink
+                  title={`Recent Real Estate`}
+                  linkTitle={`View more properties`}
+                  link={`#`}
+                />
                 <Row className="mt-1 mb-2">
                   {Object.values(properties).length > 0 &&
-                    properties?.data.map((property,index) => {
-
-                      const defaultPath = '1663871385724timebcfb37d0a1254da78dd2159801dfdfd8.jpg';
+                    properties?.data.map((property, index) => {
+                      const defaultPath =
+                        "1663871385724timebcfb37d0a1254da78dd2159801dfdfd8.jpg";
                       let featureImage = null;
-                      if(property.propertyImages.length > 0){
-                        featureImage = property.propertyImages.find((image)=> image.type == 'header' && image.size == 'md')
+                      if (property.propertyImages.length > 0) {
+                        featureImage = property.propertyImages.find(
+                          (image) =>
+                            image.type == "header" && image.size == "md"
+                        );
                       }
-                      const imagePath = featureImage ? `${API_URLS.header_img}${featureImage.fileName}` : `${API_URLS.header_img}${defaultPath}`;
+                      const imagePath = featureImage
+                        ? `${API_URLS.header_img}${featureImage.fileName}`
+                        : `${API_URLS.header_img}${defaultPath}`;
                       return (
                         <>
                           <Col md="4" className="mt-4" key={property.id}>
@@ -77,20 +74,26 @@ const PropertyFeatured = () => {
                                 <hr className="mt-2" />
                                 <Row>
                                   <Col md="4">
-                                    <span>x</span>
-                                    <span className="ft-14 text-color-b94">
+                                    <span className={`${styles.propertyIcon}`}>
+                                      <BedIcon />
+                                    </span>
+                                    <span className="ft-14 text-color-b94 mt-2">
                                       6 Rooms
                                     </span>
                                   </Col>
                                   <Col md="4">
-                                    <span>x</span>
-                                    <span className="ft-14 text-color-b94">
+                                    <span className={`${styles.propertyIcon}`}>
+                                      <BathIcon />
+                                    </span>
+                                    <span className="ft-14 text-color-b94 mt-2">
                                       3 Baths
                                     </span>
                                   </Col>
                                   <Col md="4">
-                                    <span>x</span>
-                                    <span className="ft-14 text-color-b94">
+                                    <span className={`${styles.propertyIcon}`}>
+                                      <PropertySizeIcon />
+                                    </span>
+                                    <span className="ft-14 text-color-b94 mt-2">
                                       1600 sq
                                     </span>
                                   </Col>
