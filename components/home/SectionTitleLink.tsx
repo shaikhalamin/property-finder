@@ -16,10 +16,10 @@ const SectionTitleLink: React.FC<TitleLinkProps> = ({
   return (
     <>
       <Row>
-        <Col md="6">
+        <Col md="6" key={``}>
           <h2 className={`mb-2 text-start ft-30`}>{title}</h2>
         </Col>
-        <Col md="6">
+        <Col md="6" key={``}>
           <h2 className={`mb-2 text-end`}>
             <a
               href={link}

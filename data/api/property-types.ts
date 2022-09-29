@@ -4,7 +4,7 @@ import { API_URLS } from "../utils/api.urls";
 
 const PROPERTY_TYPES_URL = API_URLS.propertyTypes;
 
-export const getPropertyTypes = async () => {
+export const getPropertyTypes = () => {
   return axios.get(PROPERTY_TYPES_URL);
 };
 

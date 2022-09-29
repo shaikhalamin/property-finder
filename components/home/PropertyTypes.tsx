@@ -39,7 +39,7 @@ const PropertyTypes = () => {
                     propertyTypes.map((propertyType) => (
                       <>
                         <Col
-                          key={`${propertyType.id}-${propertyType.alias}`}
+                          key={propertyType.id.toString()}
                           md="2"
                           sm="6"
                           className={`${styles.pTypeBody}`}
@@ -61,10 +61,13 @@ const PropertyTypes = () => {
                                 </Card>
                                 <div
                                   className={`text-center ${styles.pTypeText}`}
+                                  key={`${propertyType.id.toString()}-${Math.random().toString()}`}
                                 >
                                   {propertyType.name}
                                 </div>
-                                <div className={`text-center ${styles.pCount}`}>
+                                <div className={`text-center ${styles.pCount}`}
+                                key={`${propertyType.id.toString()}-${Math.random().toString()}`}
+                                >
                                   ({propertyType.propertyCount})
                                 </div>
                               </Col>
