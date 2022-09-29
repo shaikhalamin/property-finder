@@ -67,7 +67,7 @@ const PropertyFeatured = () => {
                                 <div className="ft-20 mb-1 text-color-a3a fw-bold">
                                   Wilshire Victoria
                                 </div>
-                                <div className="ft-14 mb-1">
+                                <div className="ft-14 mb-1 text-color-b94">
                                   10700 Wilshire Blvd, Los Angeles, CA 90024
                                 </div>
                                 <div className="ft-16 fw-bold">$950 000.00</div>

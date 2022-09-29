@@ -1,3 +1,4 @@
+import Footer from "../footer/footer";
 import PropertyHeader from "../header/PropertyHeader";
 import PropertyNavbar from "../navbar/property/PropertyNavbar";
 
@@ -10,9 +11,7 @@ const PropertyLayout: React.FC<ChildProps> = ({ children }) => {
       <PropertyNavbar />
       <PropertyHeader />
       {children}
-      <footer>
-        <p>This is property footer</p>
-      </footer>
+      <Footer/>
     </>
   );
 };

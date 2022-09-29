@@ -4,8 +4,8 @@ import styles from "./home.module.css";
 
 interface TitleLinkProps {
   title: string;
-  linkTitle: string;
-  link: string;
+  linkTitle?: string;
+  link?: string;
 }
 
 const SectionTitleLink: React.FC<TitleLinkProps> = ({
