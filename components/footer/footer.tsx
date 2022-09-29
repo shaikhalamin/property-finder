@@ -1,5 +1,11 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaTwitter,
+  FaLinkedinIn,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -17,13 +23,13 @@ const Footer = () => {
                           Templates
                         </div>
                         <div className="ft-16 mt-3 mb-1 text-color-b94">
-                          Premade websites
+                          <a href="#" className="text-color-b94 text-decoration-none">Premade websites</a>
                         </div>
                         <div className="ft-16 mb-1 text-color-b94">
-                          Popup bundles
+                          <a href="#" className="text-color-b94 text-decoration-none">Popup bundles</a>
                         </div>
                         <div className="ft-16 mb-1 text-color-b94">
-                          Website models
+                          <a href="#" className="text-color-b94 text-decoration-none">Website models</a>
                         </div>
                       </div>
                     </div>
@@ -35,13 +41,13 @@ const Footer = () => {
                           Support
                         </div>
                         <div className="ft-16 mt-3 mb-1 text-color-b94">
-                          Premade websites
+                          <a href="#" className="text-color-b94 text-decoration-none">Help Center</a>
                         </div>
                         <div className="ft-16 mb-1 text-color-b94">
-                          Popup bundles
+                          <a href="#" className="text-color-b94 text-decoration-none">Refund policy</a>
                         </div>
                         <div className="ft-16 mb-1 text-color-b94">
-                          Website models
+                          <a href="#" className="text-color-b94 text-decoration-none">FAQ</a>
                         </div>
                       </div>
                     </div>
@@ -52,14 +58,14 @@ const Footer = () => {
                         <div className="ft-20 mb-1 text-color-a3a fw-bold">
                           Links
                         </div>
-                        <div className="ft-14 mt-3 mb-1 text-color-b94">
-                          Premade websites
+                        <div className="ft-16 mt-3 mb-1 text-color-b94">
+                          <a href="#" className="text-color-b94 text-decoration-none">Blog</a>
                         </div>
-                        <div className="ft-14 mb-1 text-color-b94">
-                          Popup bundles
+                        <div className="ft-16 mb-1 text-color-b94">
+                          <a href="#" className="text-color-b94 text-decoration-none">Add Property</a>
                         </div>
-                        <div className="ft-14 mb-1 text-color-b94">
-                          Website models
+                        <div className="ft-16 mb-1 text-color-b94">
+                          <a href="#" className="text-color-b94 text-decoration-none">Find Property</a>
                         </div>
                       </div>
                     </div>
@@ -71,13 +77,29 @@ const Footer = () => {
                           Socials
                         </div>
                         <div className="ft-14 mt-3 mb-1 text-color-b94">
-                          Premade websites
-                        </div>
-                        <div className="ft-14 mb-1 text-color-b94">
-                          Popup bundles
-                        </div>
-                        <div className="ft-14 mb-1 text-color-b94">
-                          Website models
+                          <ul className="nav justify-content-start">
+                            <li className="nav-item px-1 fs-16">
+                              <a href="#" className="text-dark">
+                                <FaFacebookF />
+                              </a>
+                            </li>
+                            <li className="nav-item px-2 fs-16">
+                              <a href="#" className="text-dark">
+                                <FaInstagram />
+                              </a>
+                            </li>
+                            <li className="nav-item px-2 fs-16">
+                              <a href="#" className="text-dark">
+                                <FaTwitter />
+                              </a>
+                            </li>
+
+                            <li className="nav-item px-2 fs-16">
+                              <a href="#" className="text-dark">
+                                <FaLinkedinIn />
+                              </a>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                     </div>
@@ -89,7 +111,7 @@ const Footer = () => {
         </Container>
         <hr />
         <Row>
-          <Col>
+          <Col className="mx-3">
             <p className="text-center text-color-b94 fs-14 fw-normal">
               Copyright © {new Date().getFullYear()} powered by find property,
               Inc. All rights reserved

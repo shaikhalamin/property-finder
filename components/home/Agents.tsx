@@ -51,7 +51,7 @@ const Agents: React.FC = () => {
                             className="mt-4"
                             key={agent.id.toString()}
                           >
-                            <Card>
+                            <Card className="rounded-0">
                               <Card.Body className="py-0 px-0">
                                 <img
                                   className={`w-100`}

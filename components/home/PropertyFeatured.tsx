@@ -51,8 +51,8 @@ const PropertyFeatured = () => {
                         : `${API_URLS.header_img}${defaultPath}`;
                       return (
                         <>
-                          <Col md="4" className="mt-4" key={property.id}>
-                            <Card>
+                          <Col md="4" className={`mt-4`} key={property.id}>
+                            <Card className="rounded-0">
                               <Card.Body className="py-0 px-0">
                                 <img
                                   height={`272`}
@@ -64,16 +64,38 @@ const PropertyFeatured = () => {
                             </Card>
                             <div className="border">
                               <div className="py-3 px-3">
-                                <div className="ft-20 mb-1 text-color-a3a fw-bold">
-                                  Wilshire Victoria
+                                <div className="mb-1 text-color-a3a fw-bold">
+                                  <Row>
+                                    <Col className="text-start ft-20">
+                                      {property.name}
+                                    </Col>
+                                    <Col className="text-end">
+                                      {property.purpose.toLocaleUpperCase() ===
+                                      "RENT" ? (
+                                        <span className="badge bg-danger fs-12 fs-normal rounded-0">
+                                          {property.purpose.toLocaleUpperCase()}
+                                        </span>
+                                      ) : (
+                                        <span className="badge bg-warning fs-12 fs-normal rounded-0 text-dark">
+                                          {property.purpose.toLocaleUpperCase()}
+                                        </span>
+                                      )}
+                                    </Col>
+                                  </Row>
                                 </div>
                                 <div className="ft-14 mb-1 text-color-b94">
                                   10700 Wilshire Blvd, Los Angeles, CA 90024
                                 </div>
-                                <div className="ft-16 fw-bold">$950 000.00</div>
+                                <div className="fw-bold mt-2">
+                                  <Row>
+                                    <Col className="text-start fs-14">
+                                      $950 000.00
+                                    </Col>
+                                  </Row>
+                                </div>
                                 <hr className="mt-2" />
                                 <Row>
-                                  <Col md="4">
+                                  <Col>
                                     <span className={`${styles.propertyIcon}`}>
                                       <BedIcon />
                                     </span>
@@ -81,7 +103,7 @@ const PropertyFeatured = () => {
                                       6 Rooms
                                     </span>
                                   </Col>
-                                  <Col md="4">
+                                  <Col>
                                     <span className={`${styles.propertyIcon}`}>
                                       <BathIcon />
                                     </span>
@@ -89,7 +111,7 @@ const PropertyFeatured = () => {
                                       3 Baths
                                     </span>
                                   </Col>
-                                  <Col md="4">
+                                  <Col>
                                     <span className={`${styles.propertyIcon}`}>
                                       <PropertySizeIcon />
                                     </span>

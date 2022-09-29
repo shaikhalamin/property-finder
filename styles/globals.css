@@ -3,6 +3,10 @@ body {
   overflow-x: hidden;
 }
 
+.ft-12 {
+  font-size: 12px;
+}
+
 .ft-14 {
   font-size: 14px;
 }
@@ -21,4 +25,12 @@ body {
 }
 .text-color-b94 {
   color: #858b94;
+}
+
+a.text-color-b94:hover {
+  color: #00f09a;
+}
+
+.text-f-center {
+  text-align: center !important;
 }

@@ -17,6 +17,7 @@ const HowTo = () => {
               <Container>
                 <SectionTitleLink
                   title={`How can we help you find real estate?`}
+                  titleCls={`text-center`}
                 />
 
                 <Row className={`mt-5 mb-2`}>
