@@ -30,7 +30,7 @@ const SectionTitleLink: React.FC<TitleLinkProps> = ({
             <h2 className={`mb-2 text-end`}>
               <a
                 href={link}
-                className={`text-decoration-none text-color-b94 ft-14 text-uppercase fw-bold`}
+                className={`text-decoration-none text-black ft-14 text-uppercase fw-bold`}
               >
                 {linkTitle}
                 <span className="px-2">

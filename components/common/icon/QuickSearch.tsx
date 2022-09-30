@@ -10,7 +10,7 @@ const QuickSearchIcon = () => {
         viewBox="0 0 60 60"
         fill="none"
       >
-        <g clip-path="url(#clip0)">
+        <g clipPath="url(#clip0)">
           <path
             d="M43.5 39L38.5 43.5L54.5 59L59 54.5L43.5 39Z"
             fill="#FFCC00"
@@ -31,7 +31,7 @@ const QuickSearchIcon = () => {
           <path
             d="M43.6 22.5C43.6 34.4294 34.4294 43.6 22.5 43.6C10.5707 43.6 0.9 33.9294 0.9 22C0.9 10.0969 10.544 0.9 22.5 0.9C34.4031 0.9 43.6 10.544 43.6 22.5Z"
             stroke="#011B4E"
-            stroke-width="1.8"
+            strokeWidth="1.8"
           ></path>
         </g>
         <defs>

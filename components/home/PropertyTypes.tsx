@@ -38,41 +38,41 @@ const PropertyTypes = () => {
                   {propertyTypes.length > 0 &&
                     propertyTypes.map((propertyType) => (
                       <>
-                        <Col
-                          key={propertyType.id.toString()}
-                          md="2"
-                          sm="6"
-                          className={`${styles.pTypeBody}`}
-                        >
-                          <a href="#" className="text-decoration-none">
-                            <Row>
-                              <Col className="py-3 px-0 ">
-                                <Card className="border-0">
-                                  <Card.Body className="d-flex justify-content-center">
-                                    <img
-                                      src={`${
-                                        API_URLS.static_img
-                                      }/property-types/icon_${propertyType.name.toLocaleLowerCase()}.svg`}
-                                      width="60"
-                                      height="60"
-                                      alt={propertyType.name}
-                                    />
-                                  </Card.Body>
-                                </Card>
-                                <div
-                                  className={`text-center ${styles.pTypeText}`}
-                                  key={`${propertyType.id.toString()}-${Math.random().toString()}`}
-                                >
-                                  {propertyType.name}
-                                </div>
-                                <div className={`text-center ${styles.pCount}`}
-                                key={`${propertyType.id.toString()}-${Math.random().toString()}`}
-                                >
-                                  ({propertyType.propertyCount})
-                                </div>
-                              </Col>
-                            </Row>
-                          </a>
+                        <Col key={propertyType.id.toString()} md="2" sm="6">
+                          <Card className={`${styles.pTypeBody} border-0`}>
+                            <Card.Body>
+                              <a href="#" className="text-decoration-none">
+                                <Row>
+                                  <Col className="py-0 px-0 ">
+                                    <Card className="border-0">
+                                      <Card.Body className="d-flex justify-content-center">
+                                        <img
+                                          src={`${
+                                            API_URLS.static_img
+                                          }/property-types/icon_${propertyType.name.toLocaleLowerCase()}.svg`}
+                                          width="60"
+                                          height="60"
+                                          alt={propertyType.name}
+                                        />
+                                      </Card.Body>
+                                    </Card>
+                                    <div
+                                      className={`text-center ${styles.pTypeText}`}
+                                      key={`${propertyType.id.toString()}-${Math.random().toString()}`}
+                                    >
+                                      {propertyType.name}
+                                    </div>
+                                    <div
+                                      className={`text-center ${styles.pCount}`}
+                                      key={`${propertyType.id.toString()}-${Math.random().toString()}`}
+                                    >
+                                      ({propertyType.propertyCount})
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </a>
+                            </Card.Body>
+                          </Card>
                         </Col>
                       </>
                     ))}

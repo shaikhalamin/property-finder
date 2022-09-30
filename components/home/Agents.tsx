@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import SectionTitleLink from "./SectionTitleLink";
 import { API_URLS } from "@/data/utils/api.urls";
+import styles from "./home.module.css";
 
 const Agents: React.FC = () => {
   // const imagePath = `http://localhost:8070/uploads/agent/1664303371650time9b93f315488c45d091ce4e5bff392139.jpg`;
@@ -51,7 +52,7 @@ const Agents: React.FC = () => {
                             className="mt-4"
                             key={agent.id.toString()}
                           >
-                            <Card className="rounded-0">
+                            <Card className={`${styles.pTypeBody} rounded-0`}>
                               <Card.Body className="py-0 px-0">
                                 <img
                                   className={`w-100`}

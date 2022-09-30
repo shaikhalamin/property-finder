@@ -31,6 +31,10 @@ a.text-color-b94:hover {
   color: #00f09a;
 }
 
-.text-f-center {
-  text-align: center !important;
+.text-black {
+  color: #000;
+}
+
+a.text-black:hover {
+  color: #00f09a;
 }

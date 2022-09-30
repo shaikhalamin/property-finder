@@ -10,7 +10,7 @@ const AdviseIcon = () => {
         viewBox="0 0 60 60"
         fill="none"
       >
-        <g clip-path="url(#clip0)">
+        <g clipPath="url(#clip0)">
           <path d="M17 27H24V34L17 36.5V27Z" fill="#FFCC00"></path>
           <path
             d="M29 33L26.5 34L31.5 40L34 38.5L35 41L33.5 52.5H40L38 41L39 39L42 40L47 34L44.5 33L38 36.5H35.5L29 33Z"

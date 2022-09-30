@@ -4,6 +4,7 @@ import PropertyAddBanner from "@/components/home/PropertyAddBanner";
 import PropertyFeatured from "@/components/home/PropertyFeatured";
 import PropertyTypes from "@/components/home/PropertyTypes";
 import PropertyLayout from "@/components/layouts/PropertyLayout";
+import BusSit from "@/components/bus-booking/BusSit";
 import { ReactElement } from "react";
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
       <Agents />
       <HowTo />
       <PropertyAddBanner />
+      <BusSit />
     </>
   );
 };
