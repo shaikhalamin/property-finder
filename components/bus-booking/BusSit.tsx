@@ -1,6 +1,7 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import SeatIcon from "./SeatIcon";
+import SitPlanning from "./SitPlanning";
 
 import styles from "./test.module.css";
 
@@ -47,8 +48,12 @@ const sitsInfo = [
   },
 ];
 
+
+
 const BusSit = () => {
   const [busSits, setBusSits] = useState(sitsInfo);
+
+
 
   const handleClick = (e: SyntheticEvent, data: any) => {
     setBusSits((prevState) => {
@@ -70,15 +75,18 @@ const BusSit = () => {
     <div>
       {busSits.length > 0 && (
         <Container className="mt-5">
-          <Row key={Number(60596058969).toString()}>
-            <Col className="py-3 border mb-3" key={Number(5000).toString()}>
-              <p>
-                Selected Sits :{" "}
-                {JSON.stringify(busSits.filter((sit) => sit.isBooked === true))}
-              </p>
-            </Col>
-          </Row>
-          <Row
+          <>
+            <Row key={Number(60596058969).toString()}>
+              <Col className="py-3 border mb-3" key={Number(5000).toString()}>
+                <p>
+                  Selected Sits :{" "}
+                  {JSON.stringify(
+                    busSits.filter((sit) => sit.isBooked === true)
+                  )}
+                </p>
+              </Col>
+            </Row>
+            <Row
             key={Number(605960589696590496094).toString()}
             className={`mt-1 mb-2 py-1 px-2`}
           >
@@ -91,15 +99,19 @@ const BusSit = () => {
                       className={`px-3  py-2`}
                       key={Number(index).toString()}
                       disabled={!sit.isBooked}
-                      
                     >
                       <Card className={`border mt-2 text-center`}>
                         <p className="mt-2">{sit.sitNo}</p>
                         <p>{sit.price}</p>
-                        <p className={`${styles.seatIcon}`} onClick={(e) => handleClick(e, sit)}>
+                        <p
+                          className={`${styles.seatIcon}`}
+                          onClick={(e) => handleClick(e, sit)}
+                        >
                           <SeatIcon
                             labelName={sit.sitNo}
-                            fillColor={sit.isBooked === true ? "green" : "#fff"}
+                            fillColor={
+                              sit.isBooked === true ? "#079d49" : "#fff"
+                            }
                           />
                         </p>
                       </Card>
@@ -108,6 +120,8 @@ const BusSit = () => {
                 );
               })}
           </Row>
+          <SitPlanning />
+          </>
         </Container>
       )}
     </div>
