@@ -105,6 +105,7 @@ const PropertyNavbar = () => {
     >
       <Container>
         <Navbar.Brand
+          href="/"
           role="general-navbar-brand-role"
           className={`${styles.ft18} ${styles.ftBold}`}
         >
@@ -150,7 +151,10 @@ const PropertyNavbar = () => {
             <Nav.Link href="/signin" className={`text-white ${styles.ft14}`}>
               Sign In
             </Nav.Link>
-            <Nav.Link href="/signup" className={`text-white ${styles.ft14} mr-2`}>
+            <Nav.Link
+              href="/signup"
+              className={`text-white ${styles.ft14} mr-2`}
+            >
               Sign Up
             </Nav.Link>
 

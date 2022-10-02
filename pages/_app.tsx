@@ -5,6 +5,7 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import SSRProvider from "react-bootstrap/SSRProvider";
 import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import PropertyLayout from "@/components/layouts/PropertyLayout";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -21,9 +22,9 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   if (!Component.getLayout) {
     return (
       <SSRProvider>
-        <AdminLayout>
+        <PropertyLayout>
           <Component {...pageProps} />
-        </AdminLayout>
+        </PropertyLayout>
       </SSRProvider>
     );
   }
