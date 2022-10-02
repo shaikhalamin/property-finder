@@ -4,6 +4,8 @@ import { API_URLS } from "../utils/api.urls";
 
 const PROPERTY_URL = API_URLS.properties;
 
-export const getProperties = () => {
-  return axios.get(PROPERTY_URL);
+export const getProperties = (filters: string = "") => {
+  const propertyUrl =
+    filters.length > 0 ? `${PROPERTY_URL}?${filters}` : PROPERTY_URL;
+  return axios.get(propertyUrl);
 };

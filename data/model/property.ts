@@ -7,6 +7,7 @@ export type Property = {
   created_at: string;
   updated_at: string;
   name: string;
+  descriptions: string;
   slug: string;
   purpose: string;
   address: string;

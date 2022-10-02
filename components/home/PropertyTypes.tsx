@@ -41,7 +41,7 @@ const PropertyTypes = () => {
                         <Col key={propertyType.id.toString()} md="2" sm="6">
                           <Card className={`${styles.pTypeBody} border-0`}>
                             <Card.Body>
-                              <a href="#" className="text-decoration-none">
+                              <a href={`/property-type/${propertyType.alias}`} className="text-decoration-none">
                                 <Row>
                                   <Col className="py-0 px-0 ">
                                     <Card className="border-0">
