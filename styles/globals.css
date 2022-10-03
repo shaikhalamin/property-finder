@@ -21,6 +21,15 @@ body {
   font-size: 30px;
 }
 
+.bg-color-09a {
+  background-color: #00f09a;
+}
+
+.bg-color-09a span {
+  background-color: #00f09a !important;
+  border: 1px solid #00f09a !important;
+}
+
 .text-color-bca {
   color: #b3bbca;
 }
@@ -30,6 +39,9 @@ body {
 }
 .text-color-b94 {
   color: #858b94;
+}
+.text-color-09a {
+  color: #00f09a;
 }
 
 a.text-color-b94:hover {

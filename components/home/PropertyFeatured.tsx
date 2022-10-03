@@ -2,11 +2,9 @@ import { getProperties } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
 import { API_URLS } from "@/data/utils/api.urls";
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import {Row, Col, Card } from "react-bootstrap";
 import BaseContainer from "../common/container/BaseContainer";
-import BathIcon from "../common/icon/Bath";
-import BedIcon from "../common/icon/Bed";
-import PropertySizeIcon from "../common/icon/PropertySize";
+
 import FeatureWithIcon from "../common/property-item/FeatureWithIcon";
 import styles from "./home.module.css";
 import SectionTitleLink from "./SectionTitleLink";

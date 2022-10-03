@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import styles from "./home.module.css";
+import styles from "./property.module.css";
 
 const PropertyAddBanner = () => {
   return (
@@ -16,7 +16,7 @@ const PropertyAddBanner = () => {
                   <Col md="8">
                     <h3 className="text-white">
                       Got a property that you want to list for sale/rent ?
-                      <br/>
+                      <br />
                       Click the button to submit a listing.
                     </h3>
                   </Col>
