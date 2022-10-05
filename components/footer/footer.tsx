@@ -7,16 +7,18 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 
+import _ from "lodash"
+
 const Footer = () => {
   return (
     <div>
       <section className={`py-3`}>
         <Container>
           <Row>
-            <Col md="12">
+            <Col md="12" key={Number(_.random(10,20).toString())}>
               <Container>
                 <Row className={`mt-2 mb-2 py-2`}>
-                  <Col md="3" className="mt-4">
+                  <Col md="3" className="mt-4" key={Number(_.random(20,30).toString())}>
                     <div className="">
                       <div className="py-3 px-3">
                         <div className="ft-20 mb-1 text-color-a3a fw-bold">
@@ -34,7 +36,7 @@ const Footer = () => {
                       </div>
                     </div>
                   </Col>
-                  <Col md="3" className="mt-4">
+                  <Col md="3" className="mt-4" key={Number(_.random(31,40).toString())}>
                     <div className="">
                       <div className="py-3 px-3">
                         <div className="ft-20 mb-1 text-color-a3a fw-bold">
@@ -52,7 +54,7 @@ const Footer = () => {
                       </div>
                     </div>
                   </Col>
-                  <Col md="3" className="mt-4">
+                  <Col md="3" className="mt-4" key={Number(_.random(41,50).toString())}>
                     <div className="">
                       <div className="py-3 px-3">
                         <div className="ft-20 mb-1 text-color-a3a fw-bold">
@@ -70,7 +72,7 @@ const Footer = () => {
                       </div>
                     </div>
                   </Col>
-                  <Col md="3" className="mt-4">
+                  <Col md="3" className="mt-4" key={Number(_.random(51,60).toString())}>
                     <div className="">
                       <div className="py-3 px-3">
                         <div className="ft-20 mb-1 text-color-a3a fw-bold">
@@ -111,7 +113,7 @@ const Footer = () => {
         </Container>
         <hr />
         <Row>
-          <Col className="mx-3">
+          <Col className="mx-3" key={Number(_.random(61,70).toString())}>
             <p className="text-center text-color-b94 fs-14 fw-normal">
               Copyright © {new Date().getFullYear()} powered by find property,
               Inc. All rights reserved

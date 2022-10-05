@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col } from "react-bootstrap";
+import { GetServerSideProps } from "next";
+import React, { useCallback, useEffect, useState } from "react";
+import { Row, Col, Card, Container } from "react-bootstrap";
 import BaseContainer from "@/components/common/container/BaseContainer";
 import SectionTitleOrderBy from "@/components/property-type/SectionTitleOrderBy";
 import TypeFilterSection from "@/components/property-type/TypeFilterSection";
-import { PropertyList } from "@/data/model/property-list";
-import { API_URLS } from "@/data/utils/api.urls";
-import { GetServerSideProps } from "next";
 import SingleProperty from "@/components/property-type/SingleProperty";
 import BasicPagination from "@/components/common/pagination/BasicPagination";
 import PropertyAddBanner from "@/components/common/property-item/PropertyAddBanner";
 import { HandlePaginationProps } from "@/components/common/pagination/pagination-types";
-import { getProperties } from "@/data/api/property";
-import { generatePropertyFilterUrl } from "@/components/property-type/property-type.helpers";
+import {
+  BasicType,
+  getPropertiesByFilter,
+  PropertiesFilter,
+} from "@/data/api/property";
+import { PropertyList } from "@/data/model/property-list";
+import { API_URLS } from "@/data/utils/api.urls";
 
 type PropertyTypeProps = {
   properties: PropertyList;
@@ -24,10 +27,12 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
   property_type,
 }) => {
   const [propertyList, setPropertyList] = useState(properties);
+  const [filterClient, setFilterClient] = useState(false);
+  const [active, setActive] = useState(1);
   const [customFilter, setCustomFilter] = useState({
     basic: {
-      page: properties.meta.page.toString(),
-      perPage: properties.meta.per_page.toString(),
+      page: properties.meta.page,
+      perPage: properties.meta.per_page,
     },
     order: {
       created_at: "DESC",
@@ -35,25 +40,50 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
     filters: {
       propertyType: property_type,
     },
-  });
+  } as PropertiesFilter);
 
-  const handlePagination = async (paginationFilter: HandlePaginationProps) => {
-    for await (const [key, value] of Object.entries(paginationFilter)) {
-      setCustomFilter((prevState) => ({
-        ...prevState,
-        basic: {
-          ...prevState.basic,
-          [key]: value,
-        },
-      }));
-    }
+  const handlePagination = useCallback(
+    (paginationFilter: HandlePaginationProps) => {
+      filterClient === false && setFilterClient(true);
+      paginationFilter.page && setActive(paginationFilter.page);
 
-    console.log(generatePropertyFilterUrl(API_URLS.properties,customFilter));
+      for (const [key, value] of Object.entries(paginationFilter)) {
+        setCustomFilter((prevState) => {
+          return {
+            ...prevState,
+            basic: {
+              ...prevState.basic,
+              [key as keyof BasicType]: Number(value),
+            },
+          };
+        });
+      }
+    },
+    [filterClient]
+  );
 
-    ///const filteredProperty = await getProperties(generateUrl());
-
-    //console.log(filteredProperty.data);
-  };
+  useEffect(() => {
+    filterClient &&
+      getPropertiesByFilter({
+        basic: customFilter.basic,
+        order: customFilter.order,
+        filters: customFilter.filters,
+      }).then((result) => {
+        const propertyData = result?.data as PropertyList;
+        setPropertyList((prevState) => {
+          return {
+            ...prevState,
+            data: propertyData.data,
+            meta: propertyData.meta,
+          };
+        });
+      });
+  }, [
+    filterClient,
+    customFilter.basic,
+    customFilter.order,
+    customFilter.filters,
+  ]);
 
   return (
     <>
@@ -76,12 +106,36 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
                 );
               })}
 
-            <hr className="mt-3" />
-            <BasicPagination
-              total={propertyList.meta.all_total}
-              perPage={propertyList.meta.per_page}
-              onChange={handlePagination}
-            />
+            {!propertyList.data.length && (
+              <>
+                <Row className="py-5 mb-5">
+                  <Col>
+                    <Container>
+                      <Card className="border-0">
+                        <h2 className="ml-5 ft-18 text-center">
+                          No Properties found !
+                        </h2>
+                      </Card>
+                    </Container>
+                  </Col>
+                </Row>
+              </>
+            )}
+
+            {propertyList.data.length > 0 && (
+              <>
+                <hr className="mt-3" />
+                <BasicPagination
+                  total={Number(
+                    Math.ceil(
+                      propertyList.meta.all_total / propertyList.meta.per_page
+                    )
+                  )}
+                  active={active}
+                  onChange={handlePagination}
+                />
+              </>
+            )}
           </Col>
         </Row>
       </BaseContainer>

@@ -3,6 +3,8 @@ export type HandlePaginationProps = {
     perPage?:number
     order?: {
       name: string,
-      by: string,
+    },
+    filters?: {
+
     }
   }

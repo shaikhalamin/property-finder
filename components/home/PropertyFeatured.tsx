@@ -1,19 +1,18 @@
+import React, { useEffect, useState } from "react";
+import { Row, Col, Card } from "react-bootstrap";
+import BaseContainer from "../common/container/BaseContainer";
+import FeatureWithIcon from "../common/property-item/FeatureWithIcon";
+import SectionTitleLink from "./SectionTitleLink";
 import { getProperties } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
 import { API_URLS } from "@/data/utils/api.urls";
-import React, { useEffect, useState } from "react";
-import {Row, Col, Card } from "react-bootstrap";
-import BaseContainer from "../common/container/BaseContainer";
-
-import FeatureWithIcon from "../common/property-item/FeatureWithIcon";
-import styles from "./home.module.css";
-import SectionTitleLink from "./SectionTitleLink";
 
 const PropertyFeatured = () => {
   const [properties, setProperties] = useState({} as PropertyList);
 
   const fetchProperty = () => {
-    getProperties().then((res) => {
+    const PROPERTY_URL = `${API_URLS.properties}?page=1&perPage=6`;
+    getProperties(PROPERTY_URL).then((res) => {
       setProperties(res.data);
     });
   };
@@ -61,10 +60,22 @@ const PropertyFeatured = () => {
                       <div className="py-3 px-3">
                         <div className="mb-1 text-color-a3a fw-bold">
                           <Row>
-                            <Col className="text-start ft-20">
+                            <Col
+                              lg="8"
+                              md="8"
+                              sm="8"
+                              xs="8"
+                              className="text-start ft-20"
+                            >
                               {property.name}
                             </Col>
-                            <Col className="text-end">
+                            <Col
+                              lg="4"
+                              md="4"
+                              sm="4"
+                              xs="4"
+                              className="text-end"
+                            >
                               {property.purpose.toLocaleUpperCase() ===
                               "RENT" ? (
                                 <span className="badge bg-danger fs-12 fs-normal rounded-0">
