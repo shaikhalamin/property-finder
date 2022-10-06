@@ -52,7 +52,7 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ property }) => {
                 </div>
                 <div className="mt-2">
                   <Row className="">
-                    <Col className="text-start fs-14 fw-bold" key={Number(_.random(150,159).toString())}>
+                    <Col className="text-start fs-14 fw-bold text-dark" key={Number(_.random(150,159).toString())}>
                       ${property.price}
                     </Col>
                   </Row>

@@ -1,3 +1,4 @@
+import { Agent } from "./agent";
 import { FloorPlan } from "./floor-plan";
 import { Image } from "./image-file";
 import { PropertyFeature } from "./property-feature";
@@ -39,4 +40,10 @@ export type Property = {
   propertyImages: Image[];
   propertyFeatures: PropertyFeature[];
   floorPlans: FloorPlan[];
+  agent: Agent
+};
+
+export type PropertyResponse = {
+  success: boolean;
+  data: Property | null;
 };

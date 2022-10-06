@@ -101,7 +101,12 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
               propertyList.data.map((property) => {
                 return (
                   <>
-                    <SingleProperty property={property} />
+                    <a
+                      className="text-decoration-none"
+                      href={`/properties/${property.slug}`}
+                    >
+                      <SingleProperty property={property} />
+                    </a>
                   </>
                 );
               })}

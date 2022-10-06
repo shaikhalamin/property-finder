@@ -4,6 +4,7 @@ import BathIcon from "../icon/Bath";
 import BedIcon from "../icon/Bed";
 import PropertySizeIcon from "../icon/PropertySize";
 import styles from "./property.module.css";
+import _ from "lodash"
 
 type PropertyFeatureProps = {
   noOfRooms: number;
@@ -19,7 +20,7 @@ const FeatureWithIcon: React.FC<PropertyFeatureProps> = ({
   return (
     <>
       <Row className="mt-1 mb-1">
-        <Col>
+        <Col key={Number(_.random(160,169).toString())}>
           <span className={`${styles.propertyIcon}`}>
             <BedIcon />
           </span>
