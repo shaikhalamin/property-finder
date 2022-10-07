@@ -102,7 +102,7 @@ const Property: React.FC<PropertyProps> = ({ property: { success, data } }) => {
               <Row className="py-3">
                 <Col md="9" className="px-5">
                   <Row className="py-3 border-bottom">
-                    <Col className="text-start">
+                    <Col md="6" xs="12" className="text-start">
                       <div className="ft-24 fw-bold text-dark ">
                         {data?.name}
                       </div>
@@ -115,7 +115,7 @@ const Property: React.FC<PropertyProps> = ({ property: { success, data } }) => {
                         </span>
                       </div>
                     </Col>
-                    <Col className="text-end">
+                    <Col md="6" xs="12" className="text-end">
                       <div className="mb-3">
                         <span
                           className={`badge bg-dark fs-16 fs-normal rounded-0 text-white`}
