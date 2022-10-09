@@ -148,7 +148,7 @@ const PropertyNavbar = () => {
             </NavDropdown> */}
           </Nav>
           <Nav>
-            <Nav.Link href="/signin" className={`text-white ${styles.ft14}`}>
+            <Nav.Link href="/auth/signin" className={`text-white ${styles.ft14}`}>
               Sign In
             </Nav.Link>
             <Nav.Link

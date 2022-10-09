@@ -1,37 +1,46 @@
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
-import AdminLayout from "@/components/layouts/AdminLayout";
 import SSRProvider from "react-bootstrap/SSRProvider";
 import "@/styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PropertyLayout from "@/components/layouts/PropertyLayout";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
-type NextPageWithLayout = NextPage & {
+type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-type AppPropsWithLayout = AppProps & {
+type AppPropsWithLayout<P = {}> = AppProps<P> & {
   Component: NextPageWithLayout;
 };
 
-export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  // Use the layout defined at the page level, if available
+const MyApp = ({
+  Component,
+  pageProps,
+}: AppPropsWithLayout<{ session: Session }>) => {
+
   const getLayout = Component.getLayout ?? ((page) => page);
+  const { session, ...allProps  } = pageProps;
 
   if (!Component.getLayout) {
     return (
-      <SSRProvider>
-        <PropertyLayout>
-          <Component {...pageProps} />
-        </PropertyLayout>
-      </SSRProvider>
+      <SessionProvider session={session}>
+        <SSRProvider>
+          <PropertyLayout>
+            <Component {...allProps} />
+          </PropertyLayout>
+        </SSRProvider>
+      </SessionProvider>
     );
   }
 
   return getLayout(
     <SSRProvider>
-      <Component {...pageProps} />
+      <Component {...allProps} />
     </SSRProvider>
   );
-}
+};
+
+export default MyApp;
