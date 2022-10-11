@@ -12,6 +12,7 @@ export const API_URLS = {
   header_img: HEADER_IMAGES,
   floor_plan: FLOOR_PLAN_IMAGES,
   agent_img: AGENTS_IMAGES,
+  auth: `${API_BASE}/v1/auth`,
   propertyTypes: `${API_BASE}/v1/property-type`,
   properties: `${API_BASE}/v1/property`,
   agents: `${API_BASE}/v1/agent`,

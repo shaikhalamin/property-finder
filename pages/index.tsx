@@ -10,8 +10,6 @@ import { useSession, signIn, signOut } from "next-auth/react"
 const Home = () => {
 
   const { data: session } = useSession()
-
-
   console.log("session after login ",session)
 
 

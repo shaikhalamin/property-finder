@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "next": "12.3.0",
     "next-auth": "^4.13.0",
@@ -22,6 +23,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/lodash": "^4.14.185",
     "@types/node": "18.7.18",
     "@types/qs": "^6.9.7",

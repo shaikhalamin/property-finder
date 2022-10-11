@@ -4,14 +4,14 @@ import { Form, Row, Col, Button, Card } from "react-bootstrap";
 import { signIn } from "next-auth/react";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: SyntheticEvent) => {
     try {
       e.preventDefault();
       const login = await signIn("credentials", {
-        email: email,
+        username: username,
         password: password,
         redirect: true,
         callbackUrl: "http://localhost:8080",
@@ -37,9 +37,9 @@ const SignIn = () => {
                   <Form.Group as={Col} controlId="formGridEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
-                      type="email"
-                      value={email}
-                      onChange={({ target }) => setEmail(target.value)}
+                      type="text"
+                      value={username}
+                      onChange={({ target }) => setUsername(target.value)}
                       placeholder="Enter email"
                     />
                   </Form.Group>
