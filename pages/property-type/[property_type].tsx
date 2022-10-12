@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Card, Container } from "react-bootstrap";
+import { Row, Col, Card, Container, Button } from "react-bootstrap";
 import BaseContainer from "@/components/common/container/BaseContainer";
 import SectionTitleOrderBy from "@/components/property-type/SectionTitleOrderBy";
 import TypeFilterSection from "@/components/property-type/TypeFilterSection";
@@ -15,6 +15,8 @@ import {
 } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
 import { API_URLS } from "@/data/utils/api.urls";
+
+import axios from "axios";
 
 type PropertyTypeProps = {
   properties: PropertyList;
@@ -85,9 +87,18 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
     customFilter.filters,
   ]);
 
+  const checkServerSession = async ()=>{
+    console.log("checking server session");
+    const response  = await axios.get('/api/proxy');
+
+    console.log(response.data);
+
+  }
+
   return (
     <>
       <BaseContainer>
+        <Button className="btn-warning" onClick={checkServerSession}> Check Server side session</Button>
         <Row className="py-2">
           <Col md="4" key={Number(Math.random()).toString()}>
             <TypeFilterSection />
