@@ -1,8 +1,7 @@
 import { login } from "@/data/api/auth";
 import NextAuth, { DefaultUser, NextAuthOptions } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-import * as jwt from "jsonwebtoken";
 
 type CredentialsType = {
   username: string;
@@ -28,6 +27,7 @@ type LoginResponse = {
   access_token: string;
   refresh_token: string;
   user: ApiUser;
+  expires_at: number;
 };
 
 type LoggedInUser = DefaultUser & LoginResponse;
@@ -56,25 +56,20 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.JWT_SECRET,
   callbacks: {
-    jwt: async ({ token, user, profile }) => {
+    jwt: async ({ token, user }) => {
       if (user) {
         const loggedInUser = user as LoggedInUser;
-        const decoded = jwt.verify(
-          loggedInUser.access_token,
-          "accessTokenSecret"
-        );
-        console.log("decode", decoded);
-        token.jwt = loggedInUser.access_token;
-        token.accessTokenExpires = Date.now() + (decoded as any).exp * 1000;
-          (token.accessToken = loggedInUser.access_token);
-        token.refreshToken = loggedInUser.refresh_token;
+        token.expires_at = loggedInUser.expires_at;
+        token.access_token = loggedInUser.access_token;
+        token.refresh_token = loggedInUser.refresh_token;
         token.user = loggedInUser.user;
-        console.log("modified token ", token);
-
         return token;
       }
 
-      if (Date.now() < (token.accessTokenExpires as number)) {
+      if ((token as any).expires_at < Date.now()) {
+        console.log(
+          JSON.stringify({ msg: "refresh token rotation need to call" })
+        );
         return token;
       }
 
@@ -91,7 +86,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // console.log({ url, baseUrl });
       return url;
     },
   },
@@ -101,3 +95,39 @@ export const authOptions: NextAuthOptions = {
 };
 
 export default NextAuth(authOptions);
+
+
+
+export const refreshAccessToken = async (token:JWT)=> {
+  try {
+    
+    const refreshTokenUrl = '';
+
+    const response = await fetch(refreshTokenUrl, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
+    })
+
+    const refreshedTokens = await response.json()
+
+    if (!response.ok) {
+      throw refreshedTokens
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_at * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+    }
+  } catch (error) {
+    console.log(error)
+
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    }
+  }
+}

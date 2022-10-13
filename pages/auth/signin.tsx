@@ -13,7 +13,7 @@ const SignIn = () => {
       const login = await signIn("credentials", {
         username: username,
         password: password,
-        redirect: true,
+        redirect: false,
         callbackUrl: "http://localhost:4001",
       });
 
