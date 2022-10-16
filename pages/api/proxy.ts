@@ -7,11 +7,9 @@ const proxyToBackend = async (req: NextApiRequest, res: NextApiResponse) => {
   const { query, body,url } = req;
   if (session) {
     // Signed in
-    console.log(`Session at ${new Date().toLocaleTimeString()}`, JSON.stringify(session, null, 2));
+    //console.log(`Session at ${new Date().toLocaleTimeString()}`, JSON.stringify(session, null, 2));
     res.status(200).json({
-      query,
-      body,
-      url
+      session
     });
   } else {
     // Not Signed in

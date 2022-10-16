@@ -1,36 +1,10 @@
-import { login } from "@/data/api/auth";
-import NextAuth, { DefaultUser, NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-type CredentialsType = {
-  username: string;
-  password: string;
-  csrfToken: string;
-  callbackUrl: string;
-  json: string;
-};
-
-type ApiUser = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  phone: string;
-  isActive: boolean;
-  isVerified: boolean;
-  role: string;
-};
-
-type LoginResponse = {
-  access_token: string;
-  refresh_token: string;
-  user: ApiUser;
-  expires_at: number;
-};
-
-type LoggedInUser = DefaultUser & LoginResponse;
+import axios from "axios";
+import { login } from "@/data/api/auth";
+import { CredentialsType, LoggedInUser } from "@/data/types/auth";
+import { API_URLS } from "@/data/utils/api.urls";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -65,28 +39,20 @@ export const authOptions: NextAuthOptions = {
         token.user = loggedInUser.user;
         return token;
       }
-
       if ((token as any).expires_at < Date.now()) {
-        console.log(
-          JSON.stringify({ msg: "refresh token rotation need to call" })
-        );
-        return token;
+        return await refreshAccessToken(token);
       }
-
       return token;
     },
     session: async ({ session, token }) => {
       if (token) {
-        (session as any).role = token.role;
-        (session as any).accessToken = token.accessToken;
-        (session as any).refreshToken = token.refreshToken;
-        (session as any).user = token.user;
-        (session as any).accessTokenExpires = token.accessTokenExpires;
+        const { iat, exp, jti, ...allTokens } = token;
+        return {
+          ...session,
+          ...allTokens,
+        };
       }
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      return url;
     },
   },
   pages: {
@@ -96,38 +62,22 @@ export const authOptions: NextAuthOptions = {
 
 export default NextAuth(authOptions);
 
-
-
-export const refreshAccessToken = async (token:JWT)=> {
+export const refreshAccessToken = async (token: JWT) => {
   try {
-    
-    const refreshTokenUrl = '';
-
-    const response = await fetch(refreshTokenUrl, {
+    const refreshToken = (token as any).refresh_token;
+    const refreshTokenUrl = `${API_URLS.auth}/refresh`;
+    const response = await axios.post(refreshTokenUrl, null, {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${refreshToken}`,
       },
-      method: "POST",
-    })
-
-    const refreshedTokens = await response.json()
-
-    if (!response.ok) {
-      throw refreshedTokens
-    }
-
+    });
     return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_at * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-    }
+      ...response.data,
+    };
   } catch (error) {
-    console.log(error)
-
     return {
       ...token,
       error: "RefreshAccessTokenError",
-    }
+    };
   }
-}
+};

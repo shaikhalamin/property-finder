@@ -2,23 +2,32 @@ import BaseContainer from "@/components/common/container/BaseContainer";
 import React, { SyntheticEvent, useState } from "react";
 import { Form, Row, Col, Button, Card } from "react-bootstrap";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const router = useRouter();
+
   const handleSubmit = async (e: SyntheticEvent) => {
     try {
       e.preventDefault();
-      const login = await signIn("credentials", {
+      const loginResponse = await signIn("credentials", {
         username: username,
         password: password,
         redirect: false,
-        callbackUrl: "http://localhost:4001",
       });
+      console.log("login data in client", loginResponse);
 
-      console.log("login data in client",login)
-    } catch (error) {}
+      if (loginResponse?.ok && loginResponse.error == null) {
+        router.push("/");
+      } else {
+        alert("User name and password error");
+      }
+    } catch (error) {
+      console.log("login error", error);
+    }
   };
 
   return (
