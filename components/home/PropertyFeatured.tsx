@@ -6,6 +6,7 @@ import SectionTitleLink from "./SectionTitleLink";
 import { getProperties } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
 import { API_URLS } from "@/data/utils/api.urls";
+import Image from "next/image";
 
 const PropertyFeatured = () => {
   const [properties, setProperties] = useState({} as PropertyList);
@@ -31,49 +32,50 @@ const PropertyFeatured = () => {
         />
         <Row className="mt-1 mb-2">
           {Object.values(properties).length > 0 &&
-            properties?.data.map((property, index) => {
-              const defaultPath =
-                "1663871385724timebcfb37d0a1254da78dd2159801dfdfd8.jpg";
-              let featureImage = null;
-              if (property.propertyImages.length > 0) {
-                featureImage = property.propertyImages.find(
-                  (image) => image.type == "header" && image.size == "md"
-                );
-              }
-              const imagePath = featureImage
-                ? `${API_URLS.header_img}${featureImage.fileName}`
-                : `${API_URLS.header_img}${defaultPath}`;
+            properties?.data.map((property) => {
+              const imagePath = property.propertyImages.find(
+                (image) => image.type == "header" && image.size == "md"
+              );
+
+              const imageLoader = () => {
+                return imagePath;
+              };
+
               return (
-                <>
-                  <Col md="4" className={`mt-4`} key={property.id}>
+                <Col md="4" className={`mt-4`} key={property.id}>
+                  <a
+                    className="text-decoration-none"
+                    href={`/properties/${property.slug}`}
+                  >
                     <Card className="rounded-0">
-                      <Card.Body className="py-0 px-0">
-                        <img
-                          height={`272`}
-                          className={`w-100`}
-                          src={`${imagePath}`}
-                          alt="image source"
+                      <Card.Body className="py-0 px-0 position-relative">
+                        <Image
+                          src={`${imagePath ? imagePath.image_url : ""}`}
+                          alt={property.name}
+                          width={406}
+                          height={275}
+                          layout="responsive"
                         />
                       </Card.Body>
                     </Card>
                     <div className="border">
                       <div className="py-3 px-3">
-                        <div className="mb-1 text-color-a3a fw-bold">
+                        <div className="mb-1 text-color-a3a">
                           <Row>
                             <Col
-                              lg="8"
-                              md="8"
-                              sm="8"
-                              xs="8"
-                              className="text-start ft-20"
+                              lg="10"
+                              md="10"
+                              sm="10"
+                              xs="10"
+                              className="text-start"
                             >
-                              {property.name}
+                             <span className="fw-bold">{property.name}</span> 
                             </Col>
                             <Col
-                              lg="4"
-                              md="4"
-                              sm="4"
-                              xs="4"
+                              lg="2"
+                              md="2"
+                              sm="2"
+                              xs="2"
                               className="text-end"
                             >
                               {property.purpose.toLocaleUpperCase() ===
@@ -90,11 +92,13 @@ const PropertyFeatured = () => {
                           </Row>
                         </div>
                         <div className="ft-14 mb-1 text-color-b94">
-                          10700 Wilshire Blvd, Los Angeles, CA 90024
+                          {property.address}
                         </div>
                         <div className="fw-bold mt-2">
                           <Row>
-                            <Col className="text-start fs-14">$950 000.00</Col>
+                            <Col className="text-start fs-14 text-dark">
+                              ${property.price}
+                            </Col>
                           </Row>
                         </div>
                         <hr className="mt-2" />
@@ -105,8 +109,8 @@ const PropertyFeatured = () => {
                         />
                       </div>
                     </div>
-                  </Col>
-                </>
+                  </a>
+                </Col>
               );
             })}
         </Row>

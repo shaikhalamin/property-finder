@@ -21,6 +21,12 @@ type PropertyProps = {
 };
 
 const Property: React.FC<PropertyProps> = ({ property: { success, data } }) => {
+
+  console.log(data?.propertyImages)
+  const imagePath = data?.propertyImages.find(
+    (image) => image.type == "header" && image.size == "md"
+  );
+
   return (
     <>
       {success && (
@@ -31,9 +37,7 @@ const Property: React.FC<PropertyProps> = ({ property: { success, data } }) => {
                 className="py-0"
                 style={{
                   backgroundImage:
-                    "url(" +
-                    `${API_URLS.header_img}1663871385724timebcfb37d0a1254da78dd2159801dfdfd8.jpg` +
-                    ")",
+                    "url(" + `${imagePath ? imagePath.image_url : ""}` + ")",
                   backgroundPosition: "center center",
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
@@ -139,7 +143,7 @@ const Property: React.FC<PropertyProps> = ({ property: { success, data } }) => {
                           <Col md="4">
                             <Card className="border-0 agent-bg">
                               <img
-                                src={`${API_URLS.agent_img}${data?.agent.agentImage.fileName}`}
+                                src={`${data?.agent.agentImage.image_url}`}
                                 className="rounded-circle w-100"
                                 alt="agent"
                               />

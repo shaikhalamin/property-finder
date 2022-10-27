@@ -4,15 +4,11 @@ import Agents from "@/components/home/Agents";
 import HowTo from "@/components/home/HowTo";
 import PropertyFeatured from "@/components/home/PropertyFeatured";
 import PropertyTypes from "@/components/home/PropertyTypes";
-import { useSession, signIn, signOut } from "next-auth/react"
-
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home = () => {
-
-  const { data: session } = useSession()
-  console.log("session after login ",session)
-
-
+  const { data: session } = useSession();
+  
   return (
     <>
       <PropertyHeader />

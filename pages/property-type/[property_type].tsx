@@ -87,18 +87,20 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
     customFilter.filters,
   ]);
 
-  const checkServerSession = async ()=>{
+  const checkServerSession = async () => {
     console.log("checking server session");
-    const response  = await axios.get('/api/proxy');
+    const response = await axios.get("/api/proxy");
 
     console.log(response.data);
-
-  }
+  };
 
   return (
     <>
       <BaseContainer>
-        <Button className="btn-warning" onClick={checkServerSession}> Check Server side session</Button>
+        <Button className="btn-warning" onClick={checkServerSession}>
+          {" "}
+          Check Server side session
+        </Button>
         <Row className="py-2">
           <Col md="4" key={Number(Math.random()).toString()}>
             <TypeFilterSection />
@@ -111,14 +113,13 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
             {propertyList.data.length > 0 &&
               propertyList.data.map((property) => {
                 return (
-                  <>
-                    <a
-                      className="text-decoration-none"
-                      href={`/properties/${property.slug}`}
-                    >
-                      <SingleProperty property={property} />
-                    </a>
-                  </>
+                  <a
+                    className="text-decoration-none"
+                    href={`/properties/${property.slug}`}
+                    key={property.id}
+                  >
+                    <SingleProperty property={property} />
+                  </a>
                 );
               })}
 

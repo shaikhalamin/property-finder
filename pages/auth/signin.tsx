@@ -16,10 +16,8 @@ const SignIn = () => {
       const loginResponse = await signIn("credentials", {
         username: username,
         password: password,
-        redirect: false,
+        redirect: true,
       });
-      console.log("login data in client", loginResponse);
-
       if (loginResponse?.ok && loginResponse.error == null) {
         router.push("/");
       } else {

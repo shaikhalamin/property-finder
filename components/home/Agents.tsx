@@ -12,6 +12,7 @@ import SectionTitleLink from "./SectionTitleLink";
 import { API_URLS } from "@/data/utils/api.urls";
 import styles from "./home.module.css";
 import BaseContainer from "../common/container/BaseContainer";
+import Image from "next/image";
 
 const Agents: React.FC = () => {
   // const imagePath = `http://localhost:8070/uploads/agent/1664303371650time9b93f315488c45d091ce4e5bff392139.jpg`;
@@ -39,56 +40,57 @@ const Agents: React.FC = () => {
         <Row className="mt-1 mb-2">
           {agents.length > 0 &&
             agents.map((agent) => {
-              const imagePath = `${API_URLS.agent_img}${agent.agentImage.fileName}`;
-
+              const imagePath = agent.agentImage
+                ? agent.agentImage.image_url
+                : "";
               return (
-                <>
-                  <Col md="3" className="mt-4" key={agent.id.toString()}>
-                    <Card className={`${styles.pTypeBody} rounded-0`}>
-                      <Card.Body className="py-0 px-0">
-                        <img
-                          className={`w-100`}
-                          src={`${imagePath}`}
-                          alt="image source"
-                        />
-                      </Card.Body>
-                    </Card>
-                    <div className="border">
-                      <div className="py-3 px-3">
-                        <div className="ft-20 mb-1 text-color-a3a fw-bold">
-                          {agent.user.firstName} {agent.user.lastName}
-                        </div>
-                        <div className="ft-14 mb-1">
-                          <span className="text-color-b94">
-                            {agent.designation}
-                          </span>
-                        </div>
-                        <ul className="list-group list-group-horizontal-sm mt-2">
-                          <li className="list-group-item">
-                            <span>
-                              <FaFacebookF />
-                            </span>
-                          </li>
-                          <li className="list-group-item">
-                            <span>
-                              <FaInstagram />
-                            </span>
-                          </li>
-                          <li className="list-group-item">
-                            <span>
-                              <FaTwitter />
-                            </span>
-                          </li>
-                          <li className="list-group-item">
-                            <span>
-                              <FaLinkedinIn />
-                            </span>
-                          </li>
-                        </ul>
+                <Col md="3" className="mt-4" key={agent.id.toString()}>
+                  <Card className={`${styles.pTypeBody} rounded-0`}>
+                    <Card.Body className="py-0 px-0 position-relative">
+                      <Image
+                        src={`${imagePath}`}
+                        alt={agent.user.firstName}
+                        width={298}
+                        height={352}
+                        layout="responsive"
+                      />
+                    </Card.Body>
+                  </Card>
+                  <div className="border">
+                    <div className="py-3 px-3">
+                      <div className="ft-20 mb-1 text-color-a3a fw-bold">
+                        {agent.user.firstName} {agent.user.lastName}
                       </div>
+                      <div className="ft-14 mb-1">
+                        <span className="text-color-b94">
+                          {agent.designation}
+                        </span>
+                      </div>
+                      <ul className="list-group list-group-horizontal-sm mt-2">
+                        <li className="list-group-item">
+                          <span>
+                            <FaFacebookF />
+                          </span>
+                        </li>
+                        <li className="list-group-item">
+                          <span>
+                            <FaInstagram />
+                          </span>
+                        </li>
+                        <li className="list-group-item">
+                          <span>
+                            <FaTwitter />
+                          </span>
+                        </li>
+                        <li className="list-group-item">
+                          <span>
+                            <FaLinkedinIn />
+                          </span>
+                        </li>
+                      </ul>
                     </div>
-                  </Col>
-                </>
+                  </div>
+                </Col>
               );
             })}
         </Row>

@@ -3,6 +3,7 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import { getPropertyTypes } from "@/data/api/property-types";
 import { API_URLS } from "@/data/utils/api.urls";
 import styles from "./home.module.css";
+import Image from "next/image";
 
 type PropertyType = {
   id: number;
@@ -37,44 +38,56 @@ const PropertyTypes = () => {
                 <Row className="pl-2 pr-2 mt-4">
                   {propertyTypes.length > 0 &&
                     propertyTypes.map((propertyType) => (
-                      <>
-                        <Col key={propertyType.id.toString()} md="2" sm="6">
-                          <Card className={`${styles.pTypeBody} border-0`}>
-                            <Card.Body>
-                              <a href={`/property-type/${propertyType.alias}`} className="text-decoration-none">
-                                <Row>
-                                  <Col className="py-0 px-0 ">
-                                    <Card className="border-0">
-                                      <Card.Body className="d-flex justify-content-center">
-                                        <img
-                                          src={`${
-                                            API_URLS.static_img
-                                          }/property-types/icon_${propertyType.name.toLocaleLowerCase()}.svg`}
-                                          width="60"
-                                          height="60"
-                                          alt={propertyType.name}
-                                        />
-                                      </Card.Body>
-                                    </Card>
-                                    <div
-                                      className={`text-center ${styles.pTypeText}`}
-                                      key={`${propertyType.id.toString()}-${Math.random().toString()}`}
-                                    >
-                                      {propertyType.name}
-                                    </div>
-                                    <div
-                                      className={`text-center ${styles.pCount}`}
-                                      key={`${propertyType.id.toString()}-${Math.random().toString()}`}
-                                    >
-                                      ({propertyType.propertyCount})
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </a>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      </>
+                      <Col key={propertyType.id.toString()} md="2" sm="6">
+                        <Card className={`${styles.pTypeBody} border-0`}>
+                          <Card.Body>
+                            <a
+                              href={`/property-type/${propertyType.alias}`}
+                              className="text-decoration-none"
+                            >
+                              <Row>
+                                <Col className="py-0 px-0 ">
+                                  <Card className="border-0">
+                                    <Card.Body className="d-flex justify-content-center">
+                                      <img
+                                        src={`${
+                                          API_URLS.static_img
+                                        }/property-types/icon_${propertyType.name.toLocaleLowerCase()}.svg`}
+                                        width="60"
+                                        height="60"
+                                        alt={propertyType.name}
+                                      />
+
+                                      {/* <Image
+                                        src={`${
+                                          API_URLS.static_img
+                                        }/property-types/icon_${propertyType.name.toLocaleLowerCase()}.svg`}
+                                        alt={propertyType.name}
+                                        className="px-4 py-3"
+                                        width={`40`}
+                                        height={`40`}
+                                        layout="responsive"
+                                      /> */}
+                                    </Card.Body>
+                                  </Card>
+                                  <div
+                                    className={`text-center ${styles.pTypeText}`}
+                                    key={`${propertyType.id.toString()}-${Math.random().toString()}`}
+                                  >
+                                    {propertyType.name}
+                                  </div>
+                                  <div
+                                    className={`text-center ${styles.pCount}`}
+                                    key={`${propertyType.id.toString()}-${Math.random().toString()}`}
+                                  >
+                                    ({propertyType.propertyCount})
+                                  </div>
+                                </Col>
+                              </Row>
+                            </a>
+                          </Card.Body>
+                        </Card>
+                      </Col>
                     ))}
                 </Row>
               </Container>
