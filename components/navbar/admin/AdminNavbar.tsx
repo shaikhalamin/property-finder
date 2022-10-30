@@ -1,45 +1,53 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Form, Button } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 
-const AdminNavbar = () =>{
+const AdminNavbar = () => {
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">Property Finder Admin</Navbar.Brand>
+      <Navbar bg="light" variant="dark">
+        <Container fluid className="ml-5 mr-5">
+          <Navbar.Brand href="/">
+            <span className="text-dark">Property Finder</span>
+          </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link href="#home">
+              <span className="text-dark">Home</span>
+            </Nav.Link>
+            <Form className="d-flex">
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2 rounded-0"
+                aria-label="Search"
+              />
+              <Button variant="outline-success" className="rounded-0">
+                <span className="text-dark">Search</span>
+              </Button>
+            </Form>
           </Nav>
-        </Container>
-      </Navbar>
-      <br />
-      <Navbar bg="primary" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-
-      <br />
-      <Navbar bg="light" variant="light">
-        <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+          <Nav>
+            <Nav.Link href="#home">
+              <span className="text-dark">Language</span>
+            </Nav.Link>
+            <Nav.Link href="#home">
+              <span className="text-dark">Notification</span>
+            </Nav.Link>
+            <Nav.Link href="#home">
+              <span className="text-dark">Message</span>
+            </Nav.Link>
+            <Nav.Link href="#home">
+              <span className="text-dark">Profile</span>
+            </Nav.Link>
+            <Nav.Link href="#home">
+              <span className="text-dark">Settings</span>
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
     </>
   );
-}
+};
 
 export default AdminNavbar;

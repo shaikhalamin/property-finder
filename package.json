@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "(npx kill-port 4001) && next dev -p 4001",
+    "dev": "(npx kill-port 3000) && next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
