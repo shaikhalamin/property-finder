@@ -8,11 +8,11 @@ import PropertyLayout from "@/components/layouts/PropertyLayout";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 
-type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-type AppPropsWithLayout<P = {}> = AppProps<P> & {
+export type AppPropsWithLayout<P = {}> = AppProps<P> & {
   Component: NextPageWithLayout;
 };
 

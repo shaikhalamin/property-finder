@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.10",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
     "jsonwebtoken": "^8.5.1",
@@ -19,8 +20,10 @@
     "react": "18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.38.0",
     "react-icons": "^4.4.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.9",

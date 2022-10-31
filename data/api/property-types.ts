@@ -1,5 +1,4 @@
 import axios from "axios";
-import _ from "lodash";
 import { API_URLS } from "../utils/api.urls";
 
 const PROPERTY_TYPES_URL = API_URLS.propertyTypes;

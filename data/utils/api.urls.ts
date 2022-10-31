@@ -14,6 +14,7 @@ export const API_URLS = {
   agent_img: AGENTS_IMAGES,
   auth: `${API_BASE}/v1/auth`,
   propertyTypes: `${API_BASE}/v1/property-type`,
+  city: `${API_BASE}/v1/city`,
   properties: `${API_BASE}/v1/property`,
   agents: `${API_BASE}/v1/agent`,
 };
