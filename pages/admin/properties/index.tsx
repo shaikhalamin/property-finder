@@ -1,23 +1,19 @@
 import PropertyCreate from "@/components/admin/properties/PropertyCreate";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import { getCities } from "@/data/api/city";
+import { getFeatures } from "@/data/api/feature";
 import { getPropertyTypes } from "@/data/api/property-types";
+import { PropertyFormHelpers } from "@/data/types/property/property";
 import { NextPageWithLayout } from "@/pages/_app";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import React, { ReactElement } from "react";
 
-type FormHelpers = {
-  propertyTypes: any;
-  cities: any;
-};
-
 type AdminPropertyProps = {
-  formsHelpers: FormHelpers;
+  formsHelpers: PropertyFormHelpers;
 };
 
 const Index: NextPageWithLayout<AdminPropertyProps> = ({ formsHelpers }) => {
-  console.log(formsHelpers.cities);
-  return <PropertyCreate />;
+  return <PropertyCreate data={formsHelpers} />;
 };
 
 Index.getLayout = function getLayout(page: ReactElement) {
@@ -25,14 +21,16 @@ Index.getLayout = function getLayout(page: ReactElement) {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const [propertyTypes, cities] = await Promise.all([
+  const [propertyTypes, cities,features] = await Promise.all([
     getPropertyTypes(),
     getCities(),
+    getFeatures()
   ]);
 
   const helpers = {
     propertyTypes: propertyTypes.data,
     cities: cities.data,
+    features: features.data
   };
 
   return { props: { formsHelpers: helpers } };

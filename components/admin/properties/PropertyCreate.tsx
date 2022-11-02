@@ -1,52 +1,45 @@
-import React from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { getErrorMessage } from "@/data/utils/lib";
+import { InputField } from "@/components/common/form/InputField";
+import SelectField from "@/components/common/form/SelectField";
+import {
+  PropertyFormData,
+  propertyPurpose,
+  propertySchema,
+} from "./property.helpers";
 
-const schema = yup.object({
-  firstName: yup.string().required(),
-  age: yup.number().positive().integer().required(),
-  propertyType: yup.number().required(),
-}).required();
+const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
+  const [cities] = useState(data.cities);
+  const [propertyTypes] = useState(data.propertyTypes);
+  const [features] = useState(data.features);
+  const [checkedFeatures, setCheckedFeatures] = useState<number[]>([]);
 
-
-
-// "name":"Property with image saving issue",
-//     "purpose":"RENT",
-//     "descriptions":"Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas.",
-//     "address":"6335 Annie Oakley Drive, Las Vegas, NV 89120",
-//     "price":3500.00,
-//     "noOfBedRoom":3,
-//     "noOfBathRoom":1,
-//     "propertySize":660,
-//     "yearBuild":2001,
-//     "totalFloors":5,
-//     "accommodations":"WITHOUT_FURNITURE",
-//     "ceilingHeight":2.4,
-//     "distanceFromCenter":20,
-//     "parking":"FREE_ZONE",
-//     "areaSize":660,
-//     "garage":0,
-//     "additionalSpec":"STORAGE_SPACE",
-//     "utilityCost":100.00,
-//     "cableTvCost":100.00,
-//     "electricityCost":"AFTER_SPENDING",
-//     "lat":37.788099,
-//     "long":-122.440293,
-//     "propertyType":1,
-//     "city":1,
-//     "features":[1,2,3],
-//     "propertyImages":[6],
-
-
-const PropertyCreate = () => {
-
-  const { register, handleSubmit, formState:{ errors } } = useForm({
-    resolver: yupResolver(schema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(propertySchema),
   });
-  const onSubmit = (data:any) => console.log(data);
+  const onSubmit = (data: any) => {
+    console.log("submitted data ", data);
+  };
+
+  const errorMessage = getErrorMessage(errors);
+
+  const handleFeature = (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    let updatedList = [...checkedFeatures];
+    if (target.checked) {
+      updatedList = [...checkedFeatures, +target.value];
+    } else {
+      updatedList.splice(checkedFeatures.indexOf(+target.value), 1);
+    }
+    setCheckedFeatures(updatedList);
+  };
 
   return (
     <Container fluid>
@@ -60,154 +53,187 @@ const PropertyCreate = () => {
               <Form className="py-3" onSubmit={handleSubmit(onSubmit)}>
                 <Row className="mb-3">
                   <Col md="4">
-                    <Form.Group controlId="propertyPropertyType">
-                      <Form.Label>Property Type</Form.Label>
-                      {/* <Form.Select>
-                        <option>Select</option>
-                        <option value={`SALE`}>SALE</option>
-                        <option value={`RENT`}>RENT</option>
-                      </Form.Select> */}
-
-
-                      <Form.Select
-                          {...register('propertyType')}
-                          className={errors?.propertyType ? 'is-invalid' : ''}
-                        >
-                          {/* {expectedRateOfReturn.map((e, index) => {
-                            return (
-                              <option key={index} value={e.key}>
-                                {e.value}
-                              </option>
-                            )
-                          })} */}
-                        </Form.Select>
-                        {errors?.expectedRate && (
-                          <p className="text-danger"></p>
-                        )}
-
-
-                    </Form.Group>
+                    <SelectField
+                      labelText="Property Type"
+                      fieldName="propertyType"
+                      register={register}
+                      selectData={propertyTypes.map((item) => ({
+                        id: item.id,
+                        name: item.name,
+                      }))}
+                      errorMessage={errorMessage("propertyType")}
+                    />
                   </Col>
 
                   <Col md="4">
-                    <Form.Group controlId="propertyCity">
-                      <Form.Label>City</Form.Label>
-                      <Form.Select>
-                        <option>Select</option>
-                        <option value={`SALE`}>SALE</option>
-                        <option value={`RENT`}>RENT</option>
-                      </Form.Select>
-                    </Form.Group>
+                    <SelectField
+                      labelText="City"
+                      register={register}
+                      fieldName="city"
+                      selectData={cities}
+                      errorMessage={errorMessage("city")}
+                    />
                   </Col>
 
                   <Col md="4">
-                    <Form.Group controlId="propertyName">
-                      <Form.Label>Property Name</Form.Label>
-                      <Form.Control type="text" placeholder="Enter name" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Property Name"
+                      register={register}
+                      name="name"
+                      inputType="text"
+                      errorMessage={errorMessage("name")}
+                    />
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
                   <Col md="6">
-                    <Form.Group controlId="propertyPurpose">
-                      <Form.Label>Purpose</Form.Label>
-                      <Form.Select>
-                        <option>Select</option>
-                        <option value={`SALE`}>SALE</option>
-                        <option value={`RENT`}>RENT</option>
-                      </Form.Select>
-                    </Form.Group>
+                    <SelectField
+                      labelText="Purpose"
+                      register={register}
+                      fieldName="purpose"
+                      selectData={propertyPurpose}
+                      errorMessage={errorMessage("purpose")}
+                    />
                   </Col>
                   <Col md="6">
-                    <Form.Group className="mb-3" controlId="propertyAddress">
-                      <Form.Label>Address</Form.Label>
-                      <Form.Control type="text" placeholder="1234 Main St" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Address"
+                      register={register}
+                      name="address"
+                      inputType="text"
+                      errorMessage={errorMessage("address")}
+                    />
                   </Col>
                 </Row>
 
                 <Form.Group className="mb-3" controlId="propertyDescription">
                   <Form.Label>Descriptions</Form.Label>
-                  <Form.Control as="textarea" rows={3} />
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    {...register("descriptions")}
+                    className={errors?.descriptions ? "is-invalid" : ""}
+                  />
+                  {errors?.address && (
+                    <p className="text-danger">{errorMessage("address")}</p>
+                  )}
                 </Form.Group>
 
                 <Row className="mb-3">
                   <Col md="3">
-                    <Form.Group className="mb-3" controlId="propertyPrice">
-                      <Form.Label>Price</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Price"
+                      register={register}
+                      name="price"
+                      inputType="number"
+                      errorMessage={errorMessage("price")}
+                    />
                   </Col>
                   <Col md="3">
-                    <Form.Group controlId="propertyBedRooms">
-                      <Form.Label>No Of Bed Room</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="No Of Bed Room"
+                      register={register}
+                      name="noOfBedRoom"
+                      inputType="number"
+                      errorMessage={errorMessage("noOfBedRoom")}
+                    />
                   </Col>
                   <Col md="3">
-                    <Form.Group controlId="propertyBathRooms">
-                      <Form.Label>No Of Bath Room</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="No Of Bath Room"
+                      register={register}
+                      name="noOfBathRoom"
+                      inputType="number"
+                      errorMessage={errorMessage("noOfBathRoom")}
+                    />
                   </Col>
                   <Col md="3">
-                    <Form.Group controlId="propertySize">
-                      <Form.Label>Property Size</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row className="mb-3">
-                  <Col md="4">
-                    <Form.Group controlId="propertyYearBuild">
-                      <Form.Label>Year Build</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
-                  </Col>
-
-                  <Col md="4">
-                    <Form.Group controlId="propertyTotalFloors">
-                      <Form.Label>Total Floors</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
-                  </Col>
-
-                  <Col md="4">
-                    <Form.Group controlId="propertyCeilingHeight">
-                      <Form.Label>Ceiling Height</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Property Size"
+                      register={register}
+                      name="propertySize"
+                      inputType="number"
+                      errorMessage={errorMessage("propertySize")}
+                    />
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
                   <Col md="3">
-                    <Form.Group controlId="propertyDistanceFromCenter">
-                      <Form.Label>Distance From Center</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Year Build"
+                      register={register}
+                      name="yearBuild"
+                      inputType="number"
+                      errorMessage={errorMessage("yearBuild")}
+                    />
                   </Col>
-
                   <Col md="3">
-                    <Form.Group controlId="propertyParking">
-                      <Form.Label>Parking</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Total Floors"
+                      register={register}
+                      name="totalFloors"
+                      inputType="number"
+                      errorMessage={errorMessage("totalFloors")}
+                    />
                   </Col>
-
                   <Col md="3">
-                    <Form.Group controlId="propertyAreaSize">
-                      <Form.Label>Area Size</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Ceiling Height"
+                      register={register}
+                      name="ceilingHeight"
+                      inputType="number"
+                      errorMessage={errorMessage("ceilingHeight")}
+                    />
                   </Col>
+                  <Col md="3">
+                    <InputField
+                      labelText="Electricity Cost"
+                      register={register}
+                      name="electricityCost"
+                      inputType="text"
+                      errorMessage={errorMessage("electricityCost")}
+                    />
+                  </Col>
+                </Row>
 
+                <Row className="mb-3">
+                  <Col md="3">
+                    <InputField
+                      labelText="Distance From Center"
+                      register={register}
+                      name="distanceFromCenter"
+                      inputType="number"
+                      errorMessage={errorMessage("distanceFromCenter")}
+                    />
+                  </Col>
+                  <Col md="3">
+                    <InputField
+                      labelText="Parking"
+                      register={register}
+                      name="parking"
+                      inputType="text"
+                      errorMessage={errorMessage("parking")}
+                    />
+                  </Col>
+                  <Col md="3">
+                    <InputField
+                      labelText="Area Size"
+                      register={register}
+                      name="areaSize"
+                      inputType="text"
+                      errorMessage={errorMessage("areaSize")}
+                    />
+                  </Col>
                   <Col md="3">
                     <div className="mt-4">
                       <Form.Group id="propertyGarage">
-                        <Form.Check type="checkbox" label="Garage" />
+                        <Form.Check
+                          type="checkbox"
+                          label="Garage"
+                          {...register("garage")}
+                        />
                       </Form.Group>
                     </div>
                   </Col>
@@ -215,48 +241,89 @@ const PropertyCreate = () => {
 
                 <Row className="mb-3">
                   <Col md="3">
-                    <Form.Group controlId="propertyAccommodations">
-                      <Form.Label>Accommodations</Form.Label>
-                      <Form.Control type="text" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Accommodations"
+                      register={register}
+                      name="accommodations"
+                      inputType="text"
+                      errorMessage={errorMessage("accommodations")}
+                    />
                   </Col>
 
                   <Col md="3">
-                    <Form.Group controlId="propertyAdditionalSpec">
-                      <Form.Label>Additional Spec</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Additional Spec"
+                      register={register}
+                      name="additionalSpec"
+                      inputType="text"
+                      errorMessage={errorMessage("additionalSpec")}
+                    />
                   </Col>
 
                   <Col md="3">
-                    <Form.Group controlId="propertyUtilityCost">
-                      <Form.Label>Utility Cost</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Utility Cost"
+                      register={register}
+                      name="utilityCost"
+                      inputType="number"
+                      errorMessage={errorMessage("utilityCost")}
+                    />
                   </Col>
 
                   <Col md="3">
-                    <Form.Group controlId="propertyCableTvCost">
-                      <Form.Label>Cable Tv Cost</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Cable Tv Cost"
+                      register={register}
+                      name="cableTvCost"
+                      inputType="number"
+                      errorMessage={errorMessage("cableTvCost")}
+                    />
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
                   <Col md="6">
-                    <Form.Group controlId="propertyLat">
-                      <Form.Label>Lat</Form.Label>
-                      <Form.Control type="text" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Lat"
+                      register={register}
+                      name="lat"
+                      inputType="number"
+                      errorMessage={errorMessage("lat")}
+                    />
                   </Col>
 
                   <Col md="6">
-                    <Form.Group controlId="propertyLong">
-                      <Form.Label>Long</Form.Label>
-                      <Form.Control type="number" />
-                    </Form.Group>
+                    <InputField
+                      labelText="Long"
+                      register={register}
+                      name="long"
+                      inputType="number"
+                      errorMessage={errorMessage("long")}
+                    />
                   </Col>
+                </Row>
+
+                <Row className="mb-2">
+                  <h6 className="mt-1 mb-1">Features </h6>
+                  {features.length > 0 &&
+                    features.map((feature, index) => {
+                      return (
+                        <Col md="3" key={index} className="mt-2">
+                          <Card>
+                            <Card.Body>
+                              <Form.Group id="propertyGarage">
+                                <Form.Check
+                                  type="checkbox"
+                                  label={feature.name}
+                                  value={feature.id}
+                                  onChange={handleFeature}
+                                />
+                              </Form.Group>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      );
+                    })}
                 </Row>
 
                 <Button variant="primary" type="submit">
