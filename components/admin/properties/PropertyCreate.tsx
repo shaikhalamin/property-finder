@@ -1,7 +1,8 @@
-import React, { SyntheticEvent, useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import React, { SyntheticEvent, useRef, useState } from "react";
+import { Button, Card, Col, Container, Form, Nav, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import _ from "lodash";
 import { getErrorMessage } from "@/data/utils/lib";
 import { InputField } from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
@@ -10,12 +11,18 @@ import {
   propertyPurpose,
   propertySchema,
 } from "./property.helpers";
+import { uploadImage } from "@/data/api/image-files";
+import Loading from "@/components/common/icon/Loading";
+
+import { Image } from "@/data/model/image-file";
 
 const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   const [cities] = useState(data.cities);
   const [propertyTypes] = useState(data.propertyTypes);
   const [features] = useState(data.features);
   const [checkedFeatures, setCheckedFeatures] = useState<number[]>([]);
+  const [imageFiles, setImageFiles] = useState({} as Image);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -39,6 +46,33 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       updatedList.splice(checkedFeatures.indexOf(+target.value), 1);
     }
     setCheckedFeatures(updatedList);
+  };
+
+  const handleFileUpload = (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    const files = target.files instanceof FileList ? target.files : null;
+    let imageMime = "";
+    let formData = new FormData();
+    formData.append("type", "header");
+    formData.append("size", "md");
+
+    if (files) {
+      imageMime = files[0].type;
+      formData.append("fileName", files[0]);
+    }
+    setLoading(true);
+    console.log("image mime", imageMime);
+
+    uploadImage(formData)
+      .then((res) => {
+        setLoading(false);
+        target.value = "";
+        setImageFiles(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
@@ -326,7 +360,58 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     })}
                 </Row>
 
-                <Button variant="primary" type="submit">
+                <Row className="mt-5">
+                  <Col md="6">
+                    <Row>
+                      <Col className="mt-2 mb-2">
+                        <h5 className="mb-3">Upload Property Image</h5>
+                        <Card>
+                          <Card.Body>
+                            <Row>
+                              <Col md="10">
+                                <Form.Group
+                                  controlId="formFileSm"
+                                  className="mb-3"
+                                >
+                                  <Form.Label>Upload Header Image</Form.Label>
+                                  <Form.Control
+                                    type="file"
+                                    size="sm"
+                                    name="propertyImage"
+                                    onChange={handleFileUpload}
+                                  />
+                                </Form.Group>
+                              </Col>
+                              <Col md="2" className="mt-4">{loading && <Loading />}</Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col md="6">
+                    {imageFiles.id && (
+                      <Card className="mt-5">
+                        <Card.Body className="px-0 py-0">
+                          <Nav className="flex-column">
+                            <Nav.Link href={`#`}>
+                              <span className="text-dark ft-14">
+                                <img
+                                  src={imageFiles?.image_url}
+                                  width={`100`}
+                                  height={`100`}
+                                  alt="Property image"
+                                />
+                              </span>
+                            </Nav.Link>
+                          </Nav>
+                        </Card.Body>
+                      </Card>
+                    )}
+                  </Col>
+                </Row>
+
+                <Button variant="primary" type="submit" className="mt-3">
                   Submit
                 </Button>
               </Form>

@@ -22,7 +22,7 @@ export const InputField: React.FC<InputFormProps> = ({
   ...props
 }) => {
   return (
-    <Form.Group controlId={`htmlId-${name.toLowerCase()}`}>
+    <Form.Group controlId={`htmlId${name.toLowerCase()}`}>
       <Form.Label className={labelCls}>{labelText}</Form.Label>
       <Form.Control
         type={inputType ? inputType : "text"}

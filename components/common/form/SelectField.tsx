@@ -28,7 +28,7 @@ const SelectField: React.FC<SelectFormProps> = ({
   ...props
 }) => {
   return (
-    <Form.Group controlId={`htmlId-${fieldName.toLowerCase()}`}>
+    <Form.Group controlId={`htmlId${fieldName.toLowerCase()}`}>
       <Form.Label className={labelCls}>{labelText}</Form.Label>
       <Form.Select
         {...register(fieldName)}

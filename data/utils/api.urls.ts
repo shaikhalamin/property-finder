@@ -18,4 +18,5 @@ export const API_URLS = {
   feature: `${API_BASE}/v1/feature`,
   properties: `${API_BASE}/v1/property`,
   agents: `${API_BASE}/v1/agent`,
+  storageFile: `${API_BASE}/v1/storage-file`,
 };
