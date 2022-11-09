@@ -13,18 +13,29 @@ const SignIn = () => {
   const handleSubmit = async (e: SyntheticEvent) => {
     try {
       e.preventDefault();
-      const loginResponse = await signIn("credentials", {
+      const res = await signIn("credentials", {
         username: username,
         password: password,
-        redirect: false,
-      });
+        redirect:false
+      })
+
+      if (res?.ok && res.error == null) {
+        const url = new URL(res?.url as string);
+        const callBackUrl = url.searchParams.get("callbackUrl");
+        if (callBackUrl) {
+          router.push(callBackUrl as string);
+        } else {
+          router.push("/home");
+        }
+      }
+      //console.log(loginResponse)
 
       //console.log(loginResponse)
-      if (loginResponse?.ok && loginResponse.error == null) {
-        router.push("/");
-      } else {
-        alert("User name and password error");
-      }
+      // if (loginResponse?.ok && loginResponse.error == null) {
+      //   router.push("/");
+      // } else {
+      //   alert("User name and password error");
+      // }
     } catch (error) {
       console.log("login error", error);
     }

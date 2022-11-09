@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8080";
+export const API_BASE = "http://localhost:8080";
 const STATIC_IMAGES = `${API_BASE}/static/`;
 const FEATURES_IMAGES = `${API_BASE}/uploads/feature/`;
 const HEADER_IMAGES = `${API_BASE}/uploads/header/`;

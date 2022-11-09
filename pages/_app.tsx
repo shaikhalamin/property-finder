@@ -20,13 +20,12 @@ const MyApp = ({
   Component,
   pageProps,
 }: AppPropsWithLayout<{ session: Session }>) => {
-
   const getLayout = Component.getLayout ?? ((page) => page);
-  const { session, ...allProps  } = pageProps;
+  const { session, ...allProps } = pageProps;
 
   if (!Component.getLayout) {
     return (
-      <SessionProvider session={session}>
+      <SessionProvider session={session} refetchInterval={5 * 60}>
         <SSRProvider>
           <PropertyLayout>
             <Component {...allProps} />
@@ -37,9 +36,11 @@ const MyApp = ({
   }
 
   return getLayout(
-    <SSRProvider>
-      <Component {...allProps} />
-    </SSRProvider>
+    <SessionProvider session={session} refetchInterval={5 * 60}>
+      <SSRProvider>
+        <Component {...allProps} />
+      </SSRProvider>
+    </SessionProvider>
   );
 };
 

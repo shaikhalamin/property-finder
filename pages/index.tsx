@@ -8,6 +8,9 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home = () => {
   const { data: session } = useSession();
+  if(session){
+    console.log(session)
+  }
   
   return (
     <>

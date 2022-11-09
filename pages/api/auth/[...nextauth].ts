@@ -27,8 +27,11 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
+    maxAge: 60 * 29,
   },
-  secret: process.env.JWT_SECRET,
+  jwt: {
+    maxAge: 60 * 29,
+  },
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
@@ -36,6 +39,7 @@ export const authOptions: NextAuthOptions = {
         token.expires_at = loggedInUser.expires_at;
         token.access_token = loggedInUser.access_token;
         token.refresh_token = loggedInUser.refresh_token;
+        token.role = loggedInUser.user.role;
         token.user = loggedInUser.user;
         return token;
       }

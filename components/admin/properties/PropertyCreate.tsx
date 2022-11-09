@@ -13,8 +13,9 @@ import {
 } from "./property.helpers";
 import { uploadImage } from "@/data/api/image-files";
 import Loading from "@/components/common/icon/Loading";
-
 import { Image } from "@/data/model/image-file";
+import axios from "axios";
+
 
 const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   const [cities] = useState(data.cities);
@@ -75,12 +76,19 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       });
   };
 
+  const checkApi = async ()=>{
+   const users = await axios.get(`http://localhost:3000/api/be/user`);
+
+   console.log(users.data)
+
+  }
+
   return (
     <Container fluid>
       <Row>
         <Col className="py-4" md="8">
           <h4 className="mt-2 mb-4 text-justify fw-bold">
-            Property Create Form
+            Property Create Form  <button className="btn btn-primary" onClick={checkApi} >check api get call</button>
           </h4>
           <Card>
             <Card.Body>
