@@ -77,7 +77,17 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   };
 
   const checkApi = async ()=>{
-   const users = await axios.get(`http://localhost:3000/api/be/user`);
+   const user = {
+    firstName: 'Test Api call One',
+    lastName: 'API two',
+    username: 'apicallwe',
+    email: 'apicallwe@gmail.com',
+    phone: '+670924454678720',
+    password: '1234',
+  }
+
+  //const users = await axios.post(`http://localhost:3000/api/be/user`,user);
+  const users = await axios.get(`http://localhost:3000/api/be/user`);
 
    console.log(users.data)
 

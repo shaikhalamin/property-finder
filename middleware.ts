@@ -23,7 +23,6 @@ export default withAuth(
   {
     callbacks: {
       authorized({ token }) {
-        console.log("token in callback",token )
         return token?.role === "agent";
       },
     },
