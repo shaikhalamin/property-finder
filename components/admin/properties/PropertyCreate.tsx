@@ -15,7 +15,8 @@ import { uploadImage } from "@/data/api/image-files";
 import Loading from "@/components/common/icon/Loading";
 import { Image } from "@/data/model/image-file";
 import axios from "axios";
-
+import { createProperty } from "@/data/api/property";
+import { useRouter } from "next/router";
 
 const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   const [cities] = useState(data.cities);
@@ -24,16 +25,36 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   const [checkedFeatures, setCheckedFeatures] = useState<number[]>([]);
   const [imageFiles, setImageFiles] = useState({} as Image);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(propertySchema),
   });
-  const onSubmit = (data: any) => {
-    console.log("submitted data ", data);
+  
+  const watchPurpose = watch("purpose");
+
+  const onSubmit = async (data: any) => {
+    const propertyFormData = {
+      ...data,
+      lat: parseFloat(data.lat),
+      long: parseFloat(data.long),
+      features: [...checkedFeatures],
+      propertyImages: [imageFiles.id]
+    }
+    const property = await createProperty(propertyFormData);
+
+    if(property.data){
+      router.push("/admin/properties");
+    }
+
+    console.log(property.data)
+
+
   };
 
   const errorMessage = getErrorMessage(errors);
@@ -76,29 +97,12 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       });
   };
 
-  const checkApi = async ()=>{
-   const user = {
-    firstName: 'Test Api call One',
-    lastName: 'API two',
-    username: 'apicallwe',
-    email: 'apicallwe@gmail.com',
-    phone: '+670924454678720',
-    password: '1234',
-  }
-
-  //const users = await axios.post(`http://localhost:3000/api/be/user`,user);
-  const users = await axios.get(`http://localhost:3000/api/be/user`);
-
-   console.log(users.data)
-
-  }
-
   return (
     <Container fluid>
       <Row>
         <Col className="py-4" md="8">
           <h4 className="mt-2 mb-4 text-justify fw-bold">
-            Property Create Form  <button className="btn btn-primary" onClick={checkApi} >check api get call</button>
+            Property Create Form
           </h4>
           <Card>
             <Card.Body>
@@ -232,7 +236,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                   </Col>
                   <Col md="3">
                     <InputField
-                      labelText="Ceiling Height"
+                      labelText="Ceiling Height (meter)"
                       register={register}
                       name="ceilingHeight"
                       inputType="number"
@@ -253,7 +257,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                 <Row className="mb-3">
                   <Col md="3">
                     <InputField
-                      labelText="Distance From Center"
+                      labelText="Distance From Center(Miles)"
                       register={register}
                       name="distanceFromCenter"
                       inputType="number"
@@ -274,7 +278,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                       labelText="Area Size"
                       register={register}
                       name="areaSize"
-                      inputType="text"
+                      inputType="number"
                       errorMessage={errorMessage("areaSize")}
                     />
                   </Col>
@@ -334,7 +338,17 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                 </Row>
 
                 <Row className="mb-3">
-                  <Col md="6">
+                  <Col md="4">
+                    <InputField
+                      labelText="Heating"
+                      register={register}
+                      name="heating"
+                      inputType="text"
+                      errorMessage={errorMessage("heating")}
+                    />
+                  </Col>
+
+                  <Col md="4">
                     <InputField
                       labelText="Lat"
                       register={register}
@@ -344,7 +358,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     />
                   </Col>
 
-                  <Col md="6">
+                  <Col md="4">
                     <InputField
                       labelText="Long"
                       register={register}
@@ -378,6 +392,10 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     })}
                 </Row>
 
+                {watchPurpose == "RENT" && <Row>
+                
+                </Row> }
+
                 <Row className="mt-5">
                   <Col md="6">
                     <Row>
@@ -400,7 +418,9 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                                   />
                                 </Form.Group>
                               </Col>
-                              <Col md="2" className="mt-4">{loading && <Loading />}</Col>
+                              <Col md="2" className="mt-4">
+                                {loading && <Loading />}
+                              </Col>
                             </Row>
                           </Card.Body>
                         </Card>

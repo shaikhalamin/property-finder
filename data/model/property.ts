@@ -2,6 +2,7 @@ import { Agent } from "./agent";
 import { FloorPlan } from "./floor-plan";
 import { Image } from "./image-file";
 import { PropertyFeature } from "./property-feature";
+import { PropertyType } from "./property-type";
 
 export type Property = {
   id: number;
@@ -37,6 +38,7 @@ export type Property = {
   paymentPeriod: string;
   habitable: string;
   minimumStayDuration: number;
+  propertyType: PropertyType;
   propertyImages: Image[];
   propertyFeatures: PropertyFeature[];
   floorPlans: FloorPlan[];

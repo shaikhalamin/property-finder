@@ -1,7 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
 import qs from "qs";
-import { API_URLS } from "../utils/api.urls";
+import { API_PROXY_BASE, API_URLS } from "../utils/api.urls";
 
 const PROPERTY_URL = API_URLS.properties;
 
@@ -54,12 +54,13 @@ const createFilterUrl = (filterObject: PropertiesFilter) => {
 
 export const getPropertiesByFilter = async (filterObject: PropertiesFilter) => {
   try {
-
-    console.log({filterObject})
     const query = createFilterUrl(filterObject);
-    
     return axios.get(`${PROPERTY_URL}?${query}`);
   } catch (error) {
     console.log(error);
   }
+};
+
+export const createProperty = (propertyPayload: any) => {
+  return axios.post(`${API_PROXY_BASE}/property`, propertyPayload);
 };
