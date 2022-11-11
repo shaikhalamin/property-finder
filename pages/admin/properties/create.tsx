@@ -18,9 +18,9 @@ const CreateProperty: NextPageWithLayout<AdminPropertyProps> = ({
   return <PropertyCreate data={formsHelpers} />;
 };
 
-CreateProperty.getLayout = function getLayout(page: ReactElement) {
-  return <AdminLayout>{page}</AdminLayout>;
-};
+CreateProperty.getLayout = (page: ReactElement) => (
+  <AdminLayout>{page}</AdminLayout>
+);
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const [propertyTypes, cities, features] = await Promise.all([
