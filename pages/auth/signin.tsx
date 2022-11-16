@@ -25,7 +25,7 @@ const SignIn = () => {
         if (callBackUrl) {
           router.push(callBackUrl as string);
         } else {
-          router.push("/home");
+          router.push("/");
         }
       }
       //console.log(loginResponse)

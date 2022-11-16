@@ -23,7 +23,8 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   const [propertyTypes] = useState(data.propertyTypes);
   const [features] = useState(data.features);
   const [checkedFeatures, setCheckedFeatures] = useState<number[]>([]);
-  const [imageFiles, setImageFiles] = useState({} as Image);
+  const [imageType, setImageType] = useState("");
+  const [imageFiles, setImageFiles] = useState<Image[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -35,7 +36,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   } = useForm({
     resolver: yupResolver(propertySchema),
   });
-  
+
   const watchPurpose = watch("purpose");
 
   const onSubmit = async (data: any) => {
@@ -44,17 +45,16 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       lat: parseFloat(data.lat),
       long: parseFloat(data.long),
       features: [...checkedFeatures],
-      propertyImages: [imageFiles.id]
+      propertyImages: imageFiles.map((image) => image.id),
+    };
+    try {
+      const property = await createProperty(propertyFormData);
+      if (property.data) {
+        router.push("/admin/properties");
+      }
+    } catch (error) {
+      console.log(error);
     }
-    const property = await createProperty(propertyFormData);
-
-    if(property.data){
-      router.push("/admin/properties");
-    }
-
-    console.log(property.data)
-
-
   };
 
   const errorMessage = getErrorMessage(errors);
@@ -71,25 +71,25 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   };
 
   const handleFileUpload = (e: SyntheticEvent) => {
+    if (!imageType) {
+      alert("Please select image type");
+      return;
+    }
     const target = e.target as HTMLInputElement;
     const files = target.files instanceof FileList ? target.files : null;
-    let imageMime = "";
-    let formData = new FormData();
-    formData.append("type", "header");
-    formData.append("size", "md");
-
-    if (files) {
-      imageMime = files[0].type;
-      formData.append("fileName", files[0]);
+    if (!files) {
+      return;
     }
+    let formData = new FormData();
+    formData.append("type", imageType);
+    formData.append("size", "md");
+    formData.append("fileName", files[0]);
     setLoading(true);
-    console.log("image mime", imageMime);
-
     uploadImage(formData)
       .then((res) => {
         setLoading(false);
         target.value = "";
-        setImageFiles(res.data);
+        setImageFiles([...imageFiles, res.data]);
         console.log(res.data);
       })
       .catch((error) => {
@@ -392,12 +392,10 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     })}
                 </Row>
 
-                {watchPurpose == "RENT" && <Row>
-                
-                </Row> }
+                {watchPurpose == "RENT" && <Row></Row>}
 
                 <Row className="mt-5">
-                  <Col md="6">
+                  <Col md="7">
                     <Row>
                       <Col className="mt-2 mb-2">
                         <h5 className="mb-3">Upload Property Image</h5>
@@ -405,18 +403,35 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                           <Card.Body>
                             <Row>
                               <Col md="10">
-                                <Form.Group
-                                  controlId="formFileSm"
-                                  className="mb-3"
-                                >
-                                  <Form.Label>Upload Header Image</Form.Label>
-                                  <Form.Control
-                                    type="file"
-                                    size="sm"
-                                    name="propertyImage"
-                                    onChange={handleFileUpload}
-                                  />
-                                </Form.Group>
+                                <Row>
+                                  <Form.Group as={Col} controlId="ImageType">
+                                    <Form.Label>Image Type</Form.Label>
+                                    <Form.Select
+                                      onChange={({ target }) =>
+                                        setImageType(target.value)
+                                      }
+                                    >
+                                      <option value={""}>
+                                        Select image type
+                                      </option>
+                                      <option value={"header"}>Header</option>
+                                      <option value={"feature"}>Feature</option>
+                                    </Form.Select>
+                                  </Form.Group>
+                                  <Form.Group
+                                    as={Col}
+                                    controlId="formFileSm"
+                                    className="mb-3"
+                                  >
+                                    <Form.Label>Upload Header Image</Form.Label>
+                                    <Form.Control
+                                      type="file"
+                                      size="sm"
+                                      name="propertyImage"
+                                      onChange={handleFileUpload}
+                                    />
+                                  </Form.Group>
+                                </Row>
                               </Col>
                               <Col md="2" className="mt-4">
                                 {loading && <Loading />}
@@ -427,8 +442,8 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                       </Col>
                     </Row>
                   </Col>
-                  <Col md="6">
-                    {imageFiles.id && (
+                  <Col md="5">
+                    {/* {imageFiles.id && (
                       <Card className="mt-5">
                         <Card.Body className="px-0 py-0">
                           <Nav className="flex-column">
@@ -445,7 +460,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                           </Nav>
                         </Card.Body>
                       </Card>
-                    )}
+                    )} */}
                   </Col>
                 </Row>
 
