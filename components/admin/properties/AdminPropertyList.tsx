@@ -49,7 +49,9 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
                         <Button
                           variant="info"
                           size={`sm`}
-                          onClick={() => console.log(property.id)}
+                          onClick={() =>
+                            router.push(`/admin/properties/edit/${property.id}`)
+                          }
                         >
                           Edit
                         </Button>

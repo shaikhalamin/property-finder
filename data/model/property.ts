@@ -1,4 +1,5 @@
 import { Agent } from "./agent";
+import { City } from "./city";
 import { FloorPlan } from "./floor-plan";
 import { Image } from "./image-file";
 import { PropertyFeature } from "./property-feature";
@@ -18,6 +19,8 @@ export type Property = {
   noOfBathRoom: number;
   propertySize: number;
   yearBuild: number;
+  publishedDate?: string;
+  heating: string;
   totalFloors: number;
   accommodations: string;
   ceilingHeight: number;
@@ -39,6 +42,7 @@ export type Property = {
   habitable: string;
   minimumStayDuration: number;
   propertyType: PropertyType;
+  city: City;
   propertyImages: Image[];
   propertyFeatures: PropertyFeature[];
   floorPlans: FloorPlan[];

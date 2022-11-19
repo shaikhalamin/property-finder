@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, FormText } from "react-bootstrap";
-import { UseFormRegister, FieldValues } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 type GenericArray = {
   id: number | string;
@@ -9,24 +9,22 @@ type GenericArray = {
 
 interface SelectFormProps {
   labelText: string;
-  register: UseFormRegister<FieldValues>;
   fieldName: string;
   selectData: GenericArray[];
   errorMessage?: string;
   labelCls?: string;
   formCheckCls?: string;
-  // register: CallableFunction
 }
 
 const SelectField: React.FC<SelectFormProps> = ({
   labelText,
-  register,
   fieldName,
   selectData,
   errorMessage,
   labelCls,
   ...props
 }) => {
+  const { register } = useFormContext();
   return (
     <Form.Group controlId={`htmlId${fieldName.toLowerCase()}`}>
       <Form.Label className={labelCls}>{labelText}</Form.Label>

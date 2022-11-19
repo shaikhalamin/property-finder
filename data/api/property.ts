@@ -52,6 +52,10 @@ const createFilterUrl = (filterObject: PropertiesFilter) => {
   return query;
 };
 
+export const getPropertyDetails = async (id: number) => {
+  return axios.get(`${PROPERTY_URL}/${id}`);
+};
+
 export const getPropertiesByFilter = async (filterObject: PropertiesFilter) => {
   try {
     const query = createFilterUrl(filterObject);

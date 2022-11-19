@@ -10,3 +10,7 @@ export const uploadImage = (formData: FormData) => {
     },
   });
 };
+
+export const deleteImage = async (id: number) => {
+  return axios.delete(`${STORAGE_FILE_URL}/${id}`);
+};

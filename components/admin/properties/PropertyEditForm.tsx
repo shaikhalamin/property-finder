@@ -1,43 +1,46 @@
-import React, { SyntheticEvent, useRef, useState } from "react";
-import { Button, Card, Col, Container, Form, Nav, Row } from "react-bootstrap";
-import { FormProvider, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import _ from "lodash";
-import { getErrorMessage } from "@/data/utils/lib";
 import { InputField } from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
+import Loading from "@/components/common/icon/Loading";
+import { deleteImage, uploadImage } from "@/data/api/image-files";
+import { createProperty } from "@/data/api/property";
+import { Image } from "@/data/model/image-file";
+import { Property } from "@/data/model/property";
+import { PropertyFormHelpers } from "@/data/types/property/property";
+import { getErrorMessage } from "@/data/utils/lib";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
+import React, { SyntheticEvent, useEffect, useState } from "react";
+import { Container, Row, Col, Card, Form, Button, Nav } from "react-bootstrap";
+import { FormProvider, useForm } from "react-hook-form";
 import {
-  PropertyFormData,
   PropertyFormFields,
   propertyPurpose,
   propertySchema,
+  setPropertyEditForm,
 } from "./property.helpers";
-import { deleteImage, uploadImage } from "@/data/api/image-files";
-import Loading from "@/components/common/icon/Loading";
-import { Image } from "@/data/model/image-file";
-import axios from "axios";
-import { createProperty } from "@/data/api/property";
-import { useRouter } from "next/router";
 
-const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
+type PropertyEditProps = {
+  data: PropertyFormHelpers;
+  propertyData: Property;
+};
+
+const PropertyEditForm: React.FC<PropertyEditProps> = ({
+  data,
+  propertyData,
+}) => {
+  const [property] = useState(propertyData);
   const [cities] = useState(data.cities);
   const [propertyTypes] = useState(data.propertyTypes);
   const [features] = useState(data.features);
   const [checkedFeatures, setCheckedFeatures] = useState<number[]>([]);
   const [imageType, setImageType] = useState("");
   const [imageFiles, setImageFiles] = useState<Image[]>([]);
+  const [existingImageFiles, setExistingImageFiles] = useState<Image[]>(
+    propertyData.propertyImages
+  );
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const [deleting, setDeleting] = useState(0);
-
-  // const {
-  //   register,
-  //   watch,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm({
-  //   resolver: yupResolver(propertySchema),
-  // });
+  const router = useRouter();
 
   const methods = useForm<PropertyFormFields>({
     resolver: yupResolver(propertySchema),
@@ -51,23 +54,31 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
     setValue,
   } = methods;
 
-  const watchPurpose = watch("purpose");
+  useEffect(() => {
+    setPropertyEditForm(property, setValue);
+  }, [property, setValue]);
 
-  const onSubmit = async (data: any) => {
+  // const watchPurpose = watch("purpose");
+
+  const onSubmit = async (data: PropertyFormFields) => {
+    console.log("submitted", data.features);
+
     const propertyFormData = {
       ...data,
       lat: parseFloat(data.lat),
       long: parseFloat(data.long),
-      features: [...checkedFeatures],
+      features: data.features.map((ft) => +ft),
       propertyImages: imageFiles.map((image) => image.id),
     };
+
+    console.log(propertyFormData);
     try {
-      const property = await createProperty(propertyFormData);
-      if (property.data) {
-        router.push("/admin/properties");
-      }
+      //   const property = await createProperty(propertyFormData);
+      //   if (property.data) {
+      //     router.push("/admin/properties");
+      //   }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -92,8 +103,8 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       deleteImage(id)
         .then(async (res) => {
           setDeleting(0);
-          setImageFiles([
-            ...imageFiles.filter((image) => image.id !== id),
+          setExistingImageFiles([
+            ...existingImageFiles.filter((image) => image.id !== id),
           ]);
         })
         .catch((error) => {
@@ -123,7 +134,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
         setLoading(false);
         target.value = "";
         setImageFiles([...imageFiles, res.data]);
-        console.log(res.data);
+        setExistingImageFiles([...existingImageFiles, res.data]);
       })
       .catch((error) => {
         console.log(error.message);
@@ -134,13 +145,10 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
     <Container fluid>
       <Row>
         <Col className="py-4" md="8">
-          <h4 className="mt-2 mb-4 text-justify fw-bold">
-            Property Create Form
-          </h4>
+          <h4 className="mt-2 mb-4 text-justify fw-bold">Property Edit Form</h4>
           <Card>
             <Card.Body>
-
-            <FormProvider {...methods}>
+              <FormProvider {...methods}>
                 <Form className="py-3" onSubmit={handleSubmit(onSubmit)}>
                   <Row className="mb-3">
                     <Col md="4">
@@ -176,6 +184,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                       />
                     </Col>
                   </Row>
+
                   <Row className="mb-3">
                     <Col md="6">
                       <SelectField
@@ -206,7 +215,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                       className={errors?.descriptions ? "is-invalid" : ""}
                     />
                     {errors?.address && (
-                      <p className="text-danger">{errorMessage("descriptions")}</p>
+                      <p className="text-danger">{errorMessage("address")}</p>
                     )}
                   </Form.Group>
 
@@ -486,11 +495,10 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     </Col>
                     <Col md="5">
                       <Row>
-                        {
-                        imageFiles.length > 0 &&
-                          imageFiles.map((image) => (
+                        {existingImageFiles.length > 0 &&
+                          existingImageFiles.map((image) => (
                             <Col md="4" key={image.id}>
-                              <Card className="mt-3">
+                              <Card className="mt-5">
                                 <Card.Body className="px-0 py-0">
                                   <Row className="mb-0 ft-12 px-3">
                                     <Col md="9" className="text-start ft-12">
@@ -526,9 +534,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                                 </Card.Body>
                               </Card>
                             </Col>
-                          ))
-                          
-                          }
+                          ))}
                       </Row>
                     </Col>
                   </Row>
@@ -538,375 +544,6 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                   </Button>
                 </Form>
               </FormProvider>
-
-
-
-
-
-
-              {/* <Form className="py-3" onSubmit={handleSubmit(onSubmit)}>
-                <Row className="mb-3">
-                  <Col md="4">
-                    <SelectField
-                      labelText="Property Type"
-                      fieldName="propertyType"
-                      register={register}
-                      selectData={propertyTypes.map((item) => ({
-                        id: item.id,
-                        name: item.name,
-                      }))}
-                      errorMessage={errorMessage("propertyType")}
-                    />
-                  </Col>
-
-                  <Col md="4">
-                    <SelectField
-                      labelText="City"
-                      register={register}
-                      fieldName="city"
-                      selectData={cities}
-                      errorMessage={errorMessage("city")}
-                    />
-                  </Col>
-
-                  <Col md="4">
-                    <InputField
-                      labelText="Property Name"
-                      register={register}
-                      name="name"
-                      inputType="text"
-                      errorMessage={errorMessage("name")}
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="mb-3">
-                  <Col md="6">
-                    <SelectField
-                      labelText="Purpose"
-                      register={register}
-                      fieldName="purpose"
-                      selectData={propertyPurpose}
-                      errorMessage={errorMessage("purpose")}
-                    />
-                  </Col>
-                  <Col md="6">
-                    <InputField
-                      labelText="Address"
-                      register={register}
-                      name="address"
-                      inputType="text"
-                      errorMessage={errorMessage("address")}
-                    />
-                  </Col>
-                </Row>
-
-                <Form.Group className="mb-3" controlId="propertyDescription">
-                  <Form.Label>Descriptions</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    {...register("descriptions")}
-                    className={errors?.descriptions ? "is-invalid" : ""}
-                  />
-                  {errors?.address && (
-                    <p className="text-danger">{errorMessage("address")}</p>
-                  )}
-                </Form.Group>
-
-                <Row className="mb-3">
-                  <Col md="3">
-                    <InputField
-                      labelText="Price"
-                      register={register}
-                      name="price"
-                      inputType="number"
-                      errorMessage={errorMessage("price")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="No Of Bed Room"
-                      register={register}
-                      name="noOfBedRoom"
-                      inputType="number"
-                      errorMessage={errorMessage("noOfBedRoom")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="No Of Bath Room"
-                      register={register}
-                      name="noOfBathRoom"
-                      inputType="number"
-                      errorMessage={errorMessage("noOfBathRoom")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="Property Size"
-                      register={register}
-                      name="propertySize"
-                      inputType="number"
-                      errorMessage={errorMessage("propertySize")}
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="mb-3">
-                  <Col md="3">
-                    <InputField
-                      labelText="Year Build"
-                      register={register}
-                      name="yearBuild"
-                      inputType="number"
-                      errorMessage={errorMessage("yearBuild")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="Total Floors"
-                      register={register}
-                      name="totalFloors"
-                      inputType="number"
-                      errorMessage={errorMessage("totalFloors")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="Ceiling Height (meter)"
-                      register={register}
-                      name="ceilingHeight"
-                      inputType="number"
-                      errorMessage={errorMessage("ceilingHeight")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="Electricity Cost"
-                      register={register}
-                      name="electricityCost"
-                      inputType="text"
-                      errorMessage={errorMessage("electricityCost")}
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="mb-3">
-                  <Col md="3">
-                    <InputField
-                      labelText="Distance From Center(Miles)"
-                      register={register}
-                      name="distanceFromCenter"
-                      inputType="number"
-                      errorMessage={errorMessage("distanceFromCenter")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="Parking"
-                      register={register}
-                      name="parking"
-                      inputType="text"
-                      errorMessage={errorMessage("parking")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <InputField
-                      labelText="Area Size"
-                      register={register}
-                      name="areaSize"
-                      inputType="number"
-                      errorMessage={errorMessage("areaSize")}
-                    />
-                  </Col>
-                  <Col md="3">
-                    <div className="mt-4">
-                      <Form.Group id="propertyGarage">
-                        <Form.Check
-                          type="checkbox"
-                          label="Garage"
-                          {...register("garage")}
-                        />
-                      </Form.Group>
-                    </div>
-                  </Col>
-                </Row>
-
-                <Row className="mb-3">
-                  <Col md="3">
-                    <InputField
-                      labelText="Accommodations"
-                      register={register}
-                      name="accommodations"
-                      inputType="text"
-                      errorMessage={errorMessage("accommodations")}
-                    />
-                  </Col>
-
-                  <Col md="3">
-                    <InputField
-                      labelText="Additional Spec"
-                      register={register}
-                      name="additionalSpec"
-                      inputType="text"
-                      errorMessage={errorMessage("additionalSpec")}
-                    />
-                  </Col>
-
-                  <Col md="3">
-                    <InputField
-                      labelText="Utility Cost"
-                      register={register}
-                      name="utilityCost"
-                      inputType="number"
-                      errorMessage={errorMessage("utilityCost")}
-                    />
-                  </Col>
-
-                  <Col md="3">
-                    <InputField
-                      labelText="Cable Tv Cost"
-                      register={register}
-                      name="cableTvCost"
-                      inputType="number"
-                      errorMessage={errorMessage("cableTvCost")}
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="mb-3">
-                  <Col md="4">
-                    <InputField
-                      labelText="Heating"
-                      register={register}
-                      name="heating"
-                      inputType="text"
-                      errorMessage={errorMessage("heating")}
-                    />
-                  </Col>
-
-                  <Col md="4">
-                    <InputField
-                      labelText="Lat"
-                      register={register}
-                      name="lat"
-                      inputType="number"
-                      errorMessage={errorMessage("lat")}
-                    />
-                  </Col>
-
-                  <Col md="4">
-                    <InputField
-                      labelText="Long"
-                      register={register}
-                      name="long"
-                      inputType="number"
-                      errorMessage={errorMessage("long")}
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="mb-2">
-                  <h6 className="mt-1 mb-1">Features </h6>
-                  {features.length > 0 &&
-                    features.map((feature, index) => {
-                      return (
-                        <Col md="3" key={index} className="mt-2">
-                          <Card>
-                            <Card.Body>
-                              <Form.Group id="propertyGarage">
-                                <Form.Check
-                                  type="checkbox"
-                                  label={feature.name}
-                                  value={feature.id}
-                                  onChange={handleFeature}
-                                />
-                              </Form.Group>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      );
-                    })}
-                </Row>
-
-                {watchPurpose == "RENT" && <Row></Row>}
-
-                <Row className="mt-5">
-                  <Col md="7">
-                    <Row>
-                      <Col className="mt-2 mb-2">
-                        <h5 className="mb-3">Upload Property Image</h5>
-                        <Card>
-                          <Card.Body>
-                            <Row>
-                              <Col md="10">
-                                <Row>
-                                  <Form.Group as={Col} controlId="ImageType">
-                                    <Form.Label>Image Type</Form.Label>
-                                    <Form.Select
-                                      onChange={({ target }) =>
-                                        setImageType(target.value)
-                                      }
-                                    >
-                                      <option value={""}>
-                                        Select image type
-                                      </option>
-                                      <option value={"header"}>Header</option>
-                                      <option value={"feature"}>Feature</option>
-                                    </Form.Select>
-                                  </Form.Group>
-                                  <Form.Group
-                                    as={Col}
-                                    controlId="formFileSm"
-                                    className="mb-3"
-                                  >
-                                    <Form.Label>Upload Header Image</Form.Label>
-                                    <Form.Control
-                                      type="file"
-                                      size="sm"
-                                      name="propertyImage"
-                                      onChange={handleFileUpload}
-                                    />
-                                  </Form.Group>
-                                </Row>
-                              </Col>
-                              <Col md="2" className="mt-4">
-                                {loading && <Loading />}
-                              </Col>
-                            </Row>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md="5">
-                     {imageFiles.id && (
-                      <Card className="mt-5">
-                        <Card.Body className="px-0 py-0">
-                          <Nav className="flex-column">
-                            <Nav.Link href={`#`}>
-                              <span className="text-dark ft-14">
-                                <img
-                                  src={imageFiles?.image_url}
-                                  width={`100`}
-                                  height={`100`}
-                                  alt="Property image"
-                                />
-                              </span>
-                            </Nav.Link>
-                          </Nav>
-                        </Card.Body>
-                      </Card>
-                    )} 
-                  </Col>
-                </Row>
-                <Button variant="primary" type="submit" className="mt-3">
-                  Submit
-                </Button>
-              </Form> 
-              */}
-
             </Card.Body>
           </Card>
         </Col>
@@ -915,4 +552,32 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   );
 };
 
-export default PropertyCreate;
+export default PropertyEditForm;
+
+/* <Row className="mb-3">
+        <Col>
+          <Controller
+            control={control}
+            name="dob"
+            render={({ field }) => (
+              <Form.Group controlId="dobId">
+                <Form.Label className={`${profileStyles.FormLabel}`}>
+                  <span>生年月日</span>
+                  <span className="text-danger">*</span>
+                </Form.Label>
+                <ReactDatePicker
+                  className="form-control"
+                  placeholderText="1980/10/01"
+                  onChange={(date) => field.onChange(date)}
+                  selected={field.value}
+                  maxDate={addDays(new Date(), -365)}
+                  dateFormat="yyyy/MM/dd"
+                  closeOnScroll={true}
+                />
+              </Form.Group>
+            )}
+          />
+        </Col>
+      </Row> */
+
+// https://stackblitz.com/edit/react-l3io1m?file=src%2FApp.js
