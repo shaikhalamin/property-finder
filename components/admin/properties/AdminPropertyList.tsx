@@ -47,7 +47,7 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
                       <td>{property.propertyType.name}</td>
                       <td>
                         <Button
-                          variant="info"
+                          variant="warning"
                           size={`sm`}
                           onClick={() =>
                             router.push(`/admin/properties/edit/${property.id}`)
@@ -56,7 +56,17 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
                           Edit
                         </Button>
                       </td>
-                      <td>Preview</td>
+                      <td>
+                        <Button
+                          variant="info"
+                          size={`sm`}
+                          onClick={() =>
+                            router.push(`/properties/${property.slug}`)
+                          }
+                        >
+                          Preview
+                        </Button>
+                      </td>
                     </tr>
                   ))}
               </tbody>
