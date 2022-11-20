@@ -1,6 +1,7 @@
 import { Property } from "@/data/model/property";
 import { PropertyFormHelpers } from "@/data/types/property/property";
 import * as yup from "yup";
+import _ from "lodash";
 
 export const propertySchema = yup
   .object({
@@ -143,6 +144,25 @@ export const setPropertyEditForm = (
   setValue("city", property.city.id);
   setValue(
     "features",
-    property.propertyFeatures.map((feature) => feature.id.toString())
+    property.propertyFeatures.map((feature) => feature.featureId.toString())
   );
+};
+
+export const propertyFeatureMerge = (
+  property: Property,
+  features: string[]
+): {
+  itemToBeAdded: number[];
+  itemToBeDeleted: number[];
+} => {
+  const existingFeature = property.propertyFeatures.map((ft) => ft.featureId);
+  const featureAdded = features.map((ft) => +ft);
+  const itemToBeDeleted = _.difference(existingFeature, featureAdded);
+  const mergeNew = [...featureAdded, ...itemToBeDeleted];
+  const itemToBeAdded = _.difference(mergeNew, existingFeature);
+
+  return {
+    itemToBeAdded,
+    itemToBeDeleted,
+  };
 };

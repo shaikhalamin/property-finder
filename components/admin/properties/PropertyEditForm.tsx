@@ -2,17 +2,19 @@ import { InputField } from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
 import Loading from "@/components/common/icon/Loading";
 import { deleteImage, uploadImage } from "@/data/api/image-files";
-import { createProperty } from "@/data/api/property";
+import { editProperty } from "@/data/api/property";
 import { Image } from "@/data/model/image-file";
 import { Property } from "@/data/model/property";
 import { PropertyFormHelpers } from "@/data/types/property/property";
 import { getErrorMessage } from "@/data/utils/lib";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { property } from "lodash";
 import { useRouter } from "next/router";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { Container, Row, Col, Card, Form, Button, Nav } from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import {
+  propertyFeatureMerge,
   PropertyFormFields,
   propertyPurpose,
   propertySchema,
@@ -61,24 +63,26 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
   // const watchPurpose = watch("purpose");
 
   const onSubmit = async (data: PropertyFormFields) => {
-    console.log("submitted", data.features);
-
+    const { itemToBeAdded, itemToBeDeleted } = propertyFeatureMerge(
+      property,
+      data.features
+    );
     const propertyFormData = {
       ...data,
       lat: parseFloat(data.lat),
       long: parseFloat(data.long),
-      features: data.features.map((ft) => +ft),
+      features: itemToBeAdded,
       propertyImages: imageFiles.map((image) => image.id),
+      itemToBeDeleted,
     };
 
-    console.log(propertyFormData);
     try {
-      //   const property = await createProperty(propertyFormData);
-      //   if (property.data) {
-      //     router.push("/admin/properties");
-      //   }
+      const propertyEdit = await editProperty(property.id, propertyFormData);
+      if (propertyEdit.status == 200) {
+        router.push("/admin/properties");
+      }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   };
 
@@ -103,6 +107,7 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
       deleteImage(id)
         .then(async (res) => {
           setDeleting(0);
+          setImageFiles([...imageFiles.filter((image) => image.id !== id)]);
           setExistingImageFiles([
             ...existingImageFiles.filter((image) => image.id !== id),
           ]);
@@ -507,6 +512,7 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
                                     <Col
                                       md="3"
                                       className="text-start bg-warning text-dark"
+                                      style={{ cursor: "pointer" }}
                                       onClick={(e) => {
                                         handleFileDelete(e, image.id);
                                       }}

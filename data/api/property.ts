@@ -68,3 +68,10 @@ export const getPropertiesByFilter = async (filterObject: PropertiesFilter) => {
 export const createProperty = (propertyPayload: any) => {
   return axios.post(`${API_PROXY_BASE}/property`, propertyPayload);
 };
+
+export const editProperty = (propertyId: number, propertyPayload: any) => {
+  return axios.patch(
+    `${API_PROXY_BASE}/property/${propertyId}`,
+    propertyPayload
+  );
+};
