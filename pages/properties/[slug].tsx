@@ -1,6 +1,6 @@
 import React from "react";
 import BaseContainer from "@/components/common/container/BaseContainer";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Card } from "react-bootstrap";
 import { GetServerSideProps } from "next";
 import { API_URLS } from "@/data/utils/api.urls";
 import { Property, PropertyResponse } from "@/data/model/property";
@@ -8,6 +8,8 @@ import AgentInfo from "@/components/details/AgentInfo";
 import { NextPageWithLayout } from "../_app";
 import PropertyGeneralInfo from "@/components/details/PropertyGeneralInfo";
 import PropertyFeatureAndSpecifications from "@/components/details/PropertyFeatureAndSpecifications";
+import { property } from "lodash";
+import Image from "next/image";
 
 type PropertyProps = {
   property: PropertyResponse;
@@ -39,6 +41,18 @@ const Property: NextPageWithLayout<PropertyProps> = ({
                 }}
               />
             </Row>
+            {/* <Row>
+              <Col md="12" className={`mt-0`}>
+                <div className={"image-container"}>
+                  <Image
+                    src={`${imagePath ? imagePath.image_url : ""}`}
+                    layout="responsive"
+                    alt={data?.name}
+                    className={"image"}
+                  />
+                </div>
+              </Col>
+            </Row> */}
           </section>
           <BaseContainer>
             <PropertyGeneralInfo data={data as Property} />
@@ -59,11 +73,22 @@ const Property: NextPageWithLayout<PropertyProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { slug } = query;
-  const property_url = `${API_URLS.properties}/find-by/${slug}`;
-  const res = await fetch(property_url);
-  const property = (await res.json()) as PropertyResponse;
-  return { props: { property } };
+  try {
+    const { slug } = query;
+    const property_url = `${API_URLS.properties}/find-by/${slug}`;
+    const res = await fetch(property_url);
+    const property = (await res.json()) as PropertyResponse;
+    if (!property.success) {
+      return {
+        notFound: true,
+      };
+    }
+    return { props: { property } };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default Property;

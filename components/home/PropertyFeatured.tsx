@@ -5,14 +5,13 @@ import FeatureWithIcon from "../common/property-item/FeatureWithIcon";
 import SectionTitleLink from "./SectionTitleLink";
 import { getProperties } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
-import { API_URLS } from "@/data/utils/api.urls";
 import Image from "next/image";
 
 const PropertyFeatured = () => {
   const [properties, setProperties] = useState({} as PropertyList);
 
   const fetchProperty = () => {
-    const PROPERTY_URL = `${API_URLS.properties}?page=1&perPage=6`;
+    const PROPERTY_URL = `?page=1&perPage=6`;
     getProperties(PROPERTY_URL).then((res) => {
       setProperties(res.data);
     });

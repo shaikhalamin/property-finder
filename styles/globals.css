@@ -63,3 +63,15 @@ a.text-color-b94:hover {
 a.text-black:hover {
   color: #00f09a;
 }
+
+.image-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.image-container .image {
+  width: 100%;
+  height: 100%;
+  position: relative !important;
+  object-fit: cover;
+}

@@ -10,39 +10,44 @@ import PropertyAddBanner from "@/components/common/property-item/PropertyAddBann
 import { HandlePaginationProps } from "@/components/common/pagination/pagination-types";
 import {
   BasicType,
+  getProperties,
   getPropertiesByFilter,
+  KeyValueObject,
   PropertiesFilter,
 } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
-import { API_URLS } from "@/data/utils/api.urls";
-
-import axios from "axios";
+import { getPropertyTypes } from "@/data/api/property-types";
+import { getCities } from "@/data/api/city";
+import { getFeatures } from "@/data/api/feature";
+import { PropertyType } from "@/data/model/property-type";
+import { City } from "@/data/model/city";
+import { Feature } from "@/data/model/feature";
 
 type PropertyTypeProps = {
-  properties: PropertyList;
-  property_url: string;
-  property_type: string;
+  data: {
+    properties: PropertyList;
+    propertyTypes: PropertyType[];
+    cities: City[];
+    features: Feature[];
+    property_type: string;
+  };
 };
 
 const PropertyType: React.FC<PropertyTypeProps> = ({
-  properties,
-  property_type,
+  data: { properties, propertyTypes, cities, features, property_type },
 }) => {
   const [propertyList, setPropertyList] = useState(properties);
   const [filterClient, setFilterClient] = useState(false);
   const [active, setActive] = useState(1);
-  const [customFilter, setCustomFilter] = useState({
+  const [customFilter, setCustomFilter] = useState<PropertiesFilter>({
     basic: {
       page: properties.meta.page,
       perPage: properties.meta.per_page,
     },
-    order: {
-      created_at: "DESC",
-    },
     filters: {
       propertyType: property_type,
     },
-  } as PropertiesFilter);
+  });
 
   const handlePagination = useCallback(
     (paginationFilter: HandlePaginationProps) => {
@@ -87,28 +92,59 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
     customFilter.filters,
   ]);
 
-  const checkServerSession = async () => {
-    console.log("checking server session");
-    const response = await axios.get("/api/proxy");
+  const handlePropertySorting = useCallback(
+    (data: string) => {
+      filterClient === false && setFilterClient(true);
+      const [key, value] = data.split(":");
+      setCustomFilter((prevState) => {
+        return {
+          ...prevState,
+          order: Object.assign(
+            {},
+            { [key as keyof KeyValueObject]: value.toUpperCase() as string }
+          ),
+        };
+      });
+    },
+    [filterClient]
+  );
 
-    console.log(response.data);
-  };
+  const handleAllFilter = useCallback((key: string, value: string) => {
+    setFilterClient(true);
+    if (value.toLocaleLowerCase() === "any") {
+      setCustomFilter(customFilter);
+      return;
+    }
+
+    setCustomFilter((prevState) => {
+      return {
+        ...prevState,
+        filters: {
+          ...prevState.filters,
+          [key as keyof KeyValueObject]: value.toUpperCase() as string,
+        },
+      };
+    });
+  }, []);
 
   return (
     <>
       <BaseContainer>
-        <Button className="btn-warning" onClick={checkServerSession}>
-          {" "}
-          Check Server side session
-        </Button>
-        <Row className="py-2">
-          <Col md="4" key={Number(Math.random()).toString()}>
-            <TypeFilterSection />
+        <Row className="py-2 min-vh-100">
+          <Col md="4">
+            <TypeFilterSection
+              propertyTypes={propertyTypes}
+              cities={cities}
+              features={features}
+              propertyType={property_type}
+              onChange={handleAllFilter}
+            />
           </Col>
-          <Col md="8" key={Number(Math.random()).toString()}>
+          <Col md="8">
             <SectionTitleOrderBy
               title="Search Results"
               orderTitle="Sorted by"
+              onChange={handlePropertySorting}
             />
             {propertyList.data.length > 0 &&
               propertyList.data.map((property) => {
@@ -163,10 +199,23 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { property_type } = query;
-  const property_url = `${API_URLS.properties}?filters[propertyType]=${property_type}`;
-  const res = await fetch(property_url);
-  const properties = await res.json();
-  return { props: { properties, property_type } };
+  const property_url = `?filters[propertyType]=${property_type}`;
+  const [properties, propertyTypes, cities, features] = await Promise.all([
+    getProperties(property_url),
+    getPropertyTypes(),
+    getCities(),
+    getFeatures(),
+  ]);
+
+  const data = {
+    properties: properties.data as PropertyList,
+    propertyTypes: propertyTypes.data as PropertyType[],
+    cities: cities.data as City[],
+    features: features.data as Feature[],
+    property_type: property_type as string,
+  };
+
+  return { props: { data } };
 };
 
 export default PropertyType;

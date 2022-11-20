@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { Row, Col, Card } from "react-bootstrap";
 import { Property } from "@/data/model/property";
 import FeatureWithIcon from "../common/property-item/FeatureWithIcon";
@@ -18,14 +17,14 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ property }) => {
   return (
     <Row className="py-1 px-1 mt-3">
       <Col md="5" className="mt-1 mb-1">
-        <Card className="border-0 px-1 py-1">
-          <Card.Body className="position-relative">
-            <Image
+        <Card className="rounded-0">
+          <Card.Body className="position-relative py-0 px-0">
+            <img
               src={`${imagePath ? imagePath.image_url : ""}`}
               alt={property.name}
-              width={406}
-              height={275}
-              layout="responsive"
+              className={`w-100`}
+              height={250}
+              
             />
           </Card.Body>
         </Card>

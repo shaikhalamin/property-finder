@@ -6,7 +6,7 @@ import { API_PROXY_BASE, API_URLS } from "../utils/api.urls";
 const PROPERTY_URL = API_URLS.properties;
 
 export const getProperties = (filters: string = "") => {
-  const propertyUrl = filters.length > 0 ? `${filters}` : PROPERTY_URL;
+  const propertyUrl = filters.length > 0 ? `${PROPERTY_URL}${filters}` : PROPERTY_URL;
   return axios.get(propertyUrl);
 };
 
@@ -21,25 +21,27 @@ export type KeyValueObject = {
 
 export type FilterType = {
   basic: BasicType;
-  order: KeyValueObject;
-  filters: KeyValueObject;
+  order?: KeyValueObject;
+  filters?: KeyValueObject;
 };
 
-export type PropertiesFilter = {
+export type PropertiesFilter = FilterType & {
   basic: BasicType;
-  order: {
-    created_at: string;
-  };
-  filters: {
-    propertyType: string;
-  };
+  // order: {
+  //   created_at: string;
+  // };
+  // filters: {
+  //   propertyType: string;
+  // };
 };
 
 const createFilterUrl = (filterObject: PropertiesFilter) => {
   const query = qs.stringify(
     {
       ...filterObject.basic,
-      ...filterObject.order,
+      order: {
+        ...filterObject.order,
+      },
       filters: {
         ...filterObject.filters,
       },
