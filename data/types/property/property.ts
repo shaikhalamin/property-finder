@@ -8,3 +8,15 @@ export type PropertyFormHelpers = {
   features: Feature[]
 };
 
+export const PROPERTY_PURPOSES = [
+  {
+    id: "SALE",
+    name: "Sale",
+  },
+  {
+    id: "RENT",
+    name: "Rent",
+  },
+];
+
+

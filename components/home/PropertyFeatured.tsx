@@ -1,45 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import BaseContainer from "../common/container/BaseContainer";
 import FeatureWithIcon from "../common/property-item/FeatureWithIcon";
 import SectionTitleLink from "./SectionTitleLink";
-import { getProperties } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
 import Image from "next/image";
 
-const PropertyFeatured = () => {
-  const [properties, setProperties] = useState({} as PropertyList);
+type PropertyFeaturedProps = {
+  properties: PropertyList;
+};
 
-  const fetchProperty = () => {
-    const PROPERTY_URL = `?page=1&perPage=6`;
-    getProperties(PROPERTY_URL).then((res) => {
-      setProperties(res.data);
-    });
-  };
-
-  useEffect(() => {
-    fetchProperty();
-  }, []);
-
+const PropertyFeatured: React.FC<PropertyFeaturedProps> = ({ properties }) => {
   return (
     <>
       <BaseContainer>
         <SectionTitleLink
           title={`Recent Real Estate`}
           linkTitle={`View more properties`}
-          link={`#`}
+          link={`/property-type/properties`}
         />
         <Row className="mt-1 mb-2">
-          {Object.values(properties).length > 0 &&
+          { properties.success &&
             properties?.data.map((property) => {
               const imagePath = property.propertyImages.find(
                 (image) => image.type == "header" && image.size == "md"
               );
-
-              const imageLoader = () => {
-                return imagePath;
-              };
-
+              
               return (
                 <Col md="4" className={`mt-4`} key={property.id}>
                   <a
@@ -68,7 +54,7 @@ const PropertyFeatured = () => {
                               xs="10"
                               className="text-start"
                             >
-                             <span className="fw-bold">{property.name}</span> 
+                              <span className="fw-bold">{property.name}</span>
                             </Col>
                             <Col
                               lg="2"

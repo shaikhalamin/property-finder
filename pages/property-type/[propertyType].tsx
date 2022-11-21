@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Card, Container, Button } from "react-bootstrap";
+import { Row, Col, Card, Container } from "react-bootstrap";
 import BaseContainer from "@/components/common/container/BaseContainer";
 import SectionTitleOrderBy from "@/components/property-type/SectionTitleOrderBy";
 import TypeFilterSection from "@/components/property-type/TypeFilterSection";
@@ -14,6 +14,7 @@ import {
   getPropertiesByFilter,
   KeyValueObject,
   PropertiesFilter,
+  PropertyQueryFilters,
 } from "@/data/api/property";
 import { PropertyList } from "@/data/model/property-list";
 import { getPropertyTypes } from "@/data/api/property-types";
@@ -22,6 +23,10 @@ import { getFeatures } from "@/data/api/feature";
 import { PropertyType } from "@/data/model/property-type";
 import { City } from "@/data/model/city";
 import { Feature } from "@/data/model/feature";
+import { NextPageWithLayout } from "../_app";
+import { generateFilterUrl, removeFalsy } from "@/data/utils/lib";
+import { Dictionary } from "lodash";
+import qs from "qs";
 
 type PropertyTypeProps = {
   data: {
@@ -29,12 +34,18 @@ type PropertyTypeProps = {
     propertyTypes: PropertyType[];
     cities: City[];
     features: Feature[];
-    property_type: string;
+    queryParams: Dictionary<string | number>;
   };
 };
 
-const PropertyType: React.FC<PropertyTypeProps> = ({
-  data: { properties, propertyTypes, cities, features, property_type },
+const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
+  data: {
+    properties,
+    propertyTypes,
+    cities,
+    features,
+    queryParams,
+  },
 }) => {
   const [propertyList, setPropertyList] = useState(properties);
   const [filterClient, setFilterClient] = useState(false);
@@ -45,9 +56,11 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
       perPage: properties.meta.per_page,
     },
     filters: {
-      propertyType: property_type,
+      ...queryParams,
     },
   });
+
+  // console.log("customFilter",customFilter);
 
   const handlePagination = useCallback(
     (paginationFilter: HandlePaginationProps) => {
@@ -111,17 +124,12 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
 
   const handleAllFilter = useCallback((key: string, value: string) => {
     setFilterClient(true);
-    if (value.toLocaleLowerCase() === "any") {
-      setCustomFilter(customFilter);
-      return;
-    }
-
     setCustomFilter((prevState) => {
       return {
         ...prevState,
         filters: {
           ...prevState.filters,
-          [key as keyof KeyValueObject]: value.toUpperCase() as string,
+          [key as keyof PropertyQueryFilters]: value.toUpperCase() === 'ANY' ? '' : value.toUpperCase() as string,
         },
       };
     });
@@ -136,7 +144,7 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
               propertyTypes={propertyTypes}
               cities={cities}
               features={features}
-              propertyType={property_type}
+              filterValue = {customFilter}
               onChange={handleAllFilter}
             />
           </Col>
@@ -198,10 +206,9 @@ const PropertyType: React.FC<PropertyTypeProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { property_type } = query;
-  const property_url = `?filters[propertyType]=${property_type}`;
+  const {filterUrl,queryParams} = generateFilterUrl(query as KeyValueObject);
   const [properties, propertyTypes, cities, features] = await Promise.all([
-    getProperties(property_url),
+    getProperties( `?${filterUrl}`),
     getPropertyTypes(),
     getCities(),
     getFeatures(),
@@ -212,7 +219,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     propertyTypes: propertyTypes.data as PropertyType[],
     cities: cities.data as City[],
     features: features.data as Feature[],
-    property_type: property_type as string,
+    queryParams: queryParams,
   };
 
   return { props: { data } };

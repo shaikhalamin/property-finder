@@ -16,11 +16,8 @@ const SectionTitleOrderBy: React.FC<TitleLinkProps> = ({
 }) => {
   const handleSorting = (e: SyntheticEvent) => {
     const target = e.target as HTMLSelectElement;
-    target.value.length > 3 && onChange(target.value);
+    target.value.length > 1 && onChange(target.value);
   };
-
-  console.log("reRendering OrderBy")
-
   return (
     <section>
       <Row className="py-1 px-3 mb-3">

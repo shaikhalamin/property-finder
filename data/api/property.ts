@@ -2,6 +2,7 @@ import axios from "axios";
 import _ from "lodash";
 import qs from "qs";
 import { API_PROXY_BASE, API_URLS } from "../utils/api.urls";
+import { removeFalsy } from "../utils/lib";
 
 const PROPERTY_URL = API_URLS.properties;
 
@@ -19,21 +20,22 @@ export type KeyValueObject = {
   [key: string]: string | number;
 };
 
+export type PropertyQueryFilters = {
+  propertyType?: string;
+  propertyFeatures?: string;
+  purpose?: string;
+  cityId?: number | string;
+  price?: number;
+  noOfBedRoom?: number;
+}
+
 export type FilterType = {
   basic: BasicType;
   order?: KeyValueObject;
-  filters?: KeyValueObject;
+  filters?: PropertyQueryFilters;
 };
 
-export type PropertiesFilter = FilterType & {
-  basic: BasicType;
-  // order: {
-  //   created_at: string;
-  // };
-  // filters: {
-  //   propertyType: string;
-  // };
-};
+export type PropertiesFilter = FilterType
 
 const createFilterUrl = (filterObject: PropertiesFilter) => {
   const query = qs.stringify(
@@ -43,7 +45,7 @@ const createFilterUrl = (filterObject: PropertiesFilter) => {
         ...filterObject.order,
       },
       filters: {
-        ...filterObject.filters,
+        ...removeFalsy(filterObject.filters as KeyValueObject),
       },
     },
     {

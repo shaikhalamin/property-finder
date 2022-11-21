@@ -1,7 +1,9 @@
+import { PropertiesFilter } from "@/data/api/property";
 import { City } from "@/data/model/city";
 import { Feature } from "@/data/model/feature";
 import { PropertyType } from "@/data/model/property-type";
-import React, { SyntheticEvent } from "react";
+import { PROPERTY_PURPOSES } from "@/data/types/property/property";
+import React, { SyntheticEvent, useState } from "react";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 import styles from "./property-type.module.css";
 
@@ -9,32 +11,36 @@ type TypeFilterProps = {
   propertyTypes: PropertyType[];
   cities: City[];
   features: Feature[];
-  propertyType: string;
+  filterValue: PropertiesFilter;
   onChange: (key: string, value: string) => void;
 };
-
-const PROPERTY_PURPOSES = [
-  {
-    id: "SALE",
-    name: "Sale",
-  },
-  {
-    id: "RENT",
-    name: "Rent",
-  },
-];
 
 const TypeFilterSection: React.FC<TypeFilterProps> = ({
   onChange,
   propertyTypes,
-  propertyType,
   cities,
+  filterValue,
   features,
 }) => {
+  const [rangeValue, setRangeValue] = useState(10);
+  const [checkedFeatures, setCheckedFeatures] = useState<number[]>([]);
+
   const handleFilter = (e: SyntheticEvent, key: string) => {
     const target = e.target as HTMLSelectElement;
     const value = target.value;
     value.length > 0 && onChange(key, value);
+  };
+
+  const handleFeature = (e: SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+    let updatedList = [...checkedFeatures];
+    if (target.checked) {
+      updatedList = [...checkedFeatures, +target.value];
+    } else {
+      updatedList.splice(checkedFeatures.indexOf(+target.value), 1);
+    }
+    onChange("propertyFeatures", updatedList.join(","));
+    setCheckedFeatures(updatedList);
   };
 
   return (
@@ -51,8 +57,9 @@ const TypeFilterSection: React.FC<TypeFilterProps> = ({
                     <Form.Select
                       className="rounded-0"
                       onChange={(e) => handleFilter(e, "purpose")}
+                      defaultValue={filterValue?.filters?.purpose}
                     >
-                      <option>Select Purpose</option>
+                      <option>Any</option>
                       {PROPERTY_PURPOSES.map((item, index) => {
                         return (
                           <option key={index} value={item.id}>
@@ -71,6 +78,7 @@ const TypeFilterSection: React.FC<TypeFilterProps> = ({
                     <Form.Select
                       className="rounded-0"
                       onChange={(e) => handleFilter(e, "cityId")}
+                      defaultValue={filterValue?.filters?.cityId}
                     >
                       <option>Any</option>
                       {cities.map((city, index) => {
@@ -93,9 +101,9 @@ const TypeFilterSection: React.FC<TypeFilterProps> = ({
                     <Form.Select
                       className="rounded-0"
                       onChange={(e) => handleFilter(e, "propertyType")}
-                      defaultValue={propertyType}
+                      defaultValue={filterValue?.filters?.propertyType}
                     >
-                      <option value={'properties'}>Any</option>
+                      <option value={"properties"}>Any</option>
                       {propertyTypes.map((pt, index) => {
                         return (
                           <option key={index} value={pt.alias}>
@@ -107,22 +115,77 @@ const TypeFilterSection: React.FC<TypeFilterProps> = ({
                   </Form.Group>
                 </Col>
               </Row>
-              <Row className="mb-4 py-2">
-                <Col>
-                  <Form.Group controlId="typeSearchId">
-                    <Button
-                      variant="warning"
-                      type="submit"
-                      className="mt-3 btn-block w-100 rounded-0"
-                    >
-                      Filter Results
-                    </Button>
-                  </Form.Group>
-                </Col>
-              </Row>
             </Form>
           </Card>
         </Col>
+      </Row>
+      <Row className="mt-2 mb-1 py-3">
+        <Col md="12">
+          <h6 className="ft-18">Filter by :</h6>
+        </Col>
+      </Row>
+      <Row className="mt-2 mb-1 border py-3">
+        <Col md="12" sm="12">
+          <Form.Group controlId="bedroomId">
+            <Form.Label>Bed Rooms</Form.Label>
+            <Form.Select
+              className="rounded-0"
+              onChange={(e) => handleFilter(e, "noOfBedRoom")}
+            >
+              <option>Any</option>
+              {[...Array(10)].map((_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="mt-2 mb-1 border py-3">
+        <Col md="12" sm="12">
+          <Form.Group controlId="priceRangeId">
+            <Form.Label>Price Range</Form.Label>
+            <Form.Range
+              min={10}
+              step={25}
+              value={rangeValue}
+              onChange={(e) => {
+                handleFilter(e, "price");
+                setRangeValue(+e.target.value);
+              }}
+              max={1000000}
+            />
+            <p className="ft-14">
+              <span>${Number(rangeValue).toFixed(2)}</span>
+              <span className="ml-2 mr-2">-</span>
+              <span>${Number(1000000).toFixed(2)}</span>
+            </p>
+          </Form.Group>
+        </Col>
+      </Row>
+
+      <Row className="mt-2 mb-1 border py-3">
+        <h6 className="mt-1 mb-1">Amenities</h6>
+        {features.length > 0 &&
+          features.map((feature, index) => {
+            return (
+              <Col md="12" key={index} className="mt-2">
+                <Form.Group controlId={`htmlId`}>
+                  <Form.Check type={"checkbox"} className={``}>
+                    <Form.Check.Input
+                      type={"checkbox"}
+                      value={feature.id}
+                      onChange={handleFeature}
+                    />
+                    <Form.Check.Label className={``}>
+                      <span className={``}>{feature.name}</span>
+                    </Form.Check.Label>
+                  </Form.Check>
+                </Form.Group>
+              </Col>
+            );
+          })}
       </Row>
     </>
   );

@@ -126,13 +126,13 @@ const PropertyNavbar = () => {
 
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#features" className={`text-white ${styles.ft14}`}>
+            <Nav.Link href="/property-type/properties" className={`text-white ${styles.ft14}`}>
               Properties
             </Nav.Link>
-            <Nav.Link href="#pricing" className={`text-white ${styles.ft14}`}>
+            <Nav.Link href="/agents" className={`text-white ${styles.ft14}`}>
               Agents
             </Nav.Link>
-            <Nav.Link href="#pricing" className={`text-white ${styles.ft14}`}>
+            <Nav.Link href="/sign-up" className={`text-white ${styles.ft14}`}>
               Accounts
             </Nav.Link>
             {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
