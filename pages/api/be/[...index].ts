@@ -17,14 +17,18 @@ const proxyToBackend = async (req: NextApiRequest, res: NextApiResponse) => {
       Authorization: `Bearer ${(session as any)?.access_token}`,
     };
 
-    const apiResponse = await axios({
+    axios({
       method: method,
       url: API_URL,
       data: body,
       headers: headers,
-    });
-    
-    res.send(apiResponse.data);
+    })
+      .then((apiRes) => {
+        res.send(apiRes.data);
+      })
+      .catch((err) => {
+        res.send(err.response.data);
+      });
   } catch (error) {
     res.status(401);
   }

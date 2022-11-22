@@ -51,14 +51,24 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       features: data.features.map((ft) => +ft),
       propertyImages: imageFiles.map((image) => image.id),
     };
-    try {
-      const property = await createProperty(propertyFormData);
-      if (property.data) {
+
+    createProperty(propertyFormData).then((res)=>{
+      if (res.data) {
         router.push("/admin/properties");
       }
-    } catch (error) {
-      console.log(error);
-    }
+    }).catch((error)=>{
+      console.log(error.response?.data);
+    })
+
+    // try {
+    //   const property = await createProperty(propertyFormData);
+
+    //   if (property.data) {
+    //     router.push("/admin/properties");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const errorMessage = getErrorMessage(errors);
