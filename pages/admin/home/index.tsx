@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 
 const Index = () => {
   return (
-    <div>Admin index page</div>
+    <div>Admin index page modified admin index</div>
   )
 }
 

@@ -16,6 +16,7 @@ export const authOptions: NextAuthOptions = {
           const { username, password } = credentials as CredentialsType;
           const response = await login({ username, password });
           if (response.data) {
+            console.log("login response from server", JSON.stringify(response.data))
             return response.data;
           }
           return null;
