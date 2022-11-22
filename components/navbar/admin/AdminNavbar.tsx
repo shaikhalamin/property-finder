@@ -49,7 +49,7 @@ const AdminNavbar = () => {
 
       <Navbar bg="dark" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#">
+          <Navbar.Brand href="/admin/home">
             <span className="text-white">property</span>
             <span className="text-warning">.finder</span>
           </Navbar.Brand>

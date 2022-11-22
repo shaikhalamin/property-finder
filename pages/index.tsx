@@ -4,10 +4,12 @@ import Agents from "@/components/home/Agents";
 import HowTo from "@/components/home/HowTo";
 import PropertyFeatured from "@/components/home/PropertyFeatured";
 import PropertyTypes from "@/components/home/PropertyTypes";
+import { getAgents } from "@/data/api/agent";
 import { getCities } from "@/data/api/city";
 import { getFeatures } from "@/data/api/feature";
 import { getProperties } from "@/data/api/property";
 import { getPropertyTypes } from "@/data/api/property-types";
+import { Agent } from "@/data/model/agent";
 import { City } from "@/data/model/city";
 import { Feature } from "@/data/model/feature";
 import { PropertyList } from "@/data/model/property-list";
@@ -22,11 +24,12 @@ type HomeProps = {
     propertyTypes: PropertyType[];
     cities: City[];
     features: Feature[];
+    agents : Agent[]
   };
 };
 
 const Home: NextPageWithLayout<HomeProps> = ({
-  homeData: { properties, propertyTypes, cities, features },
+  homeData: { properties, propertyTypes, cities, features, agents },
 }) => {
   const { data: session } = useSession();
   if (session) {
@@ -42,7 +45,7 @@ const Home: NextPageWithLayout<HomeProps> = ({
       />
       <PropertyTypes propertyTypes={propertyTypes} />
       <PropertyFeatured properties={properties} />
-      <Agents />
+      <Agents agents={agents} />
       <HowTo />
       <PropertyAddBanner />
     </main>
@@ -51,11 +54,12 @@ const Home: NextPageWithLayout<HomeProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const property_url = `?page=1&perPage=6`;
-  const [properties, propertyTypes, cities, features] = await Promise.all([
+  const [properties, propertyTypes, cities, features, agents] = await Promise.all([
     getProperties(property_url),
     getPropertyTypes(),
     getCities(),
     getFeatures(),
+    getAgents()
   ]);
 
   const data = {
@@ -63,9 +67,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     propertyTypes: propertyTypes.data as PropertyType[],
     cities: cities.data as City[],
     features: features.data as Feature[],
+    agents:agents.data as Agent[]
   };
 
-  console.log(data.propertyTypes);
+  //console.log(data.propertyTypes);
 
   return { props: { homeData: data } };
 };

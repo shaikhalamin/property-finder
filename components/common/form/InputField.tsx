@@ -1,11 +1,8 @@
-import { PropertyFormFields } from "@/components/admin/properties/property.helpers";
 import React from "react";
 import { Form, FormText } from "react-bootstrap";
-import { FieldValues, useFormContext, UseFormRegister } from "react-hook-form";
-
+import { useFormContext } from "react-hook-form";
 interface InputFormProps {
   labelText: string;
-  // register: UseFormRegister<PropertyFormFields | FieldValues>;
   name: string;
   inputType: string;
   errorMessage?: string;
@@ -15,7 +12,6 @@ interface InputFormProps {
 
 export const InputField: React.FC<InputFormProps> = ({
   labelText,
-  // register,
   name,
   inputType,
   errorMessage,

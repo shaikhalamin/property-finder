@@ -28,14 +28,6 @@ const SignIn = () => {
           router.push("/");
         }
       }
-      //console.log(loginResponse)
-
-      //console.log(loginResponse)
-      // if (loginResponse?.ok && loginResponse.error == null) {
-      //   router.push("/");
-      // } else {
-      //   alert("User name and password error");
-      // }
     } catch (error) {
       console.log("login error", error);
     }
@@ -43,29 +35,37 @@ const SignIn = () => {
 
   return (
     <BaseContainer>
+    {/* <Row className="">
+      <Col md={{ span: 6, offset: 3 }} >
+          <h1 className="ft-20 text-center bg-dark py-2">
+          <span className="text-white">property</span>
+          <span className="text-warning">.inder</span>
+          </h1>
+      </Col>
+    </Row> */}
       <Row className="py-3">
         <Col md={{ span: 6, offset: 3 }}>
           <Card>
             <Card.Body>
               <Row>
-                <Col>
-                  <h3 className="text-center ft-18">Login</h3>
+                <Col md="12">
+                  <h3 className="text-center ft-24 fw-bold">Login</h3>
                 </Col>
               </Row>
               <Form onSubmit={handleSubmit}>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridEmail">
-                    <Form.Label>Email</Form.Label>
+                  <Form.Group as={Col} controlId="username">
+                    <Form.Label>User Name</Form.Label>
                     <Form.Control
                       type="text"
                       value={username}
                       onChange={({ target }) => setUsername(target.value)}
-                      placeholder="Enter email"
+                      placeholder="Enter Username"
                     />
                   </Form.Group>
                 </Row>
                 <Row>
-                  <Form.Group as={Col} controlId="formGridPassword">
+                  <Form.Group as={Col} controlId="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       type="password"
@@ -75,9 +75,14 @@ const SignIn = () => {
                     />
                   </Form.Group>
                 </Row>
-                <Row>
-                  <Col className="mt-3">
-                    <Button variant="primary" type="submit">
+                {/* <Row className="py-2">
+                  <Col md="12">
+                    <div>Forgot password ?</div>
+                  </Col>
+                </Row> */}
+                <Row className="py-3">
+                  <Col md="12" className="">
+                    <Button variant="warning" type="submit" className="w-100">
                       Submit
                     </Button>
                   </Col>

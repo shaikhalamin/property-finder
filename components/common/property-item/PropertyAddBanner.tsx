@@ -1,8 +1,11 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import styles from "./property.module.css";
 
 const PropertyAddBanner = () => {
+  const router = useRouter();
+
   return (
     <div>
       <section
@@ -25,7 +28,7 @@ const PropertyAddBanner = () => {
                       variant="warning"
                       role="general-nav-logout-btn"
                       className={`ml-5 text-dark fw-bold ft-14 rounded-0`}
-                      onClick={() => console.log("logging out")}
+                      onClick={() => router.push("/admin/properties/create")}
                     >
                       Add Property
                     </Button>
