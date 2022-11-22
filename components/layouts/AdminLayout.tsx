@@ -1,7 +1,5 @@
 import { Row, Col, Nav } from "react-bootstrap";
 import AdminNavbar from "../navbar/admin/AdminNavbar";
-import { MdDashboard,MdCall } from "react-icons/md";
-import { FaRegUser,FaBuilding,FaHandshake } from "react-icons/fa";
 import SideNavBar from "../navbar/sidebar/SideNavBar";
 
 interface ChildProps {
