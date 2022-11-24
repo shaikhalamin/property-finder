@@ -1,9 +1,20 @@
+import { BioAndDescriptionFields } from "@/components/admin/user/bio-description.helper";
 import axios from "axios";
-import _ from "lodash";
-import { API_URLS } from "../utils/api.urls";
+import { API_URLS, API_PROXY_BASE } from "../utils/api.urls";
 
 const AGENT_URL = API_URLS.agents;
 
 export const getAgents = () => {
-  return axios.get(AGENT_URL);
+  return axios.get(`${AGENT_URL}`);
+};
+
+export const createAgent = (agentPayload: BioAndDescriptionFields) => {
+  return axios.post(`${API_PROXY_BASE}/agent`, agentPayload);
+};
+
+export const updateAgent = (
+  id: number,
+  agentPayload: BioAndDescriptionFields
+) => {
+  return axios.patch(`${API_PROXY_BASE}/agent/${id}`, agentPayload);
 };

@@ -19,7 +19,7 @@ export const API_URLS = {
   cities: `${API_BASE}/v1/city`,
   feature: `${API_BASE}/v1/feature`,
   properties: `${API_BASE}/v1/property`,
-  user: `${API_BASE}/v1/user`,
+  users: `${API_BASE}/v1/user`,
   agents: `${API_BASE}/v1/agent`,
   storageFile: `${API_BASE}/v1/storage-file`,
 };

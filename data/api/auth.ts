@@ -3,7 +3,7 @@ import { SignUpFormFields } from "@/components/auth/helpers";
 import axios from "axios";
 import { API_URLS } from "../utils/api.urls";
 const AUTH_URL = API_URLS.auth;
-const USER_URL = API_URLS.user;
+const USER_URL = API_URLS.users;
 
 type LoginCredentials =  {
     username: string

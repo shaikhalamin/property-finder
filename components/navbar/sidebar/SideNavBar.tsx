@@ -35,7 +35,7 @@ const sideNavData: SideNavItems = {
   list: [
     {
       id: 2,
-      name: "User",
+      name: "Users",
       url: "/admin/users",
       icon: (size: number = 21) => <FaRegUser size={size} />,
     },
@@ -45,60 +45,60 @@ const sideNavData: SideNavItems = {
       url: "/admin/properties",
       icon: (size: number = 21) => <FaBuilding size={size} />,
     },
-    {
-      id: 4,
-      name: "Order",
-      url: "/admin/orders",
-      icon: (size: number = 21) => <MdCall size={size} />,
-    },
-    {
-      id: 5,
-      name: "Delivery",
-      url: "/admin/delivery",
-      icon: (size: number = 21) => <FaHandshake size={size} />,
-    },
+    // {
+    //   id: 4,
+    //   name: "Order",
+    //   url: "/admin/orders",
+    //   icon: (size: number = 21) => <MdCall size={size} />,
+    // },
+    // {
+    //   id: 5,
+    //   name: "Delivery",
+    //   url: "/admin/delivery",
+    //   icon: (size: number = 21) => <FaHandshake size={size} />,
+    // },
   ],
-  service: [
-    {
-      id: 6,
-      name: "System Health",
-      url: "/admin/sys-health",
-      icon: (size: number = 21) => (
-        <MdOutlineSettingsSystemDaydream size={size} />
-      ),
-    },
-    {
-      id: 7,
-      name: "Log",
-      url: "/admin/log",
-      icon: (size: number = 21) => <MdOutlineAnalytics size={size} />,
-    },
-    {
-      id: 8,
-      name: "Settings",
-      url: "/admin/settings",
-      icon: (size: number = 21) => <MdSettingsApplications size={size} />,
-    },
-  ],
-  useful: [
-    {
-      id: 9,
-      name: "Stats",
-      url: "/admin/statistics",
-      icon: (size: number = 21) => <MdAutoGraph size={size} />,
-    },
-    {
-      id: 10,
-      name: "Notifications",
-      url: "/admin/logout",
-      icon: (size: number = 21) => <MdNotificationsActive size={size} />,
-    },
-  ],
+  // service: [
+  //   {
+  //     id: 6,
+  //     name: "System Health",
+  //     url: "/admin/sys-health",
+  //     icon: (size: number = 21) => (
+  //       <MdOutlineSettingsSystemDaydream size={size} />
+  //     ),
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Log",
+  //     url: "/admin/log",
+  //     icon: (size: number = 21) => <MdOutlineAnalytics size={size} />,
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Settings",
+  //     url: "/admin/settings",
+  //     icon: (size: number = 21) => <MdSettingsApplications size={size} />,
+  //   },
+  // ],
+  // useful: [
+  //   {
+  //     id: 9,
+  //     name: "Stats",
+  //     url: "/admin/statistics",
+  //     icon: (size: number = 21) => <MdAutoGraph size={size} />,
+  //   },
+  //   {
+  //     id: 10,
+  //     name: "Notifications",
+  //     url: "/admin/logout",
+  //     icon: (size: number = 21) => <MdNotificationsActive size={size} />,
+  //   },
+  // ],
   user: [
     {
       id: 9,
       name: "Profile",
-      url: "/admin/profile",
+      url: "/admin/users/profile",
       icon: (size: number = 21) => <MdManageAccounts size={size} />,
     },
     {

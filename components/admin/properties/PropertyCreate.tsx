@@ -52,23 +52,18 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       propertyImages: imageFiles.map((image) => image.id),
     };
 
-    createProperty(propertyFormData).then((res)=>{
-      if (res.data) {
-        router.push("/admin/properties");
-      }
-    }).catch((error)=>{
-      console.log(error.response?.data);
-    })
-
-    // try {
-    //   const property = await createProperty(propertyFormData);
-
-    //   if (property.data) {
-    //     router.push("/admin/properties");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    createProperty(propertyFormData)
+      .then((res) => {
+        if (res.status === 200 || 201) {
+          router.push("/admin/properties");
+        } else {
+          console.log("response", { res });
+        }
+      })
+      .catch((error) => {
+        console.log("error catch", error.response?.data);
+        alert(error.response?.data?.message)
+      });
   };
 
   const errorMessage = getErrorMessage(errors);
@@ -92,9 +87,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       deleteImage(id)
         .then(async (res) => {
           setDeleting(0);
-          setImageFiles([
-            ...imageFiles.filter((image) => image.id !== id),
-          ]);
+          setImageFiles([...imageFiles.filter((image) => image.id !== id)]);
         })
         .catch((error) => {
           setDeleting(0);
@@ -139,8 +132,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
           </h4>
           <Card>
             <Card.Body>
-
-            <FormProvider {...methods}>
+              <FormProvider {...methods}>
                 <Form className="py-3" onSubmit={handleSubmit(onSubmit)}>
                   <Row className="mb-3">
                     <Col md="4">
@@ -206,7 +198,9 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                       className={errors?.descriptions ? "is-invalid" : ""}
                     />
                     {errors?.address && (
-                      <p className="text-danger">{errorMessage("descriptions")}</p>
+                      <p className="text-danger">
+                        {errorMessage("descriptions")}
+                      </p>
                     )}
                   </Form.Group>
 
@@ -486,8 +480,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     </Col>
                     <Col md="5">
                       <Row>
-                        {
-                        imageFiles.length > 0 &&
+                        {imageFiles.length > 0 &&
                           imageFiles.map((image) => (
                             <Col md="4" key={image.id}>
                               <Card className="mt-3">
@@ -527,9 +520,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                                 </Card.Body>
                               </Card>
                             </Col>
-                          ))
-                          
-                          }
+                          ))}
                       </Row>
                     </Col>
                   </Row>

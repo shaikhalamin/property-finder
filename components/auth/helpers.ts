@@ -7,6 +7,7 @@ export type SignUpFormFields = {
     email: string;
     phone: string;
     password: string;
+    role?: string
 }
 
 export const signUpSchema = yup
@@ -17,5 +18,6 @@ export const signUpSchema = yup
     email: yup.string().required("Email is required"),
     phone: yup.string().required("Phone is required"),
     password: yup.string().required("Password is required"),
+    role: yup.string().optional()
   })
   .required();
