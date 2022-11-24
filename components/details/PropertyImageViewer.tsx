@@ -32,6 +32,7 @@ export const PropertyImageViewer: React.FC<PropertyImageProps> = ({ data }) => {
             <Col md="4" key={index}>
               <Card className="rounded-0">
                 <Card.Body className="py-0 px-0 rounded-0">
+                  {/*eslint-disable-next-line @next/next/no-img-element*/}
                   <img
                     src={src}
                     onClick={() => openImageViewer(index)}

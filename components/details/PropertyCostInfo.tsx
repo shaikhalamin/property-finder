@@ -1,6 +1,8 @@
 import { Property } from "@/data/model/property";
 import React from "react";
 import { Row, Col } from "react-bootstrap";
+import SpecificationInfo from "./SpecificationInfo";
+import SpecificationInfoDetails from "./SpecificationInfoDetails";
 
 type PropertyCostInfoProps = {
   data?: Property;
@@ -8,39 +10,28 @@ type PropertyCostInfoProps = {
 
 const PropertyCostInfo: React.FC<PropertyCostInfoProps> = ({ data }) => {
   return (
-    <Row className="py-4 border-bottom">
-      <Col md="4">
-        <h4 className="ft-16">Costs</h4>
-      </Col>
-      <Col md="4">
-        <Row className="mb-1 px-1 py-1">
-          <Col md="7" className="text-start text-color-b94 ft-13">
-            Utilities:
-          </Col>
-          <Col md="5" className="text-start text-color-a3a ft-14">
-            {data?.utilityCost}
-          </Col>
-        </Row>
-        <Row className="mb-1 px-1 py-1">
-          <Col md="7" className="text-start text-color-b94 ft-13">
-            Electricity:
-          </Col>
-          <Col md="5" className="text-start text-color-a3a ft-14">
-            {data?.electricityCost}
-          </Col>
-        </Row>
-      </Col>
-      <Col md="4">
-        <Row className="mb-1 px-1 py-1">
-          <Col md="7" className="text-start text-color-b94 ft-13">
-            Cable TV:
-          </Col>
-          <Col md="5" className="text-start text-color-a3a ft-14">
-            {data?.cableTvCost}
-          </Col>
-        </Row>
-      </Col>
-    </Row>
+    <SpecificationInfo title="Costs" lClSize={3} rClSize={9}>
+      <Row>
+        <Col md="6">
+          <SpecificationInfoDetails
+            title="Utilities:"
+            content={data?.utilityCost.toFixed(2) as string}
+            contentPrefix="$"
+          />
+          <SpecificationInfoDetails
+            title="Electricity:"
+            content={data?.electricityCost as string}
+          />
+        </Col>
+        <Col md="6">
+          <SpecificationInfoDetails
+            title="Cable TV:"
+            content={data?.cableTvCost.toFixed(2) as string}
+            contentPrefix="$"
+          />
+        </Col>
+      </Row>
+    </SpecificationInfo>
   );
 };
 

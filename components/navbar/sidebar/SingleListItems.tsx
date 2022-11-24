@@ -12,12 +12,14 @@ const SingleListItems: React.FC<SingleListProps> = ({ data, name }) => {
     <div>
       <div className="px-3 ft-14 mt-4 text-secondary">{name.toUpperCase()}</div>
       <Nav className="flex-column px-4">
-        {data.map((item) => (
-          <Nav.Link href={item.url} key={item.id}>
-            <span style={{ marginRight: "5px" }}>{item.icon()}</span>
-            <span className="text-dark ft-14">{item.name}</span>
-          </Nav.Link>
-        ))}
+        {data.map((item) => {
+          return (
+            <Nav.Link href={item.url} key={item.id}>
+              <span style={{ marginRight: "5px" }}>{item.icon()}</span>
+              <span className="text-dark ft-14">{item.name}</span>
+            </Nav.Link>
+          );
+        })}
       </Nav>
     </div>
   );

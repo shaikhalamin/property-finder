@@ -27,6 +27,7 @@ import { NextPageWithLayout } from "../_app";
 import { generateFilterUrl, removeFalsy } from "@/data/utils/lib";
 import { Dictionary } from "lodash";
 import qs from "qs";
+import Meta from "@/components/meta/Meta";
 
 type PropertyTypeProps = {
   data: {
@@ -39,13 +40,7 @@ type PropertyTypeProps = {
 };
 
 const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
-  data: {
-    properties,
-    propertyTypes,
-    cities,
-    features,
-    queryParams,
-  },
+  data: { properties, propertyTypes, cities, features, queryParams },
 }) => {
   const [propertyList, setPropertyList] = useState(properties);
   const [filterClient, setFilterClient] = useState(false);
@@ -129,7 +124,10 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
         ...prevState,
         filters: {
           ...prevState.filters,
-          [key as keyof PropertyQueryFilters]: value.toUpperCase() === 'ANY' ? '' : value.toUpperCase() as string,
+          [key as keyof PropertyQueryFilters]:
+            value.toUpperCase() === "ANY"
+              ? ""
+              : (value.toUpperCase() as string),
         },
       };
     });
@@ -137,6 +135,10 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
 
   return (
     <>
+      <Meta
+        title="Properties | Property Finder | Best property finder at your nearest location"
+        content="Property list page | Filter paginate and sort property easily"
+      />
       <BaseContainer>
         <Row className="py-2 min-vh-100">
           <Col md="4">
@@ -144,7 +146,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
               propertyTypes={propertyTypes}
               cities={cities}
               features={features}
-              filterValue = {customFilter}
+              filterValue={customFilter}
               onChange={handleAllFilter}
             />
           </Col>
@@ -206,9 +208,9 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const {filterUrl,queryParams} = generateFilterUrl(query as KeyValueObject);
+  const { filterUrl, queryParams } = generateFilterUrl(query as KeyValueObject);
   const [properties, propertyTypes, cities, features] = await Promise.all([
-    getProperties( `?${filterUrl}`),
+    getProperties(`?${filterUrl}`),
     getPropertyTypes(),
     getCities(),
     getFeatures(),

@@ -11,12 +11,14 @@ import {
 } from "react-icons/md";
 import { FaRegUser, FaBuilding, FaHandshake } from "react-icons/fa";
 import SingleListItems from "./SingleListItems";
+import { signIn, signOut } from "next-auth/react";
 
 export type SingleItemProps = {
   id: number;
   name: string;
   url: string;
   icon: CallableFunction;
+  onClickFn?: CallableFunction;
 };
 
 interface SideNavItems {
@@ -104,8 +106,9 @@ const sideNavData: SideNavItems = {
     {
       id: 10,
       name: "Logout",
-      url: "/admin/logout",
+      url: "#",
       icon: (size: number = 21) => <MdLogin size={size} />,
+      //onClickFn: () => signOut(),
     },
   ],
 };
@@ -115,9 +118,7 @@ const SideNavBar = () => {
     <div>
       {Object.keys(sideNavData).map((key, index) => {
         const eachItem = sideNavData[key];
-        return (
-            <SingleListItems key={index} data={eachItem} name={key} />
-        );
+        return <SingleListItems key={index} data={eachItem} name={key} />;
       })}
     </div>
   );

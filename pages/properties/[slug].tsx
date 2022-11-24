@@ -10,6 +10,7 @@ import PropertyGeneralInfo from "@/components/details/PropertyGeneralInfo";
 import PropertyFeatureAndSpecifications from "@/components/details/PropertyFeatureAndSpecifications";
 import { property } from "lodash";
 import Image from "next/image";
+import Meta from "@/components/meta/Meta";
 
 type PropertyProps = {
   property: PropertyResponse;
@@ -26,6 +27,10 @@ const Property: NextPageWithLayout<PropertyProps> = ({
     <>
       {success && (
         <>
+          <Meta
+            title={data?.name as string}
+            content={data?.descriptions.slice(0, 200) as string}
+          />
           <section>
             <Row>
               <Col
@@ -41,18 +46,6 @@ const Property: NextPageWithLayout<PropertyProps> = ({
                 }}
               />
             </Row>
-            {/* <Row>
-              <Col md="12" className={`mt-0`}>
-                <div className={"image-container"}>
-                  <Image
-                    src={`${imagePath ? imagePath.image_url : ""}`}
-                    layout="responsive"
-                    alt={data?.name}
-                    className={"image"}
-                  />
-                </div>
-              </Col>
-            </Row> */}
           </section>
           <BaseContainer>
             <PropertyGeneralInfo data={data as Property} />

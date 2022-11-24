@@ -25,7 +25,6 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ property }) => {
               alt={property.name}
               className={`w-100`}
               height={250}
-              
             />
           </Card.Body>
         </Card>
@@ -51,7 +50,8 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ property }) => {
                 <span className="ft-12 text-color-b94">{property.address}</span>
               </div>
               <div className="ft-14 mt-2 mb-1 text-color-b94">
-                {property.descriptions.slice(0,160)}<span>...</span>
+                {property.descriptions.slice(0, 160)}
+                <span>...</span>
               </div>
               <div className="mt-2">
                 <FeatureWithIcon
@@ -62,8 +62,8 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ property }) => {
               </div>
               <div className="mt-2">
                 <Row className="">
-                  <Col className="text-start fs-14 fw-bold text-dark">
-                    ${property.price}
+                  <Col md="12" className="text-start fs-14 fw-bold text-dark">
+                    <span className="mt-2">${property.price.toFixed(2)}</span>
                   </Col>
                 </Row>
               </div>

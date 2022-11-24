@@ -4,6 +4,7 @@ import Agents from "@/components/home/Agents";
 import HowTo from "@/components/home/HowTo";
 import PropertyFeatured from "@/components/home/PropertyFeatured";
 import PropertyTypes from "@/components/home/PropertyTypes";
+import Meta from "@/components/meta/Meta";
 import { getAgents } from "@/data/api/agent";
 import { getCities } from "@/data/api/city";
 import { getFeatures } from "@/data/api/feature";
@@ -24,7 +25,7 @@ type HomeProps = {
     propertyTypes: PropertyType[];
     cities: City[];
     features: Feature[];
-    agents : Agent[]
+    agents: Agent[];
   };
 };
 
@@ -37,7 +38,11 @@ const Home: NextPageWithLayout<HomeProps> = ({
   }
 
   return (
-    <main>
+    <>
+      <Meta
+        title="Property Finder | Best property finder at your nearest location"
+        content="Best property finder at your nearest location"
+      />
       <PropertyHeader
         propertyTypes={propertyTypes}
         cities={cities}
@@ -48,26 +53,27 @@ const Home: NextPageWithLayout<HomeProps> = ({
       <Agents agents={agents} />
       <HowTo />
       <PropertyAddBanner />
-    </main>
+    </>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const property_url = `?page=1&perPage=6`;
-  const [properties, propertyTypes, cities, features, agents] = await Promise.all([
-    getProperties(property_url),
-    getPropertyTypes(),
-    getCities(),
-    getFeatures(),
-    getAgents()
-  ]);
+  const [properties, propertyTypes, cities, features, agents] =
+    await Promise.all([
+      getProperties(property_url),
+      getPropertyTypes(),
+      getCities(),
+      getFeatures(),
+      getAgents(),
+    ]);
 
   const data = {
     properties: properties.data as PropertyList,
     propertyTypes: propertyTypes.data as PropertyType[],
     cities: cities.data as City[],
     features: features.data as Feature[],
-    agents:agents.data as Agent[]
+    agents: agents.data as Agent[],
   };
 
   //console.log(data.propertyTypes);
