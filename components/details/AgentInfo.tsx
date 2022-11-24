@@ -21,8 +21,9 @@ const AgentInfo: React.FC<PropertyAgent> = ({ agent }) => {
             <Row className="py-2 px-3 mt-4">
               <Col md="4">
                 <Card className="border-0 agent-bg">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={`${agent?.agentImage.image_url}`}
+                    src={`${agent?.agentImage?.image_url}`}
                     className="rounded-circle w-100"
                     alt="agent"
                   />
