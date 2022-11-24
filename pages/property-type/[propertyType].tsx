@@ -125,9 +125,9 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
         filters: {
           ...prevState.filters,
           [key as keyof PropertyQueryFilters]:
-            value.toUpperCase() === "ANY"
+            value.toLocaleLowerCase() === "any"
               ? ""
-              : (value.toUpperCase() as string),
+              : (value.toLocaleLowerCase() as string),
         },
       };
     });
