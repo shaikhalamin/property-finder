@@ -19,6 +19,7 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ property }) => {
       <Col md="5" className="mt-1 mb-1">
         <Card className="rounded-0">
           <Card.Body className="position-relative py-0 px-0">
+            {/*eslint-disable-next-line @next/next/no-img-element*/}
             <img
               src={`${imagePath ? imagePath.image_url : ""}`}
               alt={property.name}
@@ -50,7 +51,7 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ property }) => {
                 <span className="ft-12 text-color-b94">{property.address}</span>
               </div>
               <div className="ft-14 mt-2 mb-1 text-color-b94">
-                {property.descriptions}
+                {property.descriptions.slice(0,160)}<span>...</span>
               </div>
               <div className="mt-2">
                 <FeatureWithIcon
