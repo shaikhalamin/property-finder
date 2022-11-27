@@ -62,7 +62,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       features: data.features.map((ft) => +ft),
       propertyImages: imageFiles.map((image) => image.id),
     };
-    
+
     setSubmitLoading(true);
     createProperty(propertyFormData)
       .then((res) => {
@@ -539,7 +539,11 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     </Col>
                   </Row>
 
-                  <SubmitButton title="Submit" isLoading={submitLoading} />
+                  <SubmitButton
+                    title="Submit"
+                    isLoading={submitLoading}
+                    buttonCls="mt-3"
+                  />
                 </Form>
               </FormProvider>
             </Card.Body>

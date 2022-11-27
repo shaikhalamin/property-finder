@@ -1,6 +1,10 @@
+import SubmitButton, {
+  ButtonSize,
+} from "@/components/common/form/SubmitButton";
 import { Property } from "@/data/model/property";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { SyntheticEvent } from "react";
+import { useState } from "react";
 import { Row, Col, Button, Table } from "react-bootstrap";
 
 type Properties = {
@@ -9,6 +13,7 @@ type Properties = {
 
 const AdminPropertyList: React.FC<Properties> = ({ data }) => {
   const router = useRouter();
+  const [buttonRef, setButtonRef] = useState(0);
   return (
     <Row className="py-4 px-2">
       <Col className="">
@@ -46,15 +51,21 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
                       <td>{property.purpose}</td>
                       <td>{property.propertyType.name}</td>
                       <td>
-                        <Button
+                        <SubmitButton
+                          title="Edit"
                           variant="warning"
-                          size={`sm`}
-                          onClick={() =>
-                            router.push(`/admin/properties/edit/${property.id}`)
-                          }
-                        >
-                          Edit
-                        </Button>
+                          isLoading={false}
+                          size={ButtonSize.SM}
+                          loadingTitle="Redirecting"
+                          btnId={property.id}
+                          btnRef={buttonRef}
+                          onClick={() => {
+                            setButtonRef(property.id);
+                            router.push(
+                              `/admin/properties/edit/${property.id}`
+                            );
+                          }}
+                        />
                       </td>
                       <td>
                         <Button

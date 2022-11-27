@@ -1,22 +1,56 @@
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import { Button, Spinner } from "react-bootstrap";
 
 type SubmitButtonProps = {
   title: string;
   isLoading: boolean;
+  size?: ButtonSize | undefined;
+  loadingTitle?: string;
+  onClick?: () => void;
+  type?: ButtonType | undefined;
   variant?: string;
   titleCls?: string;
   buttonCls?: string;
+  btnRef?: string | number;
+  btnId?: string | number;
 };
+
+export enum ButtonType {
+  SUBMIT = "submit",
+  RESET = "reset",
+  BUTTON = "button",
+}
+
+export enum ButtonSize {
+  SM = "sm",
+  LG = "lg",
+}
 
 const SubmitButton: React.FC<SubmitButtonProps> = ({
   title,
+  size,
   variant = "primary",
+  type = ButtonType.SUBMIT,
+  loadingTitle = "Submitting",
   titleCls,
   isLoading,
   buttonCls,
+  btnRef,
+  btnId,
+  onClick,
 }) => {
-  const submitLoader = (
+  const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    isLoading === true && setLoader(true);
+    if (btnRef !== undefined && btnId !== undefined && btnRef === btnId) {
+      setLoader(true);
+    }
+  }, [isLoading, btnRef, btnId]);
+
+  const spinner = (
     <Spinner
       as="span"
       animation="border"
@@ -28,12 +62,21 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
 
   return (
     <Button
+      size={size}
       variant={variant}
-      type="submit"
-      className={buttonCls ? buttonCls : "mt-3"}
+      type={type}
+      className={buttonCls ? buttonCls : ""}
+      onClick={onClick}
     >
-      {isLoading === true ? (
-        <span>{submitLoader} Submitting...</span>
+      {loader === true ? (
+        <>
+          <span>{spinner}</span>
+          {loadingTitle && (
+            <span style={{ marginLeft: "3px" }} className="ft-12">
+              {loadingTitle}...
+            </span>
+          )}
+        </>
       ) : (
         <span
           className={titleCls ? titleCls : ""}

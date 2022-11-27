@@ -564,7 +564,11 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
                     </Col>
                   </Row>
 
-                  <SubmitButton title="Submit" isLoading={submitLoading} />
+                  <SubmitButton
+                    title="Submit"
+                    isLoading={submitLoading}
+                    buttonCls="mt-3"
+                  />
                 </Form>
               </FormProvider>
             </Card.Body>
