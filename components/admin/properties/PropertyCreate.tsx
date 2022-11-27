@@ -1,5 +1,14 @@
 import React, { SyntheticEvent, useRef, useState } from "react";
-import { Button, Card, Col, Container, Form, Nav, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Nav,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import _ from "lodash";
@@ -18,6 +27,7 @@ import { Image } from "@/data/model/image-file";
 import axios from "axios";
 import { createProperty } from "@/data/api/property";
 import { useRouter } from "next/router";
+import SubmitButton from "@/components/common/form/SubmitButton";
 
 const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   const [cities] = useState(data.cities);
@@ -27,6 +37,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
   const [imageType, setImageType] = useState("");
   const [imageFiles, setImageFiles] = useState<Image[]>([]);
   const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const router = useRouter();
   const [deleting, setDeleting] = useState(0);
 
@@ -52,8 +63,11 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       propertyImages: imageFiles.map((image) => image.id),
     };
 
+    setSubmitLoading(true);
+
     createProperty(propertyFormData)
       .then((res) => {
+        setSubmitLoading(false);
         if (res.status === 200 || 201) {
           router.push("/admin/properties");
         } else {
@@ -61,8 +75,9 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
         }
       })
       .catch((error) => {
+        setSubmitLoading(false);
         console.log("error catch", error.response?.data);
-        alert(error.response?.data?.message)
+        alert(error.response?.data?.message);
       });
   };
 
@@ -525,9 +540,7 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
                     </Col>
                   </Row>
 
-                  <Button variant="primary" type="submit" className="mt-3">
-                    Submit
-                  </Button>
+                  <SubmitButton title="Submit" isLoading={submitLoading} />
                 </Form>
               </FormProvider>
             </Card.Body>

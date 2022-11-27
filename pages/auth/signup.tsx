@@ -1,5 +1,5 @@
 import BaseContainer from "@/components/common/container/BaseContainer";
-import React from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Button, Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -8,9 +8,11 @@ import { SignUpFormFields, signUpSchema } from "@/components/auth/helpers";
 import { getErrorMessage } from "@/data/utils/lib";
 import { signUp } from "@/data/api/auth";
 import { AxiosError } from "axios";
+import SubmitButton from "@/components/common/form/SubmitButton";
 
 const SignUp = () => {
   const router = useRouter();
+  const [submitLoading, setSubmitLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,17 +26,20 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpFormFields) => {
     const singUpPayload = {
-        ...data,
-        role:"agent"
-    }
+      ...data,
+      role: "agent",
+    };
     try {
+      setSubmitLoading(true);
       const createUser = await signUp(singUpPayload);
+      setSubmitLoading(false);
       if (createUser.data) {
         router.push("/auth/signin");
       } else {
         alert("Username password error");
       }
     } catch (error: any) {
+      setSubmitLoading(false);
       if (error instanceof AxiosError) {
         const message = error.response?.data?.message as string;
         const findDuplicateError = message.search("usersUniqueName");
@@ -127,9 +132,12 @@ const SignUp = () => {
                 </Row>
                 <Row className="py-3">
                   <Col md="12" className="mt-2">
-                    <Button variant="warning" type="submit" className="w-100">
-                      Submit
-                    </Button>
+                    <SubmitButton
+                      title="Submit"
+                      isLoading={submitLoading}
+                      buttonCls="w-100"
+                      variant="warning"
+                    />
                   </Col>
                 </Row>
               </Form>

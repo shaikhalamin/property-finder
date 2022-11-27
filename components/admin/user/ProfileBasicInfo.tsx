@@ -1,4 +1,4 @@
-import { SignUpFormFields, signUpSchema } from "@/components/auth/helpers";
+import { EditUserFormFields, userEditSchema } from "@/components/auth/helpers";
 import BaseContainer from "@/components/common/container/BaseContainer";
 import { User } from "@/data/model/user";
 import { getErrorMessage } from "@/data/utils/lib";
@@ -17,14 +17,14 @@ type ProfileBasicInfoProps = {
 
 const ProfileBasicInfo: React.FC<ProfileBasicInfoProps> = ({ user }) => {
   const router = useRouter();
-  
+
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<SignUpFormFields>({
-    resolver: yupResolver(signUpSchema),
+  } = useForm<EditUserFormFields>({
+    resolver: yupResolver(userEditSchema),
     mode: "onTouched",
   });
 
@@ -32,11 +32,11 @@ const ProfileBasicInfo: React.FC<ProfileBasicInfoProps> = ({ user }) => {
 
   const errorMessage = getErrorMessage(errors);
 
-  const onSubmit = async (data: SignUpFormFields) => {
-    const singUpPayload = {
+  const onSubmit = async (data: EditUserFormFields) => {
+    const userEditPayload = {
       ...data,
-      role: "agent",
     };
+    console.log("payload", userEditPayload);
     try {
       //   const createUser = await signUp(singUpPayload);
       //   if (createUser.data) {
@@ -47,12 +47,10 @@ const ProfileBasicInfo: React.FC<ProfileBasicInfoProps> = ({ user }) => {
     } catch (error: any) {
       if (error instanceof AxiosError) {
         const message = error.response?.data?.message as string;
-        alert(message)
+        alert(message);
       }
     }
   };
-
- 
 
   return (
     <BaseContainer>
@@ -101,18 +99,7 @@ const ProfileBasicInfo: React.FC<ProfileBasicInfoProps> = ({ user }) => {
                 </Row>
 
                 <Row className="mb-3">
-                  <Col md="6">
-                    <Form.Group controlId="username">
-                      <Form.Label>User name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        {...register("username")}
-                        disabled={true}
-                      />
-                    </Form.Group>
-                  </Col>
-
-                  <Col md="6">
+                  <Col md="12">
                     <Form.Group controlId="email">
                       <Form.Label>Email</Form.Label>
                       <Form.Control type="text" {...register("email")} />

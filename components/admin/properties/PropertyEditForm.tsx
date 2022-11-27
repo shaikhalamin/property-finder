@@ -1,5 +1,6 @@
 import { InputField } from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
+import SubmitButton from "@/components/common/form/SubmitButton";
 import Loading from "@/components/common/icon/Loading";
 import { deleteImage, uploadImage } from "@/data/api/image-files";
 import { editProperty } from "@/data/api/property";
@@ -11,7 +12,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { property } from "lodash";
 import { useRouter } from "next/router";
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import { Container, Row, Col, Card, Form, Button, Nav } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Nav,
+  Spinner,
+} from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   propertyFeatureMerge,
@@ -41,6 +51,7 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
     propertyData.propertyImages
   );
   const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [deleting, setDeleting] = useState(0);
   const router = useRouter();
 
@@ -76,12 +87,16 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
       itemToBeDeleted,
     };
 
+    setSubmitLoading(true);
+
     try {
       const propertyEdit = await editProperty(property.id, propertyFormData);
+      setSubmitLoading(false);
       if (propertyEdit.status == 200) {
         router.push("/admin/properties");
       }
     } catch (error) {
+      setSubmitLoading(false);
       console.log(error);
     }
   };
@@ -530,6 +545,7 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
                                       </Col>
                                     </Row>
                                   ) : (
+                                    // eslint-disable-next-line @next/next/no-img-element
                                     <img
                                       src={image.image_url}
                                       className={`w-100`}
@@ -545,9 +561,7 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
                     </Col>
                   </Row>
 
-                  <Button variant="primary" type="submit" className="mt-3">
-                    Submit
-                  </Button>
+                  <SubmitButton title="Submit" isLoading={submitLoading} />
                 </Form>
               </FormProvider>
             </Card.Body>

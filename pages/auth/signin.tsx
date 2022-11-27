@@ -3,22 +3,26 @@ import React, { SyntheticEvent, useState } from "react";
 import { Form, Row, Col, Button, Card } from "react-bootstrap";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import SubmitButton from "@/components/common/form/SubmitButton";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     try {
       e.preventDefault();
+      setSubmitLoading(true);
       const res = await signIn("credentials", {
         username: username,
         password: password,
-        redirect:false
-      })
+        redirect: false,
+      });
 
+      setSubmitLoading(false);
       if (res?.ok && res.error == null) {
         const url = new URL(res?.url as string);
         const callBackUrl = url.searchParams.get("callbackUrl");
@@ -27,15 +31,18 @@ const SignIn = () => {
         } else {
           router.push("/");
         }
+      } else {
+        alert("Username or password incorrect !");
       }
     } catch (error) {
+      setSubmitLoading(false);
       console.log("login error", error);
     }
   };
 
   return (
     <BaseContainer>
-    {/* <Row className="">
+      {/* <Row className="">
       <Col md={{ span: 6, offset: 3 }} >
           <h1 className="ft-20 text-center bg-dark py-2">
           <span className="text-white">property</span>
@@ -82,9 +89,12 @@ const SignIn = () => {
                 </Row> */}
                 <Row className="py-3">
                   <Col md="12" className="">
-                    <Button variant="warning" type="submit" className="w-100">
-                      Submit
-                    </Button>
+                    <SubmitButton
+                      title="Submit"
+                      isLoading={submitLoading}
+                      buttonCls="w-100"
+                      variant="warning"
+                    />
                   </Col>
                 </Row>
               </Form>
