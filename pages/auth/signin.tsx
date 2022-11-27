@@ -100,6 +100,7 @@ const SignIn = () => {
                     <SubmitButton
                       title="Submit"
                       isLoading={submitLoading}
+                      loadingTitle="Checking"
                       buttonCls="w-100 mt-3"
                       variant="warning"
                     />
