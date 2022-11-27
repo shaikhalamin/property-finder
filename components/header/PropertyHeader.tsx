@@ -6,6 +6,7 @@ import { City } from "@/data/model/city";
 import { Feature } from "@/data/model/feature";
 import { PROPERTY_PURPOSES } from "@/data/types/property/property";
 import { useRouter } from "next/router";
+import SubmitButton from "../common/form/SubmitButton";
 
 type PropertyHeaderProps = {
   propertyTypes: PropertyType[];
@@ -25,16 +26,18 @@ const PropertyHeader: React.FC<PropertyHeaderProps> = ({
   const [city, setCity] = useState<string>("");
   const [bedroom, setBedRoom] = useState<number>(0);
   const [purpose, setPurpose] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    setLoading(true);
     let propertiesUrl = `/property-type/${propertyType}?`;
     purpose.length > 0 && (propertiesUrl += `purpose=${purpose}&`);
-    (city.length > 0 && city !='Any') && (propertiesUrl += `cityId=${city}&`);
+    city.length > 0 && city != "Any" && (propertiesUrl += `cityId=${city}&`);
     rangeValue > 0 && (propertiesUrl += `price=${rangeValue}&`);
     bedroom > 0 && (propertiesUrl += `noOfBedRoom=${bedroom}&`);
 
-    router.push(propertiesUrl)
+    router.push(propertiesUrl);
   };
 
   return (
@@ -155,13 +158,12 @@ const PropertyHeader: React.FC<PropertyHeaderProps> = ({
                               </Col>
                               <Col md="4" sm="6">
                                 <Form.Group controlId="formGridState">
-                                  <Button
+                                  <SubmitButton
+                                    title="Filter Results"
                                     variant="warning"
-                                    type="submit"
-                                    className="mt-3 btn-block w-100 rounded-0"
-                                  >
-                                    Filter Results
-                                  </Button>
+                                    buttonCls="mt-3 btn-block w-100 rounded-0"
+                                    isLoading={loading}
+                                  />
                                 </Form.Group>
                               </Col>
                             </Row>

@@ -13,7 +13,7 @@ type Properties = {
 
 const AdminPropertyList: React.FC<Properties> = ({ data }) => {
   const router = useRouter();
-  const [buttonRef, setButtonRef] = useState(0);
+  const [buttonRef, setButtonRef] = useState<number | string>('');
   return (
     <Row className="py-4 px-2">
       <Col className="">
@@ -68,15 +68,19 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
                         />
                       </td>
                       <td>
-                        <Button
+                        <SubmitButton
+                          title="Preview"
                           variant="info"
-                          size={`sm`}
-                          onClick={() =>
-                            router.push(`/properties/${property.slug}`)
-                          }
-                        >
-                          Preview
-                        </Button>
+                          isLoading={false}
+                          size={ButtonSize.SM}
+                          loadingTitle="Previewing"
+                          btnId={`${property.id}_preview`}
+                          btnRef={buttonRef}
+                          onClick={() => {
+                            setButtonRef(`${property.id}_preview`);
+                            router.push(`/properties/${property.slug}`);
+                          }}
+                        />
                       </td>
                     </tr>
                   ))}
