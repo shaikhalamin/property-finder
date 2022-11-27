@@ -62,15 +62,14 @@ const PropertyCreate: React.FC<PropertyFormData> = ({ data }) => {
       features: data.features.map((ft) => +ft),
       propertyImages: imageFiles.map((image) => image.id),
     };
-
+    
     setSubmitLoading(true);
-
     createProperty(propertyFormData)
       .then((res) => {
-        setSubmitLoading(false);
         if (res.status === 200 || 201) {
           router.push("/admin/properties");
         } else {
+          setSubmitLoading(false);
           console.log("response", { res });
         }
       })

@@ -10,6 +10,11 @@ export type SignUpFormFields = {
   role?: string;
 };
 
+export type SignInFormFields = {
+  username: string;
+  password: string;
+};
+
 export type EditUserFormFields = {
   firstName: string;
   lastName: string;
@@ -28,6 +33,13 @@ export const signUpSchema = yup
     phone: yup.string().required("Phone is required"),
     password: yup.string().required("Password is required"),
     role: yup.string().optional(),
+  })
+  .required();
+
+export const signInSchema = yup
+  .object({
+    username: yup.string().required("Username is required"),
+    password: yup.string().required("Password is required"),
   })
   .required();
 

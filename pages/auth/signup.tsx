@@ -32,10 +32,10 @@ const SignUp = () => {
     try {
       setSubmitLoading(true);
       const createUser = await signUp(singUpPayload);
-      setSubmitLoading(false);
       if (createUser.data) {
         router.push("/auth/signin");
       } else {
+        setSubmitLoading(false);
         alert("Username password error");
       }
     } catch (error: any) {

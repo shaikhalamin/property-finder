@@ -1,20 +1,32 @@
 import BaseContainer from "@/components/common/container/BaseContainer";
-import React, { SyntheticEvent, useState } from "react";
-import { Form, Row, Col, Button, Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Row, Col, Card } from "react-bootstrap";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import SubmitButton from "@/components/common/form/SubmitButton";
+import { SignInFormFields, signInSchema } from "@/components/auth/helpers";
+import { useForm } from "react-hook-form";
+import { getErrorMessage } from "@/data/utils/lib";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const SignIn = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
-
   const router = useRouter();
 
-  const handleSubmit = async (e: SyntheticEvent) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInFormFields>({
+    resolver: yupResolver(signInSchema),
+    mode: "onTouched",
+  });
+
+  const errorMessage = getErrorMessage(errors);
+
+  const onSubmit = async (data: SignInFormFields) => {
+    const { username, password } = data;
     try {
-      e.preventDefault();
       setSubmitLoading(true);
       const res = await signIn("credentials", {
         username: username,
@@ -22,7 +34,6 @@ const SignIn = () => {
         redirect: false,
       });
 
-      setSubmitLoading(false);
       if (res?.ok && res.error == null) {
         const url = new URL(res?.url as string);
         const callBackUrl = url.searchParams.get("callbackUrl");
@@ -32,6 +43,7 @@ const SignIn = () => {
           router.push("/");
         }
       } else {
+        setSubmitLoading(false);
         alert("Username or password incorrect !");
       }
     } catch (error) {
@@ -42,14 +54,6 @@ const SignIn = () => {
 
   return (
     <BaseContainer>
-      {/* <Row className="">
-      <Col md={{ span: 6, offset: 3 }} >
-          <h1 className="ft-20 text-center bg-dark py-2">
-          <span className="text-white">property</span>
-          <span className="text-warning">.inder</span>
-          </h1>
-      </Col>
-    </Row> */}
       <Row className="py-3">
         <Col md={{ span: 6, offset: 3 }}>
           <Card>
@@ -59,16 +63,20 @@ const SignIn = () => {
                   <h3 className="text-center ft-24 fw-bold">Login</h3>
                 </Col>
               </Row>
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="username">
                     <Form.Label>User Name</Form.Label>
                     <Form.Control
                       type="text"
-                      value={username}
-                      onChange={({ target }) => setUsername(target.value)}
+                      {...register("username")}
                       placeholder="Enter Username"
                     />
+                    {errorMessage("username") && (
+                      <Form.Text className="text-danger">
+                        {errorMessage("username")}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Row>
                 <Row>
@@ -76,17 +84,17 @@ const SignIn = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       type="password"
-                      value={password}
-                      onChange={({ target }) => setPassword(target.value)}
+                      {...register("password")}
                       placeholder="Password"
                     />
+                    {errorMessage("password") && (
+                      <Form.Text className="text-danger">
+                        {errorMessage("password")}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Row>
-                {/* <Row className="py-2">
-                  <Col md="12">
-                    <div>Forgot password ?</div>
-                  </Col>
-                </Row> */}
+
                 <Row className="py-3">
                   <Col md="12" className="">
                     <SubmitButton

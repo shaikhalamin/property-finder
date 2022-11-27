@@ -91,9 +91,12 @@ const PropertyEditForm: React.FC<PropertyEditProps> = ({
 
     try {
       const propertyEdit = await editProperty(property.id, propertyFormData);
-      setSubmitLoading(false);
       if (propertyEdit.status == 200) {
         router.push("/admin/properties");
+      } else {
+        setSubmitLoading(false);
+        console.log(propertyEdit);
+        alert("Something went wrong !");
       }
     } catch (error) {
       setSubmitLoading(false);
