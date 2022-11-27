@@ -21,19 +21,19 @@ const FeatureWithIcon: React.FC<PropertyFeatureProps> = ({
   return (
     <>
       <Row className="mt-1 mb-1">
-        <Col md="4">
+        <Col lg="4" md="4" sm="4" xs="4">
           <span className={`${styles.propertyIcon}`}>
             <BedIcon />
           </span>
           <span className="ft-12 text-color-b94 mt-2">{noOfRooms} Rooms</span>
         </Col>
-        <Col md="4">
+        <Col lg="4" md="4" sm="4" xs="4">
           <span className={`${styles.propertyIcon}`}>
             <BathIcon />
           </span>
           <span className="ft-12 text-color-b94 mt-2">{noOfBath} Baths</span>
         </Col>
-        <Col md="4">
+        <Col lg="4" md="4" sm="4" xs="4">
           <span className={`${styles.propertyIcon}`}>
             <PropertySizeIcon />
           </span>

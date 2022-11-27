@@ -23,20 +23,30 @@ const AgentList: React.FC<AgentListProps> = ({ agents }) => {
           return (
             <Col md="3" className="mt-4" key={agent.id.toString()}>
               <Card className={`${styles.pTypeBody} rounded-0`}>
-                <Card.Body className="py-0 px-0 position-relative">
-                  <Image
-                    src={`${imagePath}`}
-                    alt={agent.user.firstName}
-                    width={298}
-                    height={352}
-                    layout="responsive"
-                  />
-                </Card.Body>
+                <a
+                  className="text-decoration-none"
+                  href={`/agents/${agent.id}`}
+                >
+                  <Card.Body className="py-0 px-0 position-relative">
+                    <Image
+                      src={`${imagePath}`}
+                      alt={agent.user.firstName}
+                      width={298}
+                      height={352}
+                      layout="responsive"
+                    />
+                  </Card.Body>
+                </a>
               </Card>
               <div className="border">
                 <div className="py-3 px-3">
                   <div className="ft-20 mb-1 text-color-a3a fw-bold">
-                    {agent.user.firstName} {agent.user.lastName}
+                    <a
+                      className="text-decoration-none text-dark"
+                      href={`/agents/${agent.id}`}
+                    >
+                      {agent.user.firstName} {agent.user.lastName}
+                    </a>
                   </div>
                   <div className="ft-14 mb-1">
                     <span className="text-color-b94">{agent.designation}</span>
