@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { useCallback, useEffect, useState } from "react";
-import { Row, Col, Card, Container } from "react-bootstrap";
+import { Row, Col, Card, Container, Spinner, Button } from "react-bootstrap";
 import BaseContainer from "@/components/common/container/BaseContainer";
 import SectionTitleOrderBy from "@/components/property-type/SectionTitleOrderBy";
 import TypeFilterSection from "@/components/property-type/TypeFilterSection";
@@ -28,6 +28,7 @@ import { generateFilterUrl, removeFalsy } from "@/data/utils/lib";
 import { Dictionary } from "lodash";
 import qs from "qs";
 import Meta from "@/components/meta/Meta";
+import SubmitButton from "@/components/common/form/SubmitButton";
 
 type PropertyTypeProps = {
   data: {
@@ -45,6 +46,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
   const [propertyList, setPropertyList] = useState(properties);
   const [filterClient, setFilterClient] = useState(false);
   const [active, setActive] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [customFilter, setCustomFilter] = useState<PropertiesFilter>({
     basic: {
       page: properties.meta.page,
@@ -84,6 +86,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
         order: customFilter.order,
         filters: customFilter.filters,
       }).then((result) => {
+        setLoading(false);
         const propertyData = result?.data as PropertyList;
         setPropertyList((prevState) => {
           return {
@@ -99,6 +102,8 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
     customFilter.order,
     customFilter.filters,
   ]);
+
+  console.log("loading state", loading);
 
   const handlePropertySorting = useCallback(
     (data: string) => {
@@ -119,6 +124,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
 
   const handleAllFilter = useCallback((key: string, value: string) => {
     setFilterClient(true);
+    setLoading(true);
     setCustomFilter((prevState) => {
       return {
         ...prevState,
@@ -169,15 +175,36 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
                 );
               })}
 
-            {!propertyList.data.length && (
+            {!propertyList.data.length && loading === false && (
               <>
                 <Row className="py-5 mb-5">
-                  <Col>
+                  <Col md={{ span: 6, offset: 3 }} className="py-5">
                     <Container>
-                      <Card className="border-0">
-                        <h2 className="ml-5 ft-18 text-center">
-                          No Properties found !
-                        </h2>
+                      <Card className="border mt-5">
+                        <h4 className="ft-18 ml-5 text-center py-1 mt-2 ">No Properties Found !</h4>
+                      </Card>
+                    </Container>
+                  </Col>
+                </Row>
+              </>
+            )}
+
+            {loading === true && (
+              <>
+                <Row className="py-5 mb-5">
+                  <Col md={{ span: 6, offset: 3 }} className="py-5">
+                    <Container>
+                      <Card className="border-0 mt-5">
+                        <Button variant="outline-dark" className="list_loader">
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          <span style={{ marginLeft: "5px" }}>Loading...</span>
+                        </Button>
                       </Card>
                     </Container>
                   </Col>

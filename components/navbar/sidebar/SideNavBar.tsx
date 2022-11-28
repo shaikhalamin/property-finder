@@ -108,7 +108,7 @@ const sideNavData: SideNavItems = {
       name: "Logout",
       url: "#",
       icon: (size: number = 21) => <MdLogin size={size} />,
-      //onClickFn: () => signOut(),
+      onClickFn: async () => await signOut(),
     },
   ],
 };

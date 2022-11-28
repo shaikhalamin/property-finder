@@ -80,3 +80,8 @@ a.text-black:hover {
   position: relative !important;
   object-fit: cover;
 }
+
+button.list_loader:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
