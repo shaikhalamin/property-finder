@@ -189,7 +189,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
               </>
             )}
 
-            {loading === true && (
+            {!propertyList.data.length && loading === true && (
               <>
                 <Row className="py-5 mb-5">
                   <Col md={{ span: 6, offset: 3 }} className="py-5">
