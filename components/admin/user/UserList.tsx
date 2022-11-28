@@ -1,6 +1,9 @@
+import SubmitButton, {
+  ButtonSize,
+} from "@/components/common/form/SubmitButton";
 import { User } from "@/data/model/user";
-import router, { useRouter } from "next/router";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { Row, Col, Button, Table } from "react-bootstrap";
 
 type UserListProps = {
@@ -9,6 +12,7 @@ type UserListProps = {
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
   const router = useRouter();
+  const [buttonRef, setButtonRef] = useState<number | string>("");
   return (
     <Row className="py-4 px-2">
       <Col className="">
@@ -33,19 +37,35 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Role</th>
+                  <th>Edit</th>
                   <th>Preview Button</th>
                 </tr>
               </thead>
               <tbody>
                 {users.length > 0 &&
                   users.map((user) => (
-                    <tr key={user.id.toString()}>
+                    <tr key={user.id}>
                       <td>{user.firstName}</td>
                       <td>{user.lastName}</td>
                       <td>{user.username}</td>
                       <td>{user.email}</td>
                       <td>{user.phone}</td>
                       <td>{user.role}</td>
+                      <td>
+                        <SubmitButton
+                          title="Edit"
+                          variant="warning"
+                          isLoading={false}
+                          size={ButtonSize.SM}
+                          loadingTitle="Redirecting"
+                          btnId={user.id}
+                          btnRef={buttonRef}
+                          onClick={() => {
+                            setButtonRef(user.id);
+                            router.push(`/admin/users/edit/${user.id}`);
+                          }}
+                        />
+                      </td>
                       <td>
                         <Button
                           variant="info"

@@ -29,7 +29,7 @@ export const signUpSchema = yup
     firstName: yup.string().required("FirstName is required"),
     lastName: yup.string().required("LastName is required"),
     username: yup.string().required("Username is required"),
-    email: yup.string().required("Email is required"),
+    email: yup.string().email().required("Email is required"),
     phone: yup.string().required("Phone is required"),
     password: yup.string().required("Password is required"),
     role: yup.string().optional(),
@@ -45,10 +45,10 @@ export const signInSchema = yup
 
 export const userEditSchema = yup
   .object({
-    firstName: yup.string().optional().nullable(),
-    lastName: yup.string().optional().nullable(),
-    email: yup.string().optional().nullable(),
-    phone: yup.string().optional().nullable(),
+    firstName: yup.string().optional().required(),
+    lastName: yup.string().optional().required(),
+    email: yup.string().email().required(),
+    phone: yup.string().optional().required(),
     password: yup.string().optional().nullable(),
     role: yup.string().optional().nullable(),
   })

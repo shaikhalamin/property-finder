@@ -1,3 +1,4 @@
+import { EditUserFormFields } from "@/components/auth/helpers";
 import axios from "axios";
 import { API_PROXY_BASE, API_URLS } from "../utils/api.urls";
 
@@ -17,6 +18,10 @@ export const getUser = (id: number, accessToken: string) => {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+};
+
+export const updateUser = (id: number, userPayload: EditUserFormFields) => {
+  return axios.patch(`${API_PROXY_BASE}/user/${id}`, userPayload);
 };
 
 // export const createProperty = (propertyPayload: any) => {
