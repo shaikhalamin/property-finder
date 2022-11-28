@@ -163,6 +163,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
               onChange={handlePropertySorting}
             />
             {propertyList.data.length > 0 &&
+              loading === false &&
               propertyList.data.map((property) => {
                 return (
                   <a
@@ -181,7 +182,9 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
                   <Col md={{ span: 6, offset: 3 }} className="py-5">
                     <Container>
                       <Card className="border mt-5">
-                        <h4 className="ft-18 ml-5 text-center py-1 mt-2 ">No Properties Found !</h4>
+                        <h4 className="ft-18 ml-5 text-center py-1 mt-2 ">
+                          No Properties Found !
+                        </h4>
                       </Card>
                     </Container>
                   </Col>
@@ -189,7 +192,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
               </>
             )}
 
-            {!propertyList.data.length && loading === true && (
+            {loading === true && (
               <>
                 <Row className="py-5 mb-5">
                   <Col md={{ span: 6, offset: 3 }} className="py-5">
