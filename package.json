@@ -26,6 +26,7 @@
     "react-hook-form": "^7.38.0",
     "react-icons": "^4.4.0",
     "react-simple-image-viewer": "^1.2.2",
+    "react-simple-star-rating": "^5.1.7",
     "uuid": "^9.0.0",
     "yup": "^0.32.11"
   },

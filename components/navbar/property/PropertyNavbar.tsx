@@ -5,9 +5,15 @@ import styles from "@/components/navbar/property/property-navbar.module.css";
 import { Button } from "react-bootstrap";
 import HamBurgerIcon from "../HamBurgerIcon";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
+import SubmitButton from "@/components/common/form/SubmitButton";
 
 const PropertyNavbar = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+  if (session) {
+    //console.log(session)
+  }
 
   return (
     <Navbar
@@ -54,28 +60,44 @@ const PropertyNavbar = () => {
             </Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link
-              href="/auth/signin"
-              className={`text-white ${styles.ft14}`}
-            >
-              Sign In
-            </Nav.Link>
-            <Nav.Link
-              href="/auth/signup"
-              className={`text-white ${styles.ft14} mr-2`}
-            >
-              Sign Up
-            </Nav.Link>
+            {!session && (
+              <>
+                <Nav.Link
+                  href="/auth/signin"
+                  className={`text-white ${styles.ft14}`}
+                >
+                  Sign In
+                </Nav.Link>
+                <Nav.Link
+                  href="/auth/signup"
+                  className={`text-white ${styles.ft14} mr-2`}
+                >
+                  Sign Up
+                </Nav.Link>
+              </>
+            )}
 
-            <Button
-              variant="warning"
-              role="general-nav-logout-btn"
-              className={`text-dark ${styles.ftBold} ${styles.ft14} rounded-0`}
-              onClick={() => router.push("/admin/properties/create")}
-              style={{ marginLeft: "15px" }}
-            >
-              Add Property
-            </Button>
+            {session && (
+              <>
+                <Button
+                  variant="warning"
+                  role="general-nav-logout-btn"
+                  className={`text-dark ${styles.ftBold} ${styles.ft14} rounded-0`}
+                  onClick={() => router.push("/admin/properties/create")}
+                  style={{ marginLeft: "15px", marginRight: "10px" }}
+                >
+                  Add Property
+                </Button>
+                <SubmitButton
+                  title="Log Out"
+                  variant="info"
+                  isLoading={false}
+                  onClick={async () => await signOut()}
+                  loadingTitle="Logging out"
+                  buttonCls="rounded-0"
+                />
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

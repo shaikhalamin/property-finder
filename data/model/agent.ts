@@ -1,4 +1,5 @@
 import { Image } from "./image-file";
+import { Property } from "./property";
 import { User } from "./user";
 
 export type Agent = {
@@ -13,4 +14,6 @@ export type Agent = {
   linkedin_link:string;
   user: User;
   agentImage: Image
+  properties: Property[]
+
 };

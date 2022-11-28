@@ -8,6 +8,10 @@ export const getAgents = () => {
   return axios.get(`${AGENT_URL}`);
 };
 
+export const getAgentDetails = (id: number) => {
+  return axios.get(`${AGENT_URL}/${id}`);
+};
+
 export const createAgent = (agentPayload: BioAndDescriptionFields) => {
   return axios.post(`${API_PROXY_BASE}/agent`, agentPayload);
 };
