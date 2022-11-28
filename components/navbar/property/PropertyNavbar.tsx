@@ -85,10 +85,10 @@ const PropertyNavbar = () => {
                   btnRef={buttonRef}
                   onClick={async () => {
                     setButtonRef("add_property");
-                    router.push("/admin/properties/create");
+                    await router.push("/admin/properties/create");
                   }}
                   loadingTitle="Redirecting"
-                  buttonCls={`text-dark ${styles.ftBold} ${styles.ft14} rounded-0 px-3`}
+                  buttonCls={`text-dark ${styles.ftBold} ${styles.ft14} rounded-0`}
                   style={{ marginRight: "10px" }}
                 />
                 <SubmitButton
