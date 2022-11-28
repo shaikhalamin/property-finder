@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/common/form/SubmitButton";
 import Loading from "@/components/common/icon/Loading";
 import { createAgent, updateAgent } from "@/data/api/agent";
 import { deleteImage, uploadImage } from "@/data/api/image-files";
@@ -32,6 +33,7 @@ const BioAndDescription: React.FC<BioAndDescriptionProps> = ({ user }) => {
   const [uploadedImage, setUploadedImage] = useState<Image>({} as Image);
   const [deleting, setDeleting] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const {
     register,
@@ -57,13 +59,14 @@ const BioAndDescription: React.FC<BioAndDescriptionProps> = ({ user }) => {
       };
     }
     try {
+      setSubmitLoading(true);
       if (!agentInfo?.id) {
         const agent = await createAgent(payload);
         if (agent.status) {
           router.reload();
         }
       } else {
-        const agentUpdate = await updateAgent(agentInfo?.id,payload)
+        const agentUpdate = await updateAgent(agentInfo?.id, payload);
         if (agentUpdate.status) {
           router.reload();
         }
@@ -86,9 +89,6 @@ const BioAndDescription: React.FC<BioAndDescriptionProps> = ({ user }) => {
       deleteImage(id)
         .then(async (res) => {
           setDeleting(0);
-
-          // need to work on image file delete and agent photo info update
-
           setImageFile({} as Image);
           setUploadedImage({} as Image);
         })
@@ -281,9 +281,11 @@ const BioAndDescription: React.FC<BioAndDescriptionProps> = ({ user }) => {
                   </Row>
                   <Row className="py-3 mt-2">
                     <Col md="12">
-                      <Button variant="warning" type="submit" className="">
-                        Update Info
-                      </Button>
+                      <SubmitButton
+                        title="Update Info"
+                        variant="warning"
+                        isLoading={submitLoading}
+                      />
                     </Col>
                   </Row>
                 </Form>

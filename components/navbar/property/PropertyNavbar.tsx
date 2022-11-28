@@ -2,18 +2,16 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import styles from "@/components/navbar/property/property-navbar.module.css";
-import { Button } from "react-bootstrap";
 import HamBurgerIcon from "../HamBurgerIcon";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import SubmitButton from "@/components/common/form/SubmitButton";
+import { useState } from "react";
 
 const PropertyNavbar = () => {
   const router = useRouter();
+  const [buttonRef, setButtonRef] = useState<number | string>("");
   const { data: session } = useSession();
-  if (session) {
-    //console.log(session)
-  }
 
   return (
     <Navbar
@@ -79,22 +77,33 @@ const PropertyNavbar = () => {
 
             {session && (
               <>
-                <Button
+                <SubmitButton
+                  title="Add Property"
                   variant="warning"
-                  role="general-nav-logout-btn"
-                  className={`text-dark ${styles.ftBold} ${styles.ft14} rounded-0`}
-                  onClick={() => router.push("/admin/properties/create")}
-                  style={{ marginLeft: "15px", marginRight: "10px" }}
-                >
-                  Add Property
-                </Button>
+                  isLoading={false}
+                  btnId="add_property"
+                  btnRef={buttonRef}
+                  onClick={async () => {
+                    setButtonRef("add_property");
+                    router.push("/admin/properties/create");
+                  }}
+                  loadingTitle="Redirecting"
+                  buttonCls={`text-dark ${styles.ftBold} ${styles.ft14} rounded-0 px-3`}
+                  style={{ marginRight: "10px" }}
+                />
                 <SubmitButton
                   title="Log Out"
-                  variant="info"
+                  variant="outline-light"
                   isLoading={false}
-                  onClick={async () => await signOut()}
+                  btnId="log_out"
+                  btnRef={buttonRef}
+                  onClick={async () => {
+                    setButtonRef("log_out");
+                    await signOut();
+                  }}
                   loadingTitle="Logging out"
                   buttonCls="rounded-0"
+                  titleCls="ft-14"
                 />
               </>
             )}

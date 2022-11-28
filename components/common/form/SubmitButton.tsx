@@ -15,6 +15,7 @@ type SubmitButtonProps = {
   buttonCls?: string;
   btnRef?: string | number;
   btnId?: string | number;
+  style?: { [key: string]: string };
 };
 
 export enum ButtonType {
@@ -40,6 +41,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
   btnRef,
   btnId,
   onClick,
+  style,
 }) => {
   const [loader, setLoader] = useState(false);
 
@@ -67,6 +69,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
       type={type}
       className={buttonCls ? buttonCls : ""}
       onClick={onClick}
+      style={style ? style : {}}
     >
       {loader === true ? (
         <>
