@@ -2,13 +2,14 @@ import { EditUserFormFields, userEditSchema } from "@/components/auth/helpers";
 import BaseContainer from "@/components/common/container/BaseContainer";
 import { InputField } from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
+import SubmitButton from "@/components/common/form/SubmitButton";
 import { updateUser } from "@/data/api/user";
 import { User } from "@/data/model/user";
 import { getErrorMessage } from "@/data/utils/lib";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Button, Form } from "react-bootstrap";
 import { FormProvider, useForm } from "react-hook-form";
 import { setProfileFormValue } from "./user.helper";
@@ -24,6 +25,7 @@ const ROLES = [
 ];
 
 const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const reactHookFormMethods = useForm<EditUserFormFields>({
     resolver: yupResolver(userEditSchema),
@@ -44,13 +46,16 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
 
   const onSubmit = async (data: EditUserFormFields) => {
     try {
+      setLoading(true);
       const result = await updateUser(user.id, data);
       if (result.data) {
         router.push("/admin/users/");
       } else {
+        setLoading(false);
         alert("User info update error");
       }
     } catch (error: any) {
+      setLoading(false);
       if (error instanceof AxiosError) {
         const message = error.response?.data?.message as string;
         alert(message);
@@ -134,9 +139,11 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
                   </Row>
                   <Row className="py-3">
                     <Col md="12" className="mt-2">
-                      <Button variant="warning" type="submit" className="">
-                        Submit
-                      </Button>
+                      <SubmitButton
+                        title="Submit"
+                        variant="warning"
+                        isLoading={loading}
+                      />
                     </Col>
                   </Row>
                 </Form>

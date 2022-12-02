@@ -38,7 +38,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                   <th>Phone</th>
                   <th>Role</th>
                   <th>Edit</th>
-                  <th>Preview Button</th>
                 </tr>
               </thead>
               <tbody>
@@ -65,15 +64,6 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
                             router.push(`/admin/users/edit/${user.id}`);
                           }}
                         />
-                      </td>
-                      <td>
-                        <Button
-                          variant="info"
-                          size={`sm`}
-                          onClick={() => router.push(`/agents`)}
-                        >
-                          Preview
-                        </Button>
                       </td>
                     </tr>
                   ))}

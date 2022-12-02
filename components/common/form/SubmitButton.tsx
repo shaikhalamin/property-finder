@@ -47,6 +47,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
 
   useEffect(() => {
     isLoading === true && setLoader(true);
+    isLoading === false && setLoader(false);
     if (btnRef !== undefined && btnId !== undefined && btnRef === btnId) {
       setLoader(true);
     }
