@@ -5,7 +5,7 @@ import SelectField from "@/components/common/form/SelectField";
 import SubmitButton from "@/components/common/form/SubmitButton";
 import { updateUser } from "@/data/api/user";
 import { User } from "@/data/model/user";
-import { getErrorMessage } from "@/data/utils/lib";
+import { getErrorMessage, removeFalsy } from "@/data/utils/lib";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -47,7 +47,8 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
   const onSubmit = async (data: EditUserFormFields) => {
     try {
       setLoading(true);
-      const result = await updateUser(user.id, data);
+      const trimmedData = removeFalsy(data);
+      const result = await updateUser(user.id, trimmedData as EditUserFormFields);
       if (result.data) {
         router.push("/admin/users/");
       } else {

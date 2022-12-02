@@ -1,5 +1,5 @@
 import BaseContainer from "@/components/common/container/BaseContainer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Card } from "react-bootstrap";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -43,7 +43,7 @@ const SignIn = () => {
           router.push("/");
         }
       } else {
-        setSubmitLoading(false);
+        setSubmitLoading((prev) => !prev);
         alert("Username or password incorrect !");
       }
     } catch (error) {

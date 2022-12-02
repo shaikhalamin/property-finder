@@ -25,6 +25,7 @@ export type PropertyQueryFilters = {
   propertyFeatures?: string;
   purpose?: string;
   cityId?: number | string;
+  userId?: number | string;
   price?: number;
   noOfBedRoom?: number;
 }
@@ -61,12 +62,8 @@ export const getPropertyDetails = async (id: number) => {
 };
 
 export const getPropertiesByFilter = async (filterObject: PropertiesFilter) => {
-  try {
-    const query = createFilterUrl(filterObject);
-    return axios.get(`${PROPERTY_URL}?${query}`);
-  } catch (error) {
-    console.log(error);
-  }
+  const query = createFilterUrl(filterObject);
+  return axios.get(`${PROPERTY_URL}?${query}`);
 };
 
 export const createProperty = (propertyPayload: any) => {

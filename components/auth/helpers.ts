@@ -1,5 +1,11 @@
 import * as yup from "yup";
 
+export enum Role {
+  AGENT = "agent",
+  ADMIN = "admin",
+  USER = "user",
+}
+
 export type SignUpFormFields = {
   firstName: string;
   lastName: string;
@@ -7,7 +13,7 @@ export type SignUpFormFields = {
   email: string;
   phone: string;
   password: string;
-  role?: string;
+  role?: Role;
 };
 
 export type SignInFormFields = {
@@ -21,7 +27,7 @@ export type EditUserFormFields = {
   email: string;
   phone: string;
   password: string;
-  role?: string;
+  role: string;
 };
 
 export const signUpSchema = yup
@@ -32,7 +38,7 @@ export const signUpSchema = yup
     email: yup.string().email().required("Email is required"),
     phone: yup.string().required("Phone is required"),
     password: yup.string().required("Password is required"),
-    role: yup.string().optional(),
+    role: yup.string().required("Role is required"),
   })
   .required();
 

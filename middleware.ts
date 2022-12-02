@@ -5,15 +5,15 @@ const isAdminRoute = (pathname: string) => {
   return pathname.startsWith("/admin");
 };
 
-const isHomeRoute = (pathname: string) => {
-  return pathname.startsWith("/home");
+const isDashboardRoute = (pathname: string) => {
+  return pathname.startsWith("/dashboard");
 };
 
 export default withAuth(
   function middleware(req) {
     const { pathname } = req.nextUrl;
     const token = req.nextauth.token;
-    //console.log("token in middleware",JSON.stringify(token) )
+    //console.log("token in middleware",token)
 
     if (isAdminRoute(pathname)) {
       return NextResponse.rewrite(new URL(pathname, req.url));
@@ -24,10 +24,10 @@ export default withAuth(
     callbacks: {
       authorized({ token }) {
         //console.log("token value in middleware callback", JSON.stringify(token))
-        return token?.role === "agent";
+        return token?.role === "admin" || token?.role === "agent";
       },
     },
   }
 );
 
-export const config = { matcher: ["/admin/:path*"] };
+export const config = { matcher: ["/admin/:path*", "/dashboard/:path*"] };

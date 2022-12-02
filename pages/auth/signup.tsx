@@ -1,10 +1,10 @@
 import BaseContainer from "@/components/common/container/BaseContainer";
 import React, { useState } from "react";
-import { Form, Row, Col, Button, Card } from "react-bootstrap";
+import { Form, Row, Col, Card } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SignUpFormFields, signUpSchema } from "@/components/auth/helpers";
+import { Role, SignUpFormFields, signUpSchema } from "@/components/auth/helpers";
 import { getErrorMessage } from "@/data/utils/lib";
 import { signUp } from "@/data/api/auth";
 import { AxiosError } from "axios";
@@ -27,7 +27,7 @@ const SignUp = () => {
   const onSubmit = async (data: SignUpFormFields) => {
     const singUpPayload = {
       ...data,
-      role: "agent",
+      
     };
     try {
       setSubmitLoading(true);
@@ -65,7 +65,7 @@ const SignUp = () => {
               </Row>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridEmail">
+                  <Form.Group as={Col} controlId="firstName">
                     <Form.Label>First Name</Form.Label>
                     <Form.Control type="text" {...register("firstName")} />
                     {errorMessage("firstName") && (
@@ -76,7 +76,7 @@ const SignUp = () => {
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridEmail">
+                  <Form.Group as={Col} controlId="lastName">
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control type="text" {...register("lastName")} />
                     {errorMessage("lastName") && (
@@ -87,7 +87,7 @@ const SignUp = () => {
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridEmail">
+                  <Form.Group as={Col} controlId="username">
                     <Form.Label>User name</Form.Label>
                     <Form.Control type="text" {...register("username")} />
                     {errorMessage("username") && (
@@ -98,7 +98,7 @@ const SignUp = () => {
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridEmail">
+                  <Form.Group as={Col} controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="text" {...register("email")} />
                     {errorMessage("email") && (
@@ -109,7 +109,7 @@ const SignUp = () => {
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridEmail">
+                  <Form.Group as={Col} controlId="phone">
                     <Form.Label>Phone</Form.Label>
                     <Form.Control type="text" {...register("phone")} />
                     {errorMessage("phone") && (
@@ -119,8 +119,18 @@ const SignUp = () => {
                     )}
                   </Form.Group>
                 </Row>
+
                 <Row>
-                  <Form.Group as={Col} controlId="formGridPassword">
+                  <Form.Group as={Col} controlId="ImageType">
+                    <Form.Label>Sign Up As</Form.Label>
+                    <Form.Select {...register("role")}>
+                      <option value={Role.AGENT}>Agent</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Row>
+
+                <Row>
+                  <Form.Group as={Col} controlId="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" {...register("password")} />
                     {errorMessage("password") && (

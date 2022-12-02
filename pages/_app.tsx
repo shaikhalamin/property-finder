@@ -35,11 +35,15 @@ const MyApp = ({
     );
   }
 
-  return getLayout(
+  const layoutWrapper = getLayout(
+    <SSRProvider>
+      <Component {...allProps} />
+    </SSRProvider>
+  );
+
+  return (
     <SessionProvider session={session} refetchInterval={5 * 60}>
-      <SSRProvider>
-        <Component {...allProps} />
-      </SSRProvider>
+      {layoutWrapper}
     </SessionProvider>
   );
 };

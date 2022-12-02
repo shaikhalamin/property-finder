@@ -78,14 +78,14 @@ const PropertyNavbar = () => {
             {session && (
               <>
                 <SubmitButton
-                  title="Add Property"
+                  title="Dashboard"
                   variant="warning"
                   isLoading={false}
-                  btnId="add_property"
+                  btnId="dashboard"
                   btnRef={buttonRef}
                   onClick={async () => {
-                    setButtonRef("add_property");
-                    await router.push("/admin/properties/create");
+                    setButtonRef("dashboard");
+                    await router.push("/admin/home");
                   }}
                   loadingTitle="Redirecting"
                   buttonCls={`text-dark ${styles.ftBold} ${styles.ft14} rounded-0`}

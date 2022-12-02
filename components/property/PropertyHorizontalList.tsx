@@ -74,9 +74,9 @@ const PropertyHorizontalList: React.FC<PropertyListProps> = ({
                   </div>
                   <hr className="mt-2" />
                   <FeatureWithIcon
-                    noOfRooms={6}
-                    noOfBath={3}
-                    propertySize={1600}
+                    noOfRooms={property.noOfBedRoom}
+                    noOfBath={property.noOfBathRoom}
+                    propertySize={property.propertySize}
                   />
                 </div>
               </div>

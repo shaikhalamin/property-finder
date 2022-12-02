@@ -21,18 +21,28 @@ const AgentInfo: React.FC<PropertyAgent> = ({ agent }) => {
             <Row className="py-2 px-3 mt-4">
               <Col md="4">
                 <Card className="border-0 agent-bg">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`${agent?.agentImage?.image_url}`}
-                    className="rounded-circle w-100"
-                    alt="agent"
-                  />
+                  <a
+                    href={`/agents/${agent?.id}`}
+                    className="text-decoration-none text-white"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`${agent?.agentImage?.image_url}`}
+                      className="rounded-circle w-100"
+                      alt="agent"
+                    />
+                  </a>
                 </Card>
               </Col>
               <Col md="8">
                 <div className="ft-18 text-white">
-                  {agent?.user.firstName}
-                  {agent?.user.lastName}
+                  <a
+                    href={`/agents/${agent?.id}`}
+                    className="text-decoration-none text-white"
+                  >
+                    {agent?.user.firstName}
+                    {agent?.user.lastName}
+                  </a>
                 </div>
                 <div className="ft-14 text-color-bca mt-1">
                   {agent?.designation}

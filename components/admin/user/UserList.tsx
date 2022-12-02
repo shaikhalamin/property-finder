@@ -20,7 +20,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
           <Col className="mb-3 mt-2">
             <Button
               className="btn-md btn-primary"
-              onClick={() => alert("Need to setup user creation from admin")}
+              onClick={() => alert("Insufficient admin permission")}
             >
               + Add User
             </Button>
