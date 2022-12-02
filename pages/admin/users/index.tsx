@@ -23,9 +23,15 @@ Index.getLayout = (page: ReactElement) => {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   try {
     const session = await unstable_getServerSession(req, res, authOptions);
-    let users = [] as User[] 
+    let users = [] as User[];
     if (session) {
       const token = `${(session as any)?.access_token}`;
+      const role = `${(session as any)?.role}`;
+      if (role !== "admin") {
+        return {
+          notFound: true,
+        };
+      }
       const usersResults = await getUsers(token);
       users = usersResults.data;
     }
