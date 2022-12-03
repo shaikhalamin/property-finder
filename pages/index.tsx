@@ -58,7 +58,7 @@ const Home: NextPageWithLayout<HomeProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const property_url = `?page=1&perPage=6`;
+  const property_url = `?page=1&perPage=6&order[updated_at]=DESC`;
   const [properties, propertyTypes, cities, features, agents] =
     await Promise.all([
       getProperties(property_url),
