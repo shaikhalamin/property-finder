@@ -12,6 +12,7 @@ import {
 import { FaRegUser, FaBuilding, FaHandshake } from "react-icons/fa";
 import SingleListItems from "./SingleListItems";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { Button, Spinner } from "react-bootstrap";
 
 export type SingleItemProps = {
   id: number;
@@ -123,7 +124,20 @@ export const sideNavItems = (role: string): SideNavItems => {
 
 const SideNavBar = () => {
   const { data: session } = useSession();
-  if (session) {
+  if (!session) {
+    return (
+      <Button variant="outline-dark" className="mt-3 ml-3 mb-3">
+        <Spinner
+          as="span"
+          animation="grow"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />
+        <span style={{ marginLeft: "5px" }}>Loading...</span>
+      </Button>
+    );
+  } else {
     const role = (session as any).role;
     const sideNavData = sideNavItems(role);
     return (
@@ -134,8 +148,6 @@ const SideNavBar = () => {
         })}
       </div>
     );
-  } else {
-    return <>Loading...</>;
   }
 };
 
