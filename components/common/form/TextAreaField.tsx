@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 interface TextAreaProps {
   labelText: string;
   name: string;
+  placeholder?:string;
   rows?: number;
   errorMessage?: string;
   labelCls?: string;
@@ -14,6 +15,7 @@ const TextAreaField: React.FC<TextAreaProps> = ({
   labelText,
   name,
   rows,
+  placeholder,
   errorMessage,
   labelCls,
 }) => {
@@ -26,7 +28,8 @@ const TextAreaField: React.FC<TextAreaProps> = ({
         as="textarea"
         rows={rows ? rows : 3}
         {...register(name)}
-        className={errorMessage ? "is-invalid" : ""}
+        placeholder={placeholder ? placeholder : ""}
+        className={`${errorMessage ? "is-invalid" : ""} rounded-0`}
       />
       {errorMessage && (
         <FormText className="text-danger">{errorMessage}</FormText>

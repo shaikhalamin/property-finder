@@ -8,9 +8,8 @@ import AgentInfo from "@/components/details/AgentInfo";
 import { NextPageWithLayout } from "../_app";
 import PropertyGeneralInfo from "@/components/details/PropertyGeneralInfo";
 import PropertyFeatureAndSpecifications from "@/components/details/PropertyFeatureAndSpecifications";
-import { property } from "lodash";
-import Image from "next/image";
 import Meta from "@/components/meta/Meta";
+
 
 type PropertyProps = {
   property: PropertyResponse;

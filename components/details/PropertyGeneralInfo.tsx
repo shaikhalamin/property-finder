@@ -1,15 +1,21 @@
 import { Property } from "@/data/model/property";
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import BathIcon from "../common/icon/Bath";
 import BedIcon from "../common/icon/Bed";
 import PropertySizeIcon from "../common/icon/PropertySize";
+import PropertyInquiryModal from "./inquiry/PropertyInquiryModal";
 
 type PropertyGeneralInfo = {
   data?: Property;
 };
 
 const PropertyGeneralInfo: React.FC<PropertyGeneralInfo> = ({ data }) => {
+  const [modalShow, setModalShow] = useState(false);
+  const setModalClose = (show: boolean) => {
+    setModalShow(false);
+  };
+
   return (
     <Container>
       <Row className="">
@@ -56,10 +62,17 @@ const PropertyGeneralInfo: React.FC<PropertyGeneralInfo> = ({ data }) => {
           </Row>
         </Col>
         <Col md="3" className="px-3">
-          <Button className="btn-warning w-100 py-2 mt-1 ft-14 fw-bold text-uppercase rounded-0">
+          <Button
+            onClick={() => setModalShow(true)}
+            className="btn-warning w-100 py-2 mt-1 ft-14 fw-bold text-uppercase rounded-0"
+          >
             Request Showing
           </Button>
         </Col>
+        <PropertyInquiryModal
+          modalShow={modalShow}
+          setModalClose={setModalClose}
+        />
       </Row>
     </Container>
   );
