@@ -21,7 +21,7 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
           <Col className="mb-3 mt-2">
             <Button
               variant="warning"
-              className="btn-md btn-primary rounded-0 ft-14 text-uppercase"
+              className="btn-md btn-primary rounded-0 ft-13 text-uppercase fw-normal"
               onClick={() => router.push("/admin/properties/create")}
             >
               + Add Property

@@ -28,64 +28,60 @@ const Index: NextPageWithLayout<AdminHomeProps> = ({
 }) => {
   return (
     <BaseContainer>
-      <Container>
-        <Row>
-          <Col md="4">
-            <Card>
-              <Card.Body>
-                <h4 className="ft-16 text-center">
-                  <span>
-                    <MdOutlineHomeWork size={30} className="text-danger" />
-                  </span>
-                </h4>
-                <h4 className="mt-2 mb-2 text-center ft-16 text-uppercase">
-                  <span>Properties</span>
-                </h4>
-                <h4 className="mt-1 mb-1 text-center">
-                  {properties.data.length}
-                </h4>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md="4">
-            <Card>
-              <Card.Body>
-                <h4 className="ft-16 text-center">
-                  <span>
-                    <MdCategory size={30} className="text-info" />
-                  </span>
-                </h4>
-                <h4 className="mt-2 mb-2 text-center ft-16 text-uppercase">
-                  <span>Property types</span>
-                </h4>
-                <h4 className="mt-1 mb-1 text-center">
-                  {propertyTypes.length}
-                </h4>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md="4">
-            <Card>
-              <Card.Body>
-                <h4 className="ft-16 text-center">
-                  <span>
-                    <MdLocationCity size={30} className="text-success" />
-                  </span>
-                </h4>
-                <h4 className="mt-2 mb-2 text-center ft-16 text-uppercase">
-                  <span>Location</span>
-                </h4>
-                <h4 className="mt-1 mb-1 text-center">{cities.length}</h4>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-        <Row className="py-3">
-          <Col>
-            <AdminPropertyList data={properties.data} />
-          </Col>
-        </Row>
-      </Container>
+      <Row>
+        <Col md="4">
+          <Card>
+            <Card.Body>
+              <h4 className="ft-16 text-center">
+                <span>
+                  <MdOutlineHomeWork size={30} className="text-danger" />
+                </span>
+              </h4>
+              <h4 className="mt-2 mb-2 text-center ft-16 text-uppercase">
+                <span>Properties</span>
+              </h4>
+              <h4 className="mt-1 mb-1 text-center">
+                {properties.data.length}
+              </h4>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md="4">
+          <Card>
+            <Card.Body>
+              <h4 className="ft-16 text-center">
+                <span>
+                  <MdCategory size={30} className="text-info" />
+                </span>
+              </h4>
+              <h4 className="mt-2 mb-2 text-center ft-16 text-uppercase">
+                <span>Property types</span>
+              </h4>
+              <h4 className="mt-1 mb-1 text-center">{propertyTypes.length}</h4>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md="4">
+          <Card>
+            <Card.Body>
+              <h4 className="ft-16 text-center">
+                <span>
+                  <MdLocationCity size={30} className="text-success" />
+                </span>
+              </h4>
+              <h4 className="mt-2 mb-2 text-center ft-16 text-uppercase">
+                <span>Location</span>
+              </h4>
+              <h4 className="mt-1 mb-1 text-center">{cities.length}</h4>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row className="py-3">
+        <Col>
+          <AdminPropertyList data={properties.data} />
+        </Col>
+      </Row>
     </BaseContainer>
   );
 };
