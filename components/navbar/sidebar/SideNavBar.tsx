@@ -1,17 +1,7 @@
-import {
-  MdDashboard,
-  MdCall,
-  MdLogin,
-  MdManageAccounts,
-  MdOutlineSettingsSystemDaydream,
-  MdOutlineAnalytics,
-  MdSettingsApplications,
-  MdAutoGraph,
-  MdNotificationsActive,
-} from "react-icons/md";
-import { FaRegUser, FaBuilding, FaHandshake } from "react-icons/fa";
+import { MdDashboard, MdLogin, MdManageAccounts } from "react-icons/md";
+import { FaRegUser, FaBuilding } from "react-icons/fa";
 import SingleListItems from "./SingleListItems";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Button, Spinner } from "react-bootstrap";
 
 export type SingleItemProps = {
@@ -27,7 +17,6 @@ interface SideNavItems {
 }
 
 export const sideNavItems = (role: string): SideNavItems => {
-  console.log("roles in nav", role);
   const navItems = {
     main: [
       {
@@ -44,55 +33,8 @@ export const sideNavItems = (role: string): SideNavItems => {
         url: "/admin/properties",
         icon: (size: number = 21) => <FaBuilding size={size} />,
       },
-      // {
-      //   id: 4,
-      //   name: "Order",
-      //   url: "/admin/orders",
-      //   icon: (size: number = 21) => <MdCall size={size} />,
-      // },
-      // {
-      //   id: 5,
-      //   name: "Delivery",
-      //   url: "/admin/delivery",
-      //   icon: (size: number = 21) => <FaHandshake size={size} />,
-      // },
     ],
-    // service: [
-    //   {
-    //     id: 6,
-    //     name: "System Health",
-    //     url: "/admin/sys-health",
-    //     icon: (size: number = 21) => (
-    //       <MdOutlineSettingsSystemDaydream size={size} />
-    //     ),
-    //   },
-    //   {
-    //     id: 7,
-    //     name: "Log",
-    //     url: "/admin/log",
-    //     icon: (size: number = 21) => <MdOutlineAnalytics size={size} />,
-    //   },
-    //   {
-    //     id: 8,
-    //     name: "Settings",
-    //     url: "/admin/settings",
-    //     icon: (size: number = 21) => <MdSettingsApplications size={size} />,
-    //   },
-    // ],
-    // useful: [
-    //   {
-    //     id: 9,
-    //     name: "Stats",
-    //     url: "/admin/statistics",
-    //     icon: (size: number = 21) => <MdAutoGraph size={size} />,
-    //   },
-    //   {
-    //     id: 10,
-    //     name: "Notifications",
-    //     url: "/admin/logout",
-    //     icon: (size: number = 21) => <MdNotificationsActive size={size} />,
-    //   },
-    // ],
+
     user: [
       {
         id: 9,

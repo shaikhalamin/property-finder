@@ -13,14 +13,15 @@ type Properties = {
 
 const AdminPropertyList: React.FC<Properties> = ({ data }) => {
   const router = useRouter();
-  const [buttonRef, setButtonRef] = useState<number | string>('');
+  const [buttonRef, setButtonRef] = useState<number | string>("");
   return (
     <Row className="py-4 px-2">
       <Col className="">
         <Row>
           <Col className="mb-3 mt-2">
             <Button
-              className="btn-md btn-primary"
+              variant="warning"
+              className="btn-md btn-primary rounded-0 ft-14 text-uppercase"
               onClick={() => router.push("/admin/properties/create")}
             >
               + Add Property
@@ -32,13 +33,13 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
             <Table className="border" responsive>
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Address</th>
-                  <th>Price</th>
-                  <th>Purpose</th>
-                  <th>Property Type</th>
-                  <th>Edit</th>
-                  <th>Preview Button</th>
+                  <th className="ft-14 text-uppercase">Name</th>
+                  <th className="ft-14 text-uppercase">Address</th>
+                  <th className="ft-14 text-uppercase">Price</th>
+                  <th className="ft-14 text-uppercase">Purpose</th>
+                  <th className="ft-14 text-uppercase">Property Type</th>
+                  <th className="ft-14 text-uppercase">Edit</th>
+                  <th className="ft-14 text-uppercase">Preview Button</th>
                 </tr>
               </thead>
               <tbody>
@@ -56,6 +57,7 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
                           variant="warning"
                           isLoading={false}
                           size={ButtonSize.SM}
+                          buttonCls={`rounded-0`}
                           loadingTitle="Redirecting"
                           btnId={property.id}
                           btnRef={buttonRef}
@@ -72,6 +74,7 @@ const AdminPropertyList: React.FC<Properties> = ({ data }) => {
                           title="Preview"
                           variant="info"
                           isLoading={false}
+                          buttonCls={`rounded-0`}
                           size={ButtonSize.SM}
                           loadingTitle="Previewing"
                           btnId={`${property.id}_preview`}

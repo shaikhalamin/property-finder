@@ -103,8 +103,6 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
     customFilter.filters,
   ]);
 
-  console.log("loading state", loading);
-
   const handlePropertySorting = useCallback(
     (data: string) => {
       filterClient === false && setFilterClient(true);
