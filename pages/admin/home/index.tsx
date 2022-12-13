@@ -178,7 +178,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (session) {
     const userId = (session.user as any).id as string;
     const role = (session.user as any).role;
-    let filterUrl = `?page=1&perPage=20&order[updated_at]=DESC`;
+    let filterUrl = `?page=1&perPage=15&order[updated_at]=DESC`;
     if (role === "agent") {
       filterUrl += `&filters[userId]=${userId}`;
     }
