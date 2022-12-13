@@ -40,8 +40,8 @@ const AgentInfo: React.FC<PropertyAgent> = ({ agent }) => {
                     href={`/agents/${agent?.id}`}
                     className="text-decoration-none text-white"
                   >
-                    {agent?.user.firstName}
-                    {agent?.user.lastName}
+                    <span className="px-3">{agent?.user.firstName}</span>
+                    <span>{agent?.user.lastName}</span>
                   </a>
                 </div>
                 <div className="ft-14 text-color-bca mt-1">

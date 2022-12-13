@@ -213,7 +213,7 @@ const PropertyType: NextPageWithLayout<PropertyTypeProps> = ({
               </>
             )}
 
-            {propertyList.data.length > 0 && (
+            {propertyList.data.length > 9 && (
               <>
                 <hr className="mt-3" />
                 <BasicPagination

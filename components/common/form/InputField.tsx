@@ -28,7 +28,7 @@ export const InputField: React.FC<InputFormProps> = ({
         type={inputType ? inputType : "text"}
         {...register(name)}
         autoComplete="off"
-        className={errorMessage ? "is-invalid" : ""}
+        className={`${errorMessage ? "is-invalid" : ""} rounded-0`}
         {...props}
       />
       {errorMessage && (

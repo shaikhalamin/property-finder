@@ -25,7 +25,7 @@ const CheckFormField: React.FC<CheckFormProps> = ({
           <Form.Check.Input
             {...register(name)}
             type={"checkbox"}
-            className={errorMessage ? "is-invalid" : ""}
+            className={`${errorMessage ? "is-invalid" : ""} rounded-0`}
           />
           <Form.Check.Label className={labelCls}>
             <span className={``}>{labelText}</span>

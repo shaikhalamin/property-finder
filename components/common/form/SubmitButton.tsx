@@ -68,7 +68,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
       size={size}
       variant={variant}
       type={type}
-      className={buttonCls ? buttonCls : ""}
+      className={`${buttonCls ? buttonCls : ""} rounded-0`}
       onClick={onClick}
       style={style ? style : {}}
     >

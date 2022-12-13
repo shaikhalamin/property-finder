@@ -30,7 +30,7 @@ const SelectField: React.FC<SelectFormProps> = ({
       <Form.Label className={labelCls}>{labelText}</Form.Label>
       <Form.Select
         {...register(fieldName)}
-        className={errorMessage ? "is-invalid" : ""}
+        className={`${errorMessage ? "is-invalid" : ""} rounded-0`}
         {...props}
       >
         <option>Select {labelText}</option>

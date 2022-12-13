@@ -14,18 +14,23 @@ type Properties = {
 const AdminPropertyList: React.FC<Properties> = ({ data }) => {
   const router = useRouter();
   const [buttonRef, setButtonRef] = useState<number | string>("");
+  const [loading, setLoading] = useState(false);
   return (
     <Row className="py-4 px-2">
       <Col className="">
         <Row>
           <Col className="mb-3 mt-2">
-            <Button
+            <SubmitButton
+              title="Add Property"
               variant="warning"
-              className="btn-md btn-primary rounded-0 ft-13 text-uppercase fw-normal"
-              onClick={() => router.push("/admin/properties/create")}
-            >
-              + Add Property
-            </Button>
+              loadingTitle="Redirecting"
+              onClick={() => {
+                setLoading(true);
+                router.push("/admin/properties/create");
+              }}
+              isLoading={loading}
+              buttonCls="rounded-0 ft-13 fw-normal"
+            />
           </Col>
         </Row>
         <Row>
