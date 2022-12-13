@@ -23,7 +23,7 @@ const ProfileNavItem = () => {
     const user = (session as any).user as ApiUser;
     return (
       <Nav>
-        <Dropdown>
+        <Dropdown align={'end'}>
           <Dropdown.Toggle variant="dark" id="dropdown-basic">
             {user.username} 
           </Dropdown.Toggle>
