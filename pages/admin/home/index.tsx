@@ -43,6 +43,9 @@ const Index: NextPageWithLayout<AdminHomeProps> = ({
       page: properties.meta.page,
       perPage: properties.meta.per_page,
     },
+    order: {
+      updated_at: "DESC",
+    },
   });
 
   const handlePagination = useCallback(
