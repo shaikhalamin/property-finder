@@ -141,7 +141,7 @@ const Index: NextPageWithLayout<AdminHomeProps> = ({
           </Card>
         </Col>
       </Row>
-      <Row className="py-3">
+      <Row className="py-2">
         <Col>
           {loading && <Loader />}
           {loading === false && propertyList.data.length > 0 && (
@@ -149,10 +149,10 @@ const Index: NextPageWithLayout<AdminHomeProps> = ({
           )}
         </Col>
       </Row>
-      {propertyList.data.length > 9 && (
-        <Row className="py-2">
+      {propertyList.data.length > 0 && (
+        <Row className="py-1">
           <Col>
-            <hr className="mt-3" />
+            <hr className="mt-2" />
             <BasicPagination
               total={Number(
                 Math.ceil(
@@ -178,7 +178,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (session) {
     const userId = (session.user as any).id as string;
     const role = (session.user as any).role;
-    let filterUrl = `?page=1&perPage=15&order[updated_at]=DESC`;
+    let filterUrl = `?page=1&perPage=12&order[updated_at]=DESC`;
     if (role === "agent") {
       filterUrl += `&filters[userId]=${userId}`;
     }
