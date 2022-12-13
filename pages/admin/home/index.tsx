@@ -1,5 +1,4 @@
 import AdminPropertyList from "@/components/admin/properties/AdminPropertyList";
-import BaseContainer from "@/components/common/container/BaseContainer";
 import Loader from "@/components/common/loader/Loader";
 import BasicPagination from "@/components/common/pagination/BasicPagination";
 import { HandlePaginationProps } from "@/components/common/pagination/pagination-types";
@@ -20,7 +19,7 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Container } from "react-bootstrap";
 import { MdCategory, MdLocationCity, MdOutlineHomeWork } from "react-icons/md";
 
 type AdminHomeProps = {
@@ -94,7 +93,7 @@ const Index: NextPageWithLayout<AdminHomeProps> = ({
   ]);
 
   return (
-    <BaseContainer>
+    <Container className="py-5">
       <Row>
         <Col md="4">
           <Card>
@@ -168,7 +167,7 @@ const Index: NextPageWithLayout<AdminHomeProps> = ({
           </Col>
         </Row>
       )}
-    </BaseContainer>
+    </Container>
   );
 };
 
