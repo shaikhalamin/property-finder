@@ -17,7 +17,7 @@ export type BasicType = {
 };
 
 export type KeyValueObject = {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean;
 };
 
 export type PropertyQueryFilters = {

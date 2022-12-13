@@ -16,7 +16,7 @@ export const generateFilterUrl = (
   queryObject: KeyValueObject
 ): {
   filterUrl: string;
-  queryParams: _.Dictionary<string | number>;
+  queryParams: _.Dictionary<string | number | boolean>;
 } => {
   const newQueryObject = { ...queryObject };
   const queryParams = removeFalsy(newQueryObject as KeyValueObject);

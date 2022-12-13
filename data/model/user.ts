@@ -10,6 +10,7 @@ export type User = {
     email: string;
     phone: string;
     isActive: boolean,
+    isVerified: boolean,
     role: string,
     agent?: Agent
   }

@@ -7,4 +7,5 @@ export const setProfileFormValue = (setValue: CallableFunction, user: User) => {
   setValue("email", user.email);
   setValue("phone", user.phone);
   setValue("role", user.role);
+  setValue("isVerified", user.isVerified);
 };

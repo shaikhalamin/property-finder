@@ -28,6 +28,7 @@ export type EditUserFormFields = {
   phone: string;
   password: string;
   role: string;
+  isVerified: boolean;
 };
 
 export const signUpSchema = yup
@@ -57,5 +58,6 @@ export const userEditSchema = yup
     phone: yup.string().optional().required(),
     password: yup.string().optional().nullable(),
     role: yup.string().optional().nullable(),
+    isVerified: yup.boolean().optional().nullable(),
   })
   .required();

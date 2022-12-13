@@ -1,5 +1,6 @@
 import { EditUserFormFields, userEditSchema } from "@/components/auth/helpers";
 import BaseContainer from "@/components/common/container/BaseContainer";
+import CheckFormField from "@/components/common/form/CheckFormField";
 import { InputField } from "@/components/common/form/InputField";
 import SelectField from "@/components/common/form/SelectField";
 import SubmitButton from "@/components/common/form/SubmitButton";
@@ -48,7 +49,10 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
     try {
       setLoading(true);
       const trimmedData = removeFalsy(data);
-      const result = await updateUser(user.id, trimmedData as EditUserFormFields);
+      const result = await updateUser(user.id, {
+        ...trimmedData,
+        isVerified: data.isVerified,
+      } as EditUserFormFields);
       if (result.data) {
         router.push("/admin/users/");
       } else {
@@ -138,6 +142,12 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
                       />
                     </Col>
                   </Row>
+                  <Row className="py-2">
+                    <Col md="12">
+                      <CheckFormField labelText="Verify" name="isVerified" />
+                    </Col>
+                  </Row>
+
                   <Row className="py-3">
                     <Col md="12" className="mt-2">
                       <SubmitButton
