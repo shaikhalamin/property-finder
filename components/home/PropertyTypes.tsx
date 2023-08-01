@@ -34,9 +34,7 @@ const PropertyTypes: React.FC<PropertyTypeProps> = ({ propertyTypes }) => {
                                   <Card.Body className="d-flex justify-content-center">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
-                                      src={`${
-                                        API_URLS.static_img
-                                      }/property-types/icon_${propertyType.name.toLocaleLowerCase()}.svg`}
+                                      src={`${propertyType.imageUrl}`}
                                       width="60"
                                       height="60"
                                       alt={propertyType.name}
