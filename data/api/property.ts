@@ -1,4 +1,4 @@
-import axios from "axios";
+import { $axios } from "./axios-base";
 import _ from "lodash";
 import qs from "qs";
 import { API_PROXY_BASE, API_URLS } from "../utils/api.urls";
@@ -8,7 +8,7 @@ const PROPERTY_URL = API_URLS.properties;
 
 export const getProperties = (filters: string = "") => {
   const propertyUrl = filters.length > 0 ? `${PROPERTY_URL}${filters}` : PROPERTY_URL;
-  return axios.get(propertyUrl);
+  return $axios.get(propertyUrl);
 };
 
 export type BasicType = {
@@ -58,20 +58,20 @@ const createFilterUrl = (filterObject: PropertiesFilter) => {
 };
 
 export const getPropertyDetails = async (id: number) => {
-  return axios.get(`${PROPERTY_URL}/${id}`);
+  return $axios.get(`${PROPERTY_URL}/${id}`);
 };
 
 export const getPropertiesByFilter = async (filterObject: PropertiesFilter) => {
   const query = createFilterUrl(filterObject);
-  return axios.get(`${PROPERTY_URL}?${query}`);
+  return $axios.get(`${PROPERTY_URL}?${query}`);
 };
 
 export const createProperty = (propertyPayload: any) => {
-  return axios.post(`${API_PROXY_BASE}/property`, propertyPayload);
+  return $axios.post(`${API_PROXY_BASE}/property`, propertyPayload);
 };
 
 export const editProperty = (propertyId: number, propertyPayload: any) => {
-  return axios.patch(
+  return $axios.patch(
     `${API_PROXY_BASE}/property/${propertyId}`,
     propertyPayload
   );
