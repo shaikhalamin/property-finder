@@ -10,6 +10,6 @@ const backendTest = async (req: NextApiRequest, res: NextApiResponse) => {
     })}`
   );
   const response = await axios(API_BASE as string);
-  res.status(200).json({ name: response.data });
+  res.status(200).json({ data: response.data });
 };
 export default backendTest;
